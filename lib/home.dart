@@ -1,0 +1,462 @@
+import 'package:flutter/material.dart';
+
+import 'notification.dart';
+
+class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.purple.shade900,
+        title: const Text("Real Twist"),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationView()),
+              );
+            },
+            child: Stack(
+              children: [
+                const Center(
+                    child: Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Icon(
+                    Icons.notifications,
+                    color: Colors.blue,
+                    size: 28,
+                  ),
+                )),
+                Positioned(
+                    top: 8,
+                    right: 10,
+                    child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: const Text(
+                          "21",
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800),
+                        )))
+              ],
+            ),
+          ),
+        ],
+      ),
+      drawer: const DrawerView(),
+      body: const HomeSideView(),
+    );
+  }
+}
+
+class HomeSideView extends StatelessWidget {
+  const HomeSideView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const CommonCard(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Total Coin",
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "1,00,00,000",
+                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 22),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              const Expanded(
+                child: CommonCard(
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Total Gyre",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "11235.57",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: CommonCard(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            gradient: LinearGradient(colors: [
+                              Colors.purple.shade900,
+                              Colors.purple.shade300
+                            ]),
+                          ),
+                          child: const Text(
+                            "GYRE 0.805900",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Card(
+                        elevation: 8,
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            gradient: LinearGradient(colors: [
+                              Colors.purple.shade900,
+                              Colors.purple.shade300
+                            ]),
+                          ),
+                          child: const Text(
+                            "USDT O",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          const Row(
+            children: [
+              Expanded(
+                child: CommonCard(
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "My Investment",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "11075.9692",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: 24),
+              Expanded(
+                child: CommonCard(
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Total Income",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "158.8",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          CommonCard(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  const Text(
+                    "Deposit/Withdrawal Gyre",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Settle your transactions quickly",
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(.8),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 24),
+                  const Icon(Icons.payments_outlined, size: 80),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Card(
+                          elevation: 8,
+                          child: Container(
+                            width: double.infinity,
+                            height: 40,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              gradient: LinearGradient(colors: [
+                                Colors.purple.shade600,
+                                Colors.purple.shade300
+                              ]),
+                            ),
+                            child: const Text(
+                              "Deposit",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Card(
+                          elevation: 8,
+                          child: Container(
+                            width: double.infinity,
+                            height: 40,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              gradient: LinearGradient(colors: [
+                                Colors.purple.shade600,
+                                Colors.purple.shade300,
+                              ]),
+                            ),
+                            child: const Text(
+                              "Withdraw",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                  image: AssetImage("assets/spin.jpeg"), fit: BoxFit.fill),
+              borderRadius: BorderRadius.circular(8),
+              gradient: LinearGradient(
+                  colors: [Colors.purple.shade600, Colors.purple.shade900]),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Play And Win",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Play Daily and Earn Rewards",
+                          style: TextStyle(
+                              color: Colors.white.withOpacity(.9),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 30),
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.asset("assets/spin2.png", height: 80)),
+                        const SizedBox(height: 30),
+                        Text(
+                          "Spin Wheel",
+                          style: TextStyle(
+                              color: Colors.white.withOpacity(.9),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: SizedBox(
+                      height: 0,
+                    ))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CommonCard extends StatelessWidget {
+  const CommonCard({Key? key, this.padding, this.child}) : super(key: key);
+  final EdgeInsets? padding;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: padding ?? EdgeInsets.zero,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        gradient: LinearGradient(
+            colors: [Colors.purple.shade600, Colors.purple.shade900]),
+      ),
+      child: child ?? SizedBox(),
+    );
+  }
+}
+
+class DrawerView extends StatelessWidget {
+  const DrawerView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: const EdgeInsets.all(0),
+        children: [
+          DrawerHeader(
+            decoration:
+                const BoxDecoration(color: Colors.transparent), //BoxDecoration
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                    colors: [Colors.purple.shade600, Colors.purple.shade900]),
+              ),
+              child: const UserAccountsDrawerHeader(
+                decoration: BoxDecoration(color: Colors.transparent),
+                accountName: Text(
+                  "Abhishek Mishra",
+                  style: TextStyle(fontSize: 18),
+                ),
+                accountEmail: Text("abhishekm977@gmail.com"),
+                currentAccountPictureSize: Size.square(50),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                  child: Text(
+                    "A",
+
+                    style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                  ), //Text
+                ), //circleAvatar
+              ),
+            ), //UserAccountDrawerHeader
+          ), //DrawerHeader
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text(' My Profile '),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.book),
+            title: const Text(' My Course '),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.workspace_premium),
+            title: const Text(' Go Premium '),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.video_label),
+            title: const Text(' Saved Videos '),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text(' Edit Profile '),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('LogOut'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
