@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/spinwheelscreen.dart';
 
 import 'notification.dart';
 
@@ -295,60 +296,65 @@ class HomeSideView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          Container(
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                  image: AssetImage("assets/spin.jpeg"), fit: BoxFit.fill),
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                  colors: [Colors.purple.shade600, Colors.purple.shade900]),
+          GestureDetector(
+            onTap: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const SpinWheel(),
+              ),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Play And Win",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "Play Daily and Earn Rewards",
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(.9),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 30),
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.asset("assets/spin2.png", height: 80)),
-                        const SizedBox(height: 30),
-                        Text(
-                          "Spin Wheel",
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(.9),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ],
+            child: Container(
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                    image: AssetImage("assets/spin.jpeg"), fit: BoxFit.fill),
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                    colors: [Colors.purple.shade600, Colors.purple.shade900]),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Play And Win",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Play Daily and Earn Rewards",
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(.8),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(height: 24),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child:
+                                  Image.asset("assets/spin2.png", height: 80)),
+                          const SizedBox(height: 24),
+                          const Text(
+                            "Spin Wheel",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 0,
-                    ))
-              ],
+                  const Expanded(flex: 1, child: SizedBox())
+                ],
+              ),
             ),
           ),
         ],
@@ -406,7 +412,6 @@ class DrawerView extends StatelessWidget {
                   backgroundColor: Color.fromARGB(255, 165, 255, 137),
                   child: Text(
                     "A",
-
                     style: TextStyle(fontSize: 30.0, color: Colors.blue),
                   ), //Text
                 ), //circleAvatar
