@@ -13,8 +13,18 @@ class _SpinWheelState extends State<SpinWheel> {
   final selected = BehaviorSubject<int>();
   int rewards = 0;
 
-  List<int> items = [
-    100, 200, 500, 1000, 2000
+  List<int> items = [100, 200, 500, 100, 200, 500, 1000, 2000, 1000, 2000];
+  List<Color> color = [
+    Colors.red,
+    Colors.tealAccent,
+    Colors.pinkAccent,
+    Colors.red,
+    Colors.tealAccent,
+    Colors.pinkAccent,
+    Colors.deepPurpleAccent,
+    Colors.cyanAccent,
+    Colors.deepPurpleAccent,
+    Colors.cyanAccent,
   ];
 
   @override
@@ -37,8 +47,16 @@ class _SpinWheelState extends State<SpinWheel> {
                 selected: selected.stream,
                 animateFirst: false,
                 items: [
-                  for(int i = 0; i < items.length; i++)...<FortuneItem>{
-                    FortuneItem(child: Text(items[i].toString())),
+                  for (int i = 0; i < items.length; i++) ...<FortuneItem>{
+                    FortuneItem(
+                        child: Text(
+                          items[i].toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 20),
+                        ),
+                        style: FortuneItemStyle(color: color[i])),
                   },
                 ],
                 onAnimationEnd: () {
@@ -48,7 +66,8 @@ class _SpinWheelState extends State<SpinWheel> {
                   print(rewards);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text("You just won " + rewards.toString() + " Points!"),
+                      content: Text(
+                          "You just won " + rewards.toString() + " Points!"),
                     ),
                   );
                 },
@@ -75,3 +94,21 @@ class _SpinWheelState extends State<SpinWheel> {
     );
   }
 }
+
+class ColorModel {
+  final int name;
+  final Color color;
+
+  ColorModel(this.name, this.color);
+}
+
+final List<ColorModel> colorList = [
+  ColorModel(100, Colors.red),
+  ColorModel(200, Colors.green),
+  ColorModel(1100, Colors.blue),
+  ColorModel(10, Colors.yellow),
+  ColorModel(-10, Colors.purple),
+  ColorModel(-100, Colors.blue),
+  ColorModel(-1000, Colors.purpleAccent),
+  // Add more colors as needed
+];
