@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SpinWheel extends StatefulWidget {
   const SpinWheel({Key? key}) : super(key: key);
@@ -13,24 +17,57 @@ class _SpinWheelState extends State<SpinWheel> {
   final selected = BehaviorSubject<int>();
   int rewards = 0;
 
-  List<int> items = [100, 200, 500, 100, 200, 500, 1000, 2000, 1000, 2000];
-  List<Color> color = [
-    Colors.red,
-    Colors.tealAccent,
-    Colors.pinkAccent,
-    Colors.red,
-    Colors.tealAccent,
-    Colors.pinkAccent,
-    Colors.deepPurpleAccent,
-    Colors.cyanAccent,
-    Colors.deepPurpleAccent,
-    Colors.cyanAccent,
-  ];
+  List<int> items = [10, 5, 20, -10, -5, 15, 2, 0, 25, -15];
+
+  late SharedPreferences prefs;
+  bool hasPlayedToday = false;
+
+  Future<void> _checkIfPlayedToday() async {
+    prefs = await SharedPreferences.getInstance();
+    final lastPlayDate = prefs.getString('last_play_date');
+
+    if (lastPlayDate != null) {
+      final currentDate = DateTime.now();
+      final lastDate = DateTime.parse(lastPlayDate);
+
+      // Check if the last play date is the same day as today
+      hasPlayedToday = currentDate.year == lastDate.year &&
+          currentDate.month == lastDate.month &&
+          currentDate.day == lastDate.day;
+    }
+  }
+
+  Future<void> _updateLastPlayDate() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setString('last_play_date', DateTime.now().toIso8601String());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfPlayedToday();
+  }
 
   @override
   void dispose() {
     selected.close();
     super.dispose();
+  }
+
+  Future<int> _spinCoinApi() async {
+    const apiUrl = '{{host}}spincoin';
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: '{"coinNumbers":$items}',
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return jsonResponse['selectedNumber'] ?? 0;
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   @override
@@ -52,37 +89,50 @@ class _SpinWheelState extends State<SpinWheel> {
                         child: Text(
                           items[i].toString(),
                           style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
                               fontSize: 20),
                         ),
-                        style: FortuneItemStyle(color: color[i])),
+                    )
                   },
                 ],
-                onAnimationEnd: () {
+                onAnimationEnd: () async{
                   setState(() {
                     rewards = items[selected.value];
                   });
-                  print(rewards);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          "You just won " + rewards.toString() + " Points!"),
+                          "You just won $rewards Points!"),
                     ),
                   );
+                  await _updateLastPlayDate();
                 },
               ),
             ),
+            const SizedBox(height: 35,),
             GestureDetector(
-              onTap: () {
-                setState(() {
-                  selected.add(Fortune.randomInt(0, items.length));
-                });
+              onTap: () async{
+                if (!hasPlayedToday) {
+                  final selectedNumber = await _spinCoinApi();
+                  setState(() {
+                    selected.value = items.indexOf(selectedNumber);
+                  });
+                } else {
+                  // User has already played today
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("You have already played today."),
+                    ),
+                  );
+                }
               },
               child: Container(
-                height: 40,
-                width: 120,
-                color: Colors.redAccent,
+                height: 50,
+                width: 130,
+                decoration:  BoxDecoration(color: !hasPlayedToday ? Colors.redAccent : Colors.grey,
+                  borderRadius: const BorderRadius.all(Radius.circular(10))
+                ),
                 child: const Center(
                   child: Text("SPIN"),
                 ),
@@ -94,21 +144,3 @@ class _SpinWheelState extends State<SpinWheel> {
     );
   }
 }
-
-class ColorModel {
-  final int name;
-  final Color color;
-
-  ColorModel(this.name, this.color);
-}
-
-final List<ColorModel> colorList = [
-  ColorModel(100, Colors.red),
-  ColorModel(200, Colors.green),
-  ColorModel(1100, Colors.blue),
-  ColorModel(10, Colors.yellow),
-  ColorModel(-10, Colors.purple),
-  ColorModel(-100, Colors.blue),
-  ColorModel(-1000, Colors.purpleAccent),
-  // Add more colors as needed
-];
