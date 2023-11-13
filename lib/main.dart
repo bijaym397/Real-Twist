@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/utils/custom_loader.dart';
 import 'login.dart';
 
+CustomLoader? customLoader;
 void main() {
+  customLoader = CustomLoader();
   runApp(const MyApp());
 }
 
