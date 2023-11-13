@@ -13,18 +13,22 @@ class _SpinWheelState extends State<SpinWheel> {
   final selected = BehaviorSubject<int>();
   int rewards = 0;
 
-  List<int> items = [100, 200, 500, 100, 200, 500, 1000, 2000, 1000, 2000];
+  List<int> items = [100, 200, 500, 100, 200, 500, 1000, -2000, -1000, -2000];
   List<Color> color = [
-    Colors.red,
-    Colors.tealAccent,
-    Colors.pinkAccent,
-    Colors.red,
-    Colors.tealAccent,
-    Colors.pinkAccent,
-    Colors.deepPurpleAccent,
-    Colors.cyanAccent,
-    Colors.deepPurpleAccent,
-    Colors.cyanAccent,
+    Colors.orange.shade900,
+    Colors.yellow.shade800,
+
+    Colors.orange.shade900,
+    Colors.yellow.shade800,
+
+    Colors.orange.shade900,
+    Colors.yellow.shade800,
+
+    Colors.orange.shade900,
+    Colors.yellow.shade800,
+
+    Colors.orange.shade900,
+    Colors.yellow.shade800,
   ];
 
   @override
@@ -36,6 +40,15 @@ class _SpinWheelState extends State<SpinWheel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: Colors.black,
+        title: const Text(
+          "Spin & Win",
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+        ),
+      ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,13 +79,14 @@ class _SpinWheelState extends State<SpinWheel> {
                   print(rewards);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(
-                          "You just won " + rewards.toString() + " Points!"),
+                      content:
+                          Text("You just won ${rewards.toString()} Points!"),
                     ),
                   );
                 },
               ),
             ),
+
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -80,6 +94,7 @@ class _SpinWheelState extends State<SpinWheel> {
                 });
               },
               child: Container(
+                margin: const EdgeInsets.only(top: 60),
                 height: 40,
                 width: 120,
                 color: Colors.redAccent,

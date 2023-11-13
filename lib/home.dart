@@ -14,8 +14,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.purple.shade900,
+        backgroundColor: Colors.pink.shade800,
         title: const Text("Real Twist"),
         actions: [
           GestureDetector(
@@ -32,14 +33,14 @@ class _HomeViewState extends State<HomeView> {
                     child: Padding(
                   padding: EdgeInsets.all(12),
                   child: Icon(
-                    Icons.notifications,
-                    color: Colors.blue,
+                    Icons.notifications_active_outlined,
+                    color: Colors.white,
                     size: 28,
                   ),
                 )),
                 Positioned(
-                    top: 8,
-                    right: 10,
+                    top: 5,
+                    right: 7,
                     child: Container(
                         padding: const EdgeInsets.all(2),
                         decoration: const BoxDecoration(
@@ -308,8 +309,7 @@ class HomeSideView extends StatelessWidget {
                 image: const DecorationImage(
                     image: AssetImage("assets/spin.jpeg"), fit: BoxFit.fill),
                 borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                    colors: [Colors.purple.shade600, Colors.purple.shade900]),
+
               ),
               child: Row(
                 children: [
@@ -375,7 +375,7 @@ class CommonCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         gradient: LinearGradient(
-            colors: [Colors.purple.shade600, Colors.purple.shade900]),
+            colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
       ),
       child: child ?? SizedBox(),
     );
@@ -388,6 +388,7 @@ class DrawerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.black,
       child: ListView(
         padding: const EdgeInsets.all(0),
         children: [
