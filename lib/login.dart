@@ -114,6 +114,7 @@ class _LoginViewState extends State<LoginView> {
 
 
   static Future<bool> signup({
+    required BuildContext context,
     required String firstName,
     required String phone,
   }) async {
@@ -125,7 +126,7 @@ class _LoginViewState extends State<LoginView> {
         "phoneNumber": "91",
       };
 
-      final Uri uri = Uri.parse(Api.baseUrl);
+      final Uri uri = Uri.parse("url");
       dynamic response = await http.post(uri, body: payload);
 
       if (response != null) {
