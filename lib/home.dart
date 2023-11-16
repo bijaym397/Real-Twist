@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/login.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 
 import 'game2.dart';
@@ -456,7 +457,7 @@ class DrawerView extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: LinearGradient(
-                    colors: [Colors.purple.shade600, Colors.purple.shade900]),
+                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
               ),
               child: const UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.transparent),
@@ -515,7 +516,10 @@ class DrawerView extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('LogOut'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginView()),
+              );
             },
           ),
         ],
