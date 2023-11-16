@@ -219,7 +219,7 @@ class HomeSideView extends StatelessWidget {
           const SizedBox(height: 24),
           CommonCard(
             child: Padding(
-              padding: EdgeInsets.all(24),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
                   const Text(
