@@ -364,20 +364,24 @@ class HomeSideView extends StatelessWidget {
 }
 
 class CommonCard extends StatelessWidget {
-  const CommonCard({Key? key, this.padding, this.child}) : super(key: key);
+  const CommonCard({Key? key, this.padding, this.child, this.onTap}) : super(key: key);
   final EdgeInsets? padding;
   final Widget? child;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding ?? EdgeInsets.zero,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-            colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: padding ?? EdgeInsets.zero,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          gradient: LinearGradient(
+              colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+        ),
+        child: child ?? SizedBox(),
       ),
-      child: child ?? SizedBox(),
     );
   }
 }

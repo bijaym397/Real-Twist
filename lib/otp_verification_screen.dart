@@ -63,48 +63,50 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 120),
-            const Center(
-                child: Text(
-                  "Welcome to",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-                )),
-            const SizedBox(height: 8),
-            const Center(
-                child: Text(
-                  "Real Twist",
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
-                )),
-            const SizedBox(height: 60),
-            Text(
-              'Enter the OTP sent to ${widget.phoneNumber}',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 24),
-            TextFormField(
-              controller: otpController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.vpn_key),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                border: OutlineInputBorder(),
-                hintText: 'Enter OTP',
-                labelText: 'Enter OTP',
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 120),
+              const Center(
+                  child: Text(
+                    "Welcome to",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
+                  )),
+              const SizedBox(height: 8),
+              const Center(
+                  child: Text(
+                    "Real Twist",
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
+                  )),
+              const SizedBox(height: 60),
+              Text(
+                'Enter the OTP sent to ${widget.phoneNumber}',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              height: 45,
-              width: double.infinity,
-              child: ElevatedButton(
-                child: const Text("Verify OTP", style: TextStyle(fontSize: 18)),
-                onPressed: _hitVerifyOtpApi,
+              const SizedBox(height: 24),
+              TextFormField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.vpn_key),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter OTP',
+                  labelText: 'Enter OTP',
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 24),
+              SizedBox(
+                height: 45,
+                width: double.infinity,
+                child: ElevatedButton(
+                  child: const Text("Verify OTP", style: TextStyle(fontSize: 18)),
+                  onPressed: _hitVerifyOtpApi,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
