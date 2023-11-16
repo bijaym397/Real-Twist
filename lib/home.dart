@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 
+import 'game2.dart';
 import 'notification.dart';
 
 class HomeView extends StatefulWidget {
@@ -305,58 +306,110 @@ class HomeSideView extends StatelessWidget {
               ),
             ),
             child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 24),
               decoration: BoxDecoration(
-                image: const DecorationImage(
-                    image: AssetImage("assets/spin.jpeg"), fit: BoxFit.fill),
+                // color: Colors.pink.shade500,
+                gradient: LinearGradient(
+                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                image: DecorationImage(
+                    image: const AssetImage("assets/spin_bg.jpeg"), fit: BoxFit.fill,
+                    colorFilter:  ColorFilter.mode(Colors.black.withOpacity(.3), BlendMode.dstATop)
+                ),
                 borderRadius: BorderRadius.circular(8),
 
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    flex: 4,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Play And Win",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w800),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Play Daily and Earn Rewards",
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(.8),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(height: 24),
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child:
-                                  Image.asset("assets/spin2.png", height: 80)),
-                          const SizedBox(height: 24),
-                          const Text(
-                            "Spin Wheel",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ],
-                      ),
-                    ),
+                  const Text(
+                    "Play And Win",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900),
                   ),
-                  const Expanded(flex: 1, child: SizedBox())
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Play Daily and Earn Rewards",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 16),
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:
+                          Image.asset("assets/spin2.png", height: 100)),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Spin Wheel",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900),
+                  ),
                 ],
               ),
             ),
           ),
+          const SizedBox(height: 24),
+          GestureDetector(
+            onTap: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const NumberSpinner(),
+              ),
+            ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              decoration: BoxDecoration(
+                // color: Colors.pink.shade500,
+                gradient: LinearGradient(
+                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                image: DecorationImage(
+                    image: const AssetImage("assets/assets/spin.jpeg"), fit: BoxFit.fill,
+                    colorFilter:  ColorFilter.mode(Colors.black.withOpacity(.3), BlendMode.dstATop)
+                ),
+                borderRadius: BorderRadius.circular(8),
+
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Play And Win",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Play Daily and Earn Rewards",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 16),
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:
+                      Image.asset("assets/spin2.png", height: 100)),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Spin Wheel",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 48,)
         ],
       ),
     );

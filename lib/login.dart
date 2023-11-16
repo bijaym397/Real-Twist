@@ -124,7 +124,7 @@ class _LoginViewState extends State<LoginView> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            const SizedBox(height: 120),
+            const SizedBox(height: 100),
             const Center(
                 child: Text(
               "Welcome to",
@@ -168,7 +168,7 @@ class _LoginViewState extends State<LoginView> {
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
                 )),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             SizedBox(
               height: 45,
               child: CommonCard(
@@ -176,15 +176,13 @@ class _LoginViewState extends State<LoginView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const OtpVerificationScreen(
-                        phoneNumber: '9088099176',
-                      ),
+                      builder: (context) => const HomeView(),
                     ),
                   );
                 },
                 child: const Center(
                   child: Text(
-                    'Submit',
+                    'Login',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -271,6 +269,7 @@ Future<void> _showTextFieldPopup(BuildContext context) async {
                     Expanded(
                       child: CommonCard(
                         onTap: () {
+                          Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
