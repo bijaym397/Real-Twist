@@ -102,10 +102,18 @@
 
 ///
 
-import 'package:flutter/material.dart';
-import 'package:real_twist/home.dart';
-import 'package:real_twist/signUp.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:real_twist/constants/strings.dart';
+import 'package:real_twist/home.dart';
+import 'package:real_twist/main.dart';
+import 'package:real_twist/modals/login_data_modal.dart';
+import 'package:real_twist/signUp.dart';
+import 'package:real_twist/utils/form_validator.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'otp_verification_screen.dart';
 
 class LoginView extends StatefulWidget {
@@ -116,117 +124,271 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+   TextEditingController phoneController = TextEditingController();
+   TextEditingController passwordController = TextEditingController();
+   FocusNode phoneNode = FocusNode();
+   FocusNode passwordNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            const SizedBox(height: 100),
-            const Center(
-                child: Text(
-              "Welcome to",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-            )),
-            const SizedBox(height: 8),
-            const Center(
-                child: Text(
-              "Real Twist",
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
-            )),
-            const SizedBox(height: 68),
-            TextFormField(
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.phone),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter Your Phone Number',
-                  labelText: "Enter Your Phone Number"),
-            ),
-            const SizedBox(height: 24),
-            TextFormField(
-              decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  prefixIcon: Icon(Icons.key),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter You Password',
-                  labelText: "Enter You Password"),
-            ),
-            const SizedBox(height: 12),
-            Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
+        child: Form(
+          key: loginFormKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              const SizedBox(height: 100),
+              const Center(
+                  child: Text(
+                "Welcome to",
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
+              )),
+              const SizedBox(height: 8),
+              const Center(
+                  child: Text(
+                "Real Twist",
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
+              )),
+              const SizedBox(height: 68),
+              TextFormField(
+                 focusNode: phoneNode,
+                controller: phoneController,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) return "*Required";
+                  if (value.length < 10) {
+                    return "Length should be ${14 - 4}";
+                  }
+                  if (!value.isValidPhone()) return "Invalid Phone Number";
+                  return null;
+                },
+                // validator: FromValidator.phoneValidator,
+                textInputAction: TextInputAction.next,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.phone),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter Your Phone Number',
+                    labelText: "Enter Your Phone Number"),
+              ),
+              const SizedBox(height: 24),
+              TextFormField(
+                focusNode: passwordNode,
+                controller: passwordController,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) return "*Required";
+                  if (!value.isValidPassword()){
+                    return "Password must contain at least 8 characters.";
+                  }
+                  return null;
+                },
+                // validator: FromValidator.passwordValidator,
+                textInputAction: TextInputAction.done,
+                decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    prefixIcon: Icon(Icons.key),
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter You Password',
+                    labelText: "Enter You Password"),
+              ),
+              const SizedBox(height: 12),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      _showTextFieldPopup(context);
+                    },
+                    child: const Text(
+                      "Forgot Password",
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                  )),
+              const SizedBox(height: 32),
+              SizedBox(
+                height: 45,
+                child: CommonCard(
                   onTap: () {
-                    _showTextFieldPopup(context);
+                    if(loginFormKey.currentState!.validate()){
+                      _hitLoginApi(
+                        phone: phoneController.text.trim(),
+                        countryCode: "91",
+                        password: passwordController.text.trim(),
+                      );
+                      /*Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeView(),
+                        ),
+                      );*/
+                    }
                   },
-                  child: const Text(
-                    "Forgot Password",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  child: const Center(
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
                   ),
-                )),
-            const SizedBox(height: 32),
-            SizedBox(
-              height: 45,
-              child: CommonCard(
+                ),
+              ),
+              const SizedBox(height: 60),
+              GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeView(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const SignupView()),
                   );
                 },
-                child: const Center(
-                  child: Text(
-                    'Login',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "You don't have a account, ",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.pink.shade400),
+                      ),
+                      TextSpan(
+                        text: "Sign Up",
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.pinkAccent.shade100),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 60),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignupView()),
-                );
-              },
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "You don't have a account, ",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.pink.shade400),
-                    ),
-                    TextSpan(
-                      text: "Sign Up",
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.pinkAccent.shade100),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
+    Future<void> _hitLoginApi({String? countryCode, String? phone, String? password}) async {
+    try{
+      customLoader!.show(context);
+      const apiUrl = '${'http://178.16.138.186:6000/api/'}login';
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'phoneNumber': phone.toString(),
+          'countryCode': countryCode.toString(),
+          'password': password.toString(),
+        }),
+      );
+      final loginData = LoginData.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        // API call successful
+        // var data = json.decode(response.body);
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${loginData.message} ?? OTP sent to your phone."),
+          ),
+        );
+        SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+        // sharedPreferences.setBool("isEntered", isEntered = true);
+        // Navigate to OTP verification screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpVerificationScreen(
+              phoneNumber: '$countryCode${phone.toString()}',
+            ),
+          ),
+        ).then((value) {
+          sharedPreferences.setString(
+              AppStrings.spUserId, loginData.data!.userId.toString());
+          sharedPreferences.setString(
+              AppStrings.spAuthToken, loginData.data!.userId.toString());
+        });
+      } else {
+        // API call failed
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${loginData.message} ?? Failed to send OTP. Please try again."),
+          ),
+        );
+      }
+    }
+    catch(e){
+      customLoader!.hide();
+      return debugPrint(e.toString());
+    }
+
+  }
+
+/*  loginAPI(context) async {
+    DialogHelper.showLoadingDialog(label: 'Logging . . .');
+    Map data = {
+      'email': emailController.text.trim(),
+      'password': passwordController.text.trim(),
+    };
+    var response = await http.post(
+        Uri.parse("${"https://www.wiserxcard.com/wp-json/wp/v2/users/"}" +
+            "${"login"}"),
+        body: data);
+    DialogHelper.closeDialog();
+    var dataa = json.decode(response.body);
+    if (dataa["status"] == true) {
+      final loginData = LoginData.fromJson(json.decode(response.body));
+      var loginTemp;
+
+      loginTemp = loginData.data[0].toJson();
+
+      SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
+      sharedPreferences.setString(
+          AppStrings.spUserId, loginTemp["userid"].toString());
+      sharedPreferences.setString(
+          AppStrings.spFirstName, loginTemp["first_name"].toString());
+      sharedPreferences.setString(
+          AppStrings.spLastName, loginTemp["last_name"].toString());
+      sharedPreferences.setString(
+          AppStrings.spEmail, loginTemp["email"].toString());
+      sharedPreferences.setString(
+          AppStrings.spPhone, loginTemp["phonenumber"].toString());
+      sharedPreferences.setString(
+          AppStrings.spImage, loginTemp["profilePic"].toString());
+      sharedPreferences.setBool(AppStrings.spLoginSocial, false);
+      sharedPreferences.setBool(AppStrings.spLoggedIn, true);
+      sharedPreferences.setBool("isEntered", isEntered = true);
+      navController.currentIndex = 1;
+      Utility().toast(context, "Login Successfully");
+      Get.offAll(DashboardWrapper())!.then((value) async {
+        emailController.text = "";
+        passwordController.text = "";
+        SharedPreferences preference = await SharedPreferences.getInstance();
+        await preference.setBool(AppStrings.spLoggedIn, true);
+        await preference.setBool("isEntered", isEntered = true);
+      });
+    } else {
+      print("Failure API");
+
+      Utility().toast(
+          context,
+          dataa["message"] ??
+              "Sorry, your email or password is incorrect. Please try again.");
+    }
+  }*/
+
+
 }
 
 Future<void> _showTextFieldPopup(BuildContext context) async {
   TextEditingController _textFieldController = TextEditingController();
+  FocusNode forgotFocusNode = FocusNode();
 
   return showDialog(
     context: context,
@@ -241,6 +403,8 @@ Future<void> _showTextFieldPopup(BuildContext context) async {
             children: [
               const Text('Forgot Password'),
               TextFormField(
+                controller: _textFieldController,
+                focusNode: forgotFocusNode,
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 6),
