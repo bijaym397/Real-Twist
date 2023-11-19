@@ -42,7 +42,7 @@ class _PaymentViewState extends State<PaymentView> {
           .initPaymentSheet(
               paymentSheetParameters: SetupPaymentSheetParameters(
                   paymentIntentClientSecret: paymentIntent![
-                      'client_secret'], //Gotten from payment intent
+                      'client_secret'],
                   style: ThemeMode.light,
                   merchantDisplayName: 'Abhi',
                   // googlePay: gpay

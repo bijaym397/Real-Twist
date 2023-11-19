@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:real_twist/login.dart';
-import 'package:real_twist/otp.dart';
-import 'package:real_twist/otp_verification_screen.dart';
 import 'package:real_twist/utils/form_validator.dart';
+
+import 'otp_verification_screen.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({Key? key}) : super(key: key);

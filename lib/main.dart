@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:real_twist/splash.dart';
+import 'package:real_twist/auth/splash.dart';
 import 'package:real_twist/utils/custom_loader.dart';
 
 CustomLoader? customLoader;
