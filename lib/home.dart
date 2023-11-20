@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:real_twist/login.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/spinwheelscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'game2.dart';
 import 'menu.dart';
@@ -314,11 +315,11 @@ class HomeSideView extends StatelessWidget {
                 gradient: LinearGradient(
                     colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
                 image: DecorationImage(
-                    image: const AssetImage("assets/spin_bg.jpeg"), fit: BoxFit.fill,
-                    colorFilter:  ColorFilter.mode(Colors.black.withOpacity(.3), BlendMode.dstATop)
-                ),
+                    image: const AssetImage("assets/spin_bg.jpeg"),
+                    fit: BoxFit.fill,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(.3), BlendMode.dstATop)),
                 borderRadius: BorderRadius.circular(8),
-
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -341,8 +342,7 @@ class HomeSideView extends StatelessWidget {
                   const SizedBox(height: 16),
                   ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child:
-                          Image.asset("assets/spin2.png", height: 100)),
+                      child: Image.asset("assets/spin2.png", height: 100)),
                   const SizedBox(height: 16),
                   const Text(
                     "Spin Wheel",
@@ -370,11 +370,11 @@ class HomeSideView extends StatelessWidget {
                 gradient: LinearGradient(
                     colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
                 image: DecorationImage(
-                    image: const AssetImage("assets/assets/spin.jpeg"), fit: BoxFit.fill,
-                    colorFilter:  ColorFilter.mode(Colors.black.withOpacity(.3), BlendMode.dstATop)
-                ),
+                    image: const AssetImage("assets/assets/spin.jpeg"),
+                    fit: BoxFit.fill,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(.3), BlendMode.dstATop)),
                 borderRadius: BorderRadius.circular(8),
-
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -397,8 +397,7 @@ class HomeSideView extends StatelessWidget {
                   const SizedBox(height: 16),
                   ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child:
-                      Image.asset("assets/spin2.png", height: 100)),
+                      child: Image.asset("assets/spin2.png", height: 100)),
                   const SizedBox(height: 16),
                   const Text(
                     "Spin Wheel",
@@ -411,7 +410,9 @@ class HomeSideView extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 48,)
+          SizedBox(
+            height: 48,
+          )
         ],
       ),
     );
@@ -419,7 +420,8 @@ class HomeSideView extends StatelessWidget {
 }
 
 class CommonCard extends StatelessWidget {
-  const CommonCard({Key? key, this.padding, this.child, this.onTap}) : super(key: key);
+  const CommonCard({Key? key, this.padding, this.child, this.onTap})
+      : super(key: key);
   final EdgeInsets? padding;
   final Widget? child;
   final Function()? onTap;

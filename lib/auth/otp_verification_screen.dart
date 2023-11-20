@@ -18,18 +18,18 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final TextEditingController otpController = TextEditingController();
 
   Future<void> _hitVerifyOtpApi() async {
-    // final apiUrl = '{{host}}verifyOtp';
-    // final response = await http.post(
-    //   Uri.parse(apiUrl),
-    //   headers: {'Content-Type': 'application/json'},
-    //   body: jsonEncode({
-    //     'userId': '654ca1fe7470d369ff94735c',
-    //     'phoneNumber': widget.phoneNumber,
-    //     'verificationCode': int.tryParse(otpController.text) ?? 0,
-    //   }),
-    // );
-    //
-    // if (response.statusCode == 200) {
+    final apiUrl = '{{host}}verifyOtp';
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userId': '654ca1fe7470d369ff94735c',
+        'phoneNumber': widget.phoneNumber,
+        'verificationCode': int.tryParse(otpController.text) ?? 0,
+      }),
+    );
+
+    if (response.statusCode == 200) {
       // API call successful
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -44,14 +44,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           builder: (context) => const HomeView(),
         ),
       );
-    // } else {
-    //   // API call failed
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: const Text("OTP verification failed. Please try again."),
-    //     ),
-    //   );
-    // }
+      // } else {
+      //   // API call failed
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       content: const Text("OTP verification failed. Please try again."),
+      //     ),
+      //   );
+      // }
+    }
   }
 
   @override
