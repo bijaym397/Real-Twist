@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/login.dart';
+import 'package:real_twist/auth/widgets.dart';
 import 'package:real_twist/utils/form_validator.dart';
 
 import 'otp_verification_screen.dart';
@@ -11,7 +13,6 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-
   final GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
 
   TextEditingController nameController = TextEditingController();
@@ -38,19 +39,30 @@ class _SignupViewState extends State<SignupView> {
             children: [
               const SizedBox(height: 40),
               const Center(
-                  child: Text(
-                "Please Sign Up",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-              )),
+                child: Text(
+                  "Please Sign Up",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 30,
+                  ),
+                ),
+              ),
               const SizedBox(height: 40),
               TextFormField(
                 focusNode: nameNode,
                 controller: nameController,
-                validator: FromValidator.phoneValidator,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return "*Required";
+                  } else if (value.length < 3) {
+                    return "Name should be 3 characters";
+                  }
+                  return null;
+                },
                 keyboardType: TextInputType.name,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: Icon(Icons.person_2_outlined),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     border: OutlineInputBorder(),
@@ -62,7 +74,15 @@ class _SignupViewState extends State<SignupView> {
                 focusNode: phoneNode,
                 controller: phoneController,
                 keyboardType: TextInputType.phone,
-                validator: FromValidator.phoneValidator,
+                maxLength: 10,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return "*Required";
+                  } else if (value.length < 10) {
+                    return "Number should be 10 characters";
+                  }
+                  return null;
+                },
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.phone),
@@ -76,7 +96,7 @@ class _SignupViewState extends State<SignupView> {
               TextFormField(
                 focusNode: emailNode,
                 controller: emailController,
-                validator: FromValidator.emailValidator,
+                validator: validateEmail,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
@@ -91,7 +111,14 @@ class _SignupViewState extends State<SignupView> {
               TextFormField(
                 focusNode: passwordNode,
                 controller: passwordController,
-                validator: FromValidator.passwordValidator,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "*Required";
+                  } else if (value.length < 8) {
+                    return "Minimum length is 8";
+                  }
+                  return null;
+                },
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: const InputDecoration(
@@ -108,8 +135,14 @@ class _SignupViewState extends State<SignupView> {
                 controller: confirmPasswordController,
                 keyboardType: TextInputType.visiblePassword,
                 validator: (value) {
-                  if (value == null || value.isEmpty) return "*Required";
-                  if (value.length < 8) return "Minimum length is 8";
+                  if (value == null || value.isEmpty) {
+                    return "*Required";
+                  } else if (value.length < 8) {
+                    return "Minimum length is 8";
+                  } else if (passwordController.value.text !=
+                      confirmPasswordController.value.text) {
+                    return "Password & Confirmation password do not match";
+                  }
                   return null;
                 },
                 textInputAction: TextInputAction.done,
@@ -122,53 +155,35 @@ class _SignupViewState extends State<SignupView> {
                     labelText: "Enter Your Confirm Password"),
               ),
               const SizedBox(height: 24),
-              const Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    "Forgot Password",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                  )),
-              const SizedBox(height: 24),
-              SizedBox(
-                height: 45,
-                child: ElevatedButton(
-                  child: const Text("Sign Up", style: TextStyle(fontSize: 18),),
-                  onPressed: () {
-                    if(signUpFormKey.currentState!.validate()){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OtpVerificationScreen(phoneNumber: '9088099176'),
-                        ),
-                      );
-                    }
-                  },
-                ),
+              ButtonCommon(
+                title: "Submit",
+                onTap: () {
+                  print(confirmPasswordController.value.text);
+                  if (signUpFormKey.currentState!.validate()) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OtpVerificationScreen(
+                            phoneNumber: '9088099176'),
+                      ),
+                    );
+                  }
+                },
               ),
-              const SizedBox(height: 60),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "You don't have a account, ",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
+              const SizedBox(height: 40),
+              BottomText(
+                text: "Already have an account?",
+                text2: " Log in",
+                onTap: () {
+                  if (signUpFormKey.currentState!.validate()) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginView(),
                       ),
-                      TextSpan(
-                        text: "Login",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
+                    );
+                  }
+                },
               ),
             ],
           ),
