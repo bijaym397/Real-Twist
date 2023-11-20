@@ -157,6 +157,7 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(height: 68),
                 TextFormField(
                   focusNode: phoneNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: phoneController,
                   maxLength: 10,
                   validator: (value) {
@@ -183,6 +184,7 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(height: 24),
                 TextFormField(
                   focusNode: passwordNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: passwordController,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) return "*Required";
@@ -259,10 +261,8 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(height: 60),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignupView()),
-                    );
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const SignupView()),(Route<dynamic> route) => false);
                   },
                   child: RichText(
                     textAlign: TextAlign.center,
@@ -407,6 +407,7 @@ Future<void> _showTextFieldPopup(BuildContext context) async {
                   controller: textFieldController,
                   focusNode: forgotFocusNode,
                   maxLength: 10,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
                     if (value == null || value.trim().isEmpty)
                       return "*Required";

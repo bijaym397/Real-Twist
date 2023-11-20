@@ -37,7 +37,9 @@ class BottomText extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
-                    color: Colors.pinkAccent.shade100),
+                    color: Colors.white
+                    // color: Colors.pinkAccent.shade100
+                ),
               ),
             ],
           ),

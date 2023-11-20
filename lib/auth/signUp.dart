@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/auth/widgets.dart';
+import 'package:real_twist/utils/Back_handler.dart';
 import 'package:real_twist/utils/form_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/strings.dart';
@@ -32,170 +35,220 @@ class _SignupViewState extends State<SignupView> {
   FocusNode passwordNode = FocusNode();
   FocusNode confirmPasswordNode = FocusNode();
 
+  bool hidePassword = true;
+  bool hideConfirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Form(
-          key: signUpFormKey,
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              const SizedBox(height: 40),
-              const Center(
-                child: Text(
-                  "Please Sign Up",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 30,
+    return BackHandler(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: SafeArea(
+          child: Form(
+            key: signUpFormKey,
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                const SizedBox(height: 40),
+                const Center(
+                  child: Text(
+                    "Please Sign Up",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 30,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 40),
-              TextFormField(
-                focusNode: nameNode,
-                controller: nameController,
-                validator: (value) {
-                  if (value == null || value
-                      .trim()
-                      .isEmpty) {
-                    return "*Required";
-                  } else if (value.length < 3) {
-                    return "Name should be 3 characters";
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person_2_outlined),
-                    contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Your Full Name',
-                    labelText: "Enter Your Full Name"),
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                focusNode: phoneNode,
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                maxLength: 10,
-                validator: (value) {
-                  if (value == null || value
-                      .trim()
-                      .isEmpty) {
-                    return "*Required";
-                  } else if (value.length < 10) {
-                    return "Number should be 10 characters";
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.phone),
-                    contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Your Phone Number',
-                    labelText: "Enter Your Phone Number"),
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                focusNode: emailNode,
-                controller: emailController,
-                validator: validateEmail,
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.email_outlined),
-                    contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Your Email iD',
-                    labelText: "Enter Your Email iD"),
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                focusNode: passwordNode,
-                controller: passwordController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "*Required";
-                  } else if (value.length < 8) {
-                    return "Minimum length is 8";
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.key),
-                    contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Your Password',
-                    labelText: "Enter Your Password"),
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                focusNode: confirmPasswordNode,
-                controller: confirmPasswordController,
-                keyboardType: TextInputType.visiblePassword,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "*Required";
-                  } else if (value.length < 8) {
-                    return "Minimum length is 8";
-                  } else if (passwordController.value.text !=
-                      confirmPasswordController.value.text) {
-                    return "Password & Confirmation password do not match";
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.key),
-                    contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Your Confirm Password',
-                    labelText: "Enter Your Confirm Password"),
-              ),
-              const SizedBox(height: 24),
-              ButtonCommon(
-                title: "Submit",
-                onTap: () {
-                  print(confirmPasswordController.value.text);
-                  if (signUpFormKey.currentState!.validate()) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const OtpVerificationScreen(
-                            phoneNumber: '9088099176'),
+                const SizedBox(height: 40),
+                TextFormField(
+                  focusNode: nameNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: nameController,
+                  validator: (value) {
+                    if (value == null || value
+                        .trim()
+                        .isEmpty) {
+                      return "*Required";
+                    } else if (value.length < 3) {
+                      return "Name should be 3 characters";
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person_2_outlined),
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Your Full Name',
+                      labelText: "Enter Your Full Name"),
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
+                  focusNode: phoneNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  maxLength: 10,
+                  validator: (value) {
+                    if (value == null || value
+                        .trim()
+                        .isEmpty) {
+                      return "*Required";
+                    } else if (value.length < 10) {
+                      return "Number should be 10 characters";
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      counterText: "",
+                      prefixIcon: Icon(Icons.phone),
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Your Phone Number',
+                      labelText: "Enter Your Phone Number"),
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
+                  focusNode: emailNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: emailController,
+                  validator: validateEmail,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.email_outlined),
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Your Email iD',
+                      labelText: "Enter Your Email iD"),
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
+                  focusNode: passwordNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "*Required";
+                    } else if (value.length < 8) {
+                      return "Minimum length is 8";
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: hidePassword,
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.key),
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Your Password',
+                      labelText: "Enter Your Password",
+                    suffixIcon: InkWell(
+                      onTap: (){
+                        hidePassword = !hidePassword;
+                        setState(() {
+
+                        });
+                      },
+                      child: Icon(
+                        hidePassword
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
                       ),
-                    );
-                  }
-                },
-              ),
-              const SizedBox(height: 40),
-              BottomText(
-                text: "Already have an account?",
-                text2: " Log in",
-                onTap: () {
-                  if (signUpFormKey.currentState!.validate()) {
-                    _hitSignUpApi(
-                      name: nameController.text.trim(),
-                      phoneNumber: phoneController.text.trim(),
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim(),
-                    );
-                  }
-                },
-              ),
-            ],
+                      /*onTap: () {
+
+                        }*/
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
+                  focusNode: confirmPasswordNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: confirmPasswordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: hideConfirmPassword,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "*Required";
+                    } else if (value.length < 8) {
+                      return "Minimum length is 8";
+                    } else if (passwordController.value.text !=
+                        confirmPasswordController.value.text) {
+                      return "Password & Confirmation password do not match";
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.key),
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Your Confirm Password',
+                      labelText: "Enter Your Confirm Password",
+                    suffixIcon: InkWell(
+                      onTap: (){
+                        hideConfirmPassword = !hideConfirmPassword;
+                        setState(() {
+
+                        });
+                      },
+                      child: Icon(
+                        hideConfirmPassword
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
+                      ),
+                      /*onTap: () {
+
+                        }*/
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ButtonCommon(
+                  title: "Submit",
+                  onTap: () {
+                    debugPrint(confirmPasswordController.value.text);
+                    if (signUpFormKey.currentState!.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                          const OtpVerificationScreen(
+                              phoneNumber: '9088099176'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: 40),
+                BottomText(
+                  text: "Already have an account?",
+                  text2: " Log in",
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => const LoginView()),(Route<dynamic> route) => false);
+                    /* if (signUpFormKey.currentState!.validate()) {
+                      _hitSignUpApi(
+                        name: nameController.text.trim(),
+                        phoneNumber: phoneController.text.trim(),
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                      );
+                      }*/
+                    }
+                ),
+              ],
+            ),
           ),
         ),
       ),
