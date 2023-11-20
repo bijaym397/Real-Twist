@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/constants/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 import 'auth/login.dart';
@@ -132,9 +133,8 @@ Future<void> _showTextFieldPopup(BuildContext context) async {
                     Expanded(
                       child: CommonCard(
                         onTap: () async {
-                          SharedPreferences preference =
-                              await SharedPreferences.getInstance();
-                          preference.setBool("spLoggedIn", false);
+                          SharedPreferences preference = await SharedPreferences.getInstance();
+                          preference.setString(AppStrings.spAuthToken, "");
                           Navigator.push(
                             context,
                             MaterialPageRoute(

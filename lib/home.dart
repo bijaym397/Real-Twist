@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/spinwheelscreen.dart';
+import 'package:real_twist/utils/Back_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'game2.dart';
@@ -17,52 +18,54 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.pink.shade800,
-        title: const Text("Real Twist"),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NotificationView()),
-              );
-            },
-            child: Stack(
-              children: [
-                const Center(
-                    child: Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Icon(
-                    Icons.notifications_active_outlined,
-                    color: Colors.white,
-                    size: 28,
-                  ),
-                )),
-                Positioned(
-                    top: 5,
-                    right: 7,
-                    child: Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: const Text(
-                          "21",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800),
-                        )))
-              ],
+    return BackHandler(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.pink.shade800,
+          title: const Text("Real Twist"),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationView()),
+                );
+              },
+              child: Stack(
+                children: [
+                  const Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Icon(
+                      Icons.notifications_active_outlined,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  )),
+                  Positioned(
+                      top: 5,
+                      right: 7,
+                      child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: const Text(
+                            "21",
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800),
+                          )))
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+        drawer: const DrawerView(),
+        body: const HomeSideView(),
       ),
-      drawer: const DrawerView(),
-      body: const HomeSideView(),
     );
   }
 }

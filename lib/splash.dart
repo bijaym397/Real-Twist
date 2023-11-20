@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/login.dart';
+import 'package:real_twist/home.dart';
 import 'package:real_twist/payment_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'login.dart';
+import 'constants/strings.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -14,12 +17,30 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
+    var authToken = getToken();
+    debugPrint("authToken----- $authToken");
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PaymentView()),
-      );
+      if(authToken != null){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeView()),
+        );
+      }
+      else{
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginView()),
+        );
+      }
     });
+  }
+
+  getToken() async {
+    SharedPreferences sharedPreferences =
+    await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString(AppStrings.spAuthToken);
+    //debugPrint("authPToken----- $token");
+    return token;
   }
 
   @override

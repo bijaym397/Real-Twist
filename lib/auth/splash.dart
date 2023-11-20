@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/constants/strings.dart';
+import 'package:real_twist/home.dart';
 import 'package:real_twist/payment_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
 
@@ -14,12 +17,31 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
+   initStates();
+  }
+
+  initStates() async {
+    var authToken = await getToken();
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginView()),
-      );
+      if(authToken?.isNotEmpty == true){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeView()),
+        );
+      }
+      else{
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginView()));
+      }
     });
+  }
+
+  Future<String?> getToken() async {
+    SharedPreferences sharedPreferences =
+    await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString(AppStrings.spAuthToken);
+    return token;
   }
 
   @override
