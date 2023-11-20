@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/auth/widgets.dart';
 import 'package:real_twist/utils/form_validator.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../constants/strings.dart';
+import '../main.dart';
+import '../modals/login_data_modal.dart';
 import 'otp_verification_screen.dart';
+import 'package:http/http.dart' as http;
 
 class SignupView extends StatefulWidget {
   const SignupView({Key? key}) : super(key: key);
@@ -52,7 +57,9 @@ class _SignupViewState extends State<SignupView> {
                 focusNode: nameNode,
                 controller: nameController,
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
+                  if (value == null || value
+                      .trim()
+                      .isEmpty) {
                     return "*Required";
                   } else if (value.length < 3) {
                     return "Name should be 3 characters";
@@ -64,7 +71,7 @@ class _SignupViewState extends State<SignupView> {
                 decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person_2_outlined),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     border: OutlineInputBorder(),
                     hintText: 'Enter Your Full Name',
                     labelText: "Enter Your Full Name"),
@@ -76,7 +83,9 @@ class _SignupViewState extends State<SignupView> {
                 keyboardType: TextInputType.phone,
                 maxLength: 10,
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
+                  if (value == null || value
+                      .trim()
+                      .isEmpty) {
                     return "*Required";
                   } else if (value.length < 10) {
                     return "Number should be 10 characters";
@@ -87,7 +96,7 @@ class _SignupViewState extends State<SignupView> {
                 decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.phone),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     border: OutlineInputBorder(),
                     hintText: 'Enter Your Phone Number',
                     labelText: "Enter Your Phone Number"),
@@ -102,7 +111,7 @@ class _SignupViewState extends State<SignupView> {
                 decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.email_outlined),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     border: OutlineInputBorder(),
                     hintText: 'Enter Your Email iD',
                     labelText: "Enter Your Email iD"),
@@ -124,7 +133,7 @@ class _SignupViewState extends State<SignupView> {
                 decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.key),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     border: OutlineInputBorder(),
                     hintText: 'Enter Your Password',
                     labelText: "Enter Your Password"),
@@ -149,7 +158,7 @@ class _SignupViewState extends State<SignupView> {
                 decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.key),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     border: OutlineInputBorder(),
                     hintText: 'Enter Your Confirm Password',
                     labelText: "Enter Your Confirm Password"),
@@ -163,7 +172,8 @@ class _SignupViewState extends State<SignupView> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const OtpVerificationScreen(
+                        builder: (context) =>
+                        const OtpVerificationScreen(
                             phoneNumber: '9088099176'),
                       ),
                     );
@@ -176,11 +186,11 @@ class _SignupViewState extends State<SignupView> {
                 text2: " Log in",
                 onTap: () {
                   if (signUpFormKey.currentState!.validate()) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginView(),
-                      ),
+                    _hitSignUpApi(
+                      name: nameController.text.trim(),
+                      phoneNumber: phoneController.text.trim(),
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
                     );
                   }
                 },
@@ -190,5 +200,61 @@ class _SignupViewState extends State<SignupView> {
         ),
       ),
     );
+  }
+
+  Future<void> _hitSignUpApi(
+      {String? name, String? phoneNumber, String? email, String? password,}) async {
+    try {
+      customLoader!.show(context);
+      const apiUrl = "http://178.16.138.186:6000/api/login";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          // 'phoneNumber': phone.toString(),
+          // 'countryCode': countryCode.toString(),
+          // 'password': password.toString(),
+
+          'phoneNumber': "7452823763",
+          'countryCode': "+91",
+          'password': "Bhandari@123",
+        }),
+      );
+      final loginData = LoginData.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Login ${loginData.message}"),
+        ));
+        SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+        // sharedPreferences.setBool("isEntered", isEntered = true);
+        // Navigate to OTP verification screen
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const OtpVerificationScreen(phoneNumber: "7452823763"),
+          ),
+        ).then((value) =>
+        {
+          sharedPreferences.setString(
+              AppStrings.spUserId, loginData.data!.userId.toString()),
+          sharedPreferences.setString(
+              AppStrings.spAuthToken, loginData.data!.userId.toString()),
+        });
+      } else {
+        // API call failed
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${loginData.message}"),
+          ),
+        );
+      }
+    } catch (e) {
+      customLoader!.hide();
+      return debugPrint(e.toString());
+    }
   }
 }
