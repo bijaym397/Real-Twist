@@ -6,6 +6,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'constants/strings.dart';
+
 class SpinWheel extends StatefulWidget {
   const SpinWheel({Key? key}) : super(key: key);
 
@@ -16,6 +18,8 @@ class SpinWheel extends StatefulWidget {
 class _SpinWheelState extends State<SpinWheel> {
   final selected = BehaviorSubject<int>();
   int rewards = 0;
+
+  bool isApiCallInProgress = false;
 
   List<int> items = [10, 5, 20, -10, -5, 15, 2, 0, 25, -15];
 
@@ -55,90 +59,140 @@ class _SpinWheelState extends State<SpinWheel> {
   }
 
   Future<int> _spinCoinApi() async {
-    const apiUrl = '{{host}}spincoin';
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: '{"coinNumbers":$items}',
-    );
+    setState(() {
+      isApiCallInProgress = true;
+    });
 
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      return jsonResponse['selectedNumber'] ?? 0;
-    } else {
-      throw Exception('Failed to load data');
+    final pref = await SharedPreferences.getInstance();
+
+    try {
+      const apiUrl = 'http://178.16.138.186:5000/api/spincoin';
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': pref.getString(AppStrings.spAuthToken) ?? "",
+        },
+        body: '{"coinNumbers":$items}',
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        return jsonResponse['selectedNumber'] ?? 0;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load data'),
+          ),
+        );
+        return 0;
+      }
+    } finally {
+      setState(() {
+        isApiCallInProgress = false;
+      });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 300,
-              child: FortuneWheel(
-                selected: selected.stream,
-                animateFirst: false,
-                items: [
-                  for (int i = 0; i < items.length; i++) ...<FortuneItem>{
-                    FortuneItem(
-                        child: Text(
-                          items[i].toString(),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20),
+      appBar: AppBar(
+        backgroundColor: Colors.pink.shade800,
+        title: const Text("Game One"),
+      ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.black87,
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.brown,
+                  borderRadius: BorderRadius.circular(200.0),
+                ),
+                height: 300,
+                width: 300,
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow:  [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(100), // Shadow color
+                        offset: const Offset(0.0, 0.0),
+                        blurRadius: 10.0, // Spread of the shadow
+                        spreadRadius: 5.0, // Expansion of the shadow
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(200.0),
+                  ),
+                  child: FortuneWheel(
+                    selected: selected.stream,
+                    animateFirst: false,
+                    items : List.generate(items.length, (index) =>
+                        FortuneItem(
+                          child: Container(
+                            color: index.isEven ? Colors.pink.shade900 : Colors.pinkAccent.shade100, // Set background color based on condition
+                            child: Center(
+                              child: Text(
+                                items[index].toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                    )
-                  },
-                ],
-                onAnimationEnd: () async{
-                  setState(() {
-                    rewards = items[selected.value];
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                          "You just won $rewards Points!"),
                     ),
-                  );
-                  await _updateLastPlayDate();
-                },
+                    onAnimationEnd: () async{
+                      setState(() {
+                        rewards = items[selected.value];
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              "You just won $rewards Points!"),
+                        ),
+                      );
+                      await _updateLastPlayDate();
+                    },
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 35,),
-            GestureDetector(
-              onTap: () async{
-                if (!hasPlayedToday) {
+              const SizedBox(height: 35,),
+              ElevatedButton(
+                onPressed: !hasPlayedToday && !isApiCallInProgress
+                    ? () async {
                   final selectedNumber = await _spinCoinApi();
                   setState(() {
                     selected.value = items.indexOf(selectedNumber);
                   });
-                } else {
-                  // User has already played today
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("You have already played today."),
-                    ),
-                  );
                 }
-              },
-              child: Container(
-                height: 50,
-                width: 130,
-                decoration:  BoxDecoration(color: !hasPlayedToday ? Colors.redAccent : Colors.grey,
-                  borderRadius: const BorderRadius.all(Radius.circular(10))
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: !hasPlayedToday && !isApiCallInProgress
+                      ? Colors.white
+                      : Colors.grey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                child: const Center(
-                  child: Text("SPIN"),
+                child: Container(
+                  height: 50,
+                  width: 130,
+                  alignment: Alignment.center,
+                  child: const Text("SPIN", style: TextStyle(color: Colors.black87),),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
