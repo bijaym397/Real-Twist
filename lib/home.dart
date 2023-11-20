@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/spinwheelscreen.dart';
+import 'package:real_twist/utils/Back_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'game2.dart';
+import 'menu.dart';
 import 'notification.dart';
 
 class HomeView extends StatefulWidget {
@@ -13,51 +18,54 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple.shade900,
-        title: const Text("Real Twist"),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NotificationView()),
-              );
-            },
-            child: Stack(
-              children: [
-                const Center(
-                    child: Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Icon(
-                    Icons.notifications,
-                    color: Colors.blue,
-                    size: 28,
-                  ),
-                )),
-                Positioned(
-                    top: 8,
-                    right: 10,
-                    child: Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: const Text(
-                          "21",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800),
-                        )))
-              ],
+    return BackHandler(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.pink.shade800,
+          title: const Text("Real Twist"),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationView()),
+                );
+              },
+              child: Stack(
+                children: [
+                  const Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Icon(
+                      Icons.notifications_active_outlined,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  )),
+                  Positioned(
+                      top: 5,
+                      right: 7,
+                      child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: const Text(
+                            "21",
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800),
+                          )))
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+        drawer: const DrawerView(),
+        body: const HomeSideView(),
       ),
-      drawer: const DrawerView(),
-      body: const HomeSideView(),
     );
   }
 }
@@ -218,7 +226,7 @@ class HomeSideView extends StatelessWidget {
           const SizedBox(height: 24),
           CommonCard(
             child: Padding(
-              padding: EdgeInsets.all(24),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
                   const Text(
@@ -304,59 +312,110 @@ class HomeSideView extends StatelessWidget {
               ),
             ),
             child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 24),
               decoration: BoxDecoration(
-                image: const DecorationImage(
-                    image: AssetImage("assets/spin.jpeg"), fit: BoxFit.fill),
-                borderRadius: BorderRadius.circular(8),
+                // color: Colors.pink.shade500,
                 gradient: LinearGradient(
-                    colors: [Colors.purple.shade600, Colors.purple.shade900]),
+                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                image: DecorationImage(
+                    image: const AssetImage("assets/spin_bg.jpeg"),
+                    fit: BoxFit.fill,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(.3), BlendMode.dstATop)),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    flex: 4,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Play And Win",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w800),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Play Daily and Earn Rewards",
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(.8),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(height: 24),
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child:
-                                  Image.asset("assets/spin2.png", height: 80)),
-                          const SizedBox(height: 24),
-                          const Text(
-                            "Spin Wheel",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ],
-                      ),
-                    ),
+                  const Text(
+                    "Play And Win",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900),
                   ),
-                  const Expanded(flex: 1, child: SizedBox())
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Play Daily and Earn Rewards",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 16),
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset("assets/spin2.png", height: 100)),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Spin Wheel",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900),
+                  ),
                 ],
               ),
             ),
           ),
+          const SizedBox(height: 24),
+          GestureDetector(
+            onTap: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const NumberSpinner(),
+              ),
+            ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              decoration: BoxDecoration(
+                // color: Colors.pink.shade500,
+                gradient: LinearGradient(
+                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                image: DecorationImage(
+                    image: const AssetImage("assets/assets/spin.jpeg"),
+                    fit: BoxFit.fill,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(.3), BlendMode.dstATop)),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Play And Win",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Play Daily and Earn Rewards",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 16),
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset("assets/spin2.png", height: 100)),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Spin Wheel",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 48,
+          )
         ],
       ),
     );
@@ -364,103 +423,24 @@ class HomeSideView extends StatelessWidget {
 }
 
 class CommonCard extends StatelessWidget {
-  const CommonCard({Key? key, this.padding, this.child}) : super(key: key);
+  const CommonCard({Key? key, this.padding, this.child, this.onTap})
+      : super(key: key);
   final EdgeInsets? padding;
   final Widget? child;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding ?? EdgeInsets.zero,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-            colors: [Colors.purple.shade600, Colors.purple.shade900]),
-      ),
-      child: child ?? SizedBox(),
-    );
-  }
-}
-
-class DrawerView extends StatelessWidget {
-  const DrawerView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: const EdgeInsets.all(0),
-        children: [
-          DrawerHeader(
-            decoration:
-                const BoxDecoration(color: Colors.transparent), //BoxDecoration
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                    colors: [Colors.purple.shade600, Colors.purple.shade900]),
-              ),
-              child: const UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Colors.transparent),
-                accountName: Text(
-                  "Abhishek Mishra",
-                  style: TextStyle(fontSize: 18),
-                ),
-                accountEmail: Text("abhishekm977@gmail.com"),
-                currentAccountPictureSize: Size.square(50),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                  child: Text(
-                    "A",
-                    style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                  ), //Text
-                ), //circleAvatar
-              ),
-            ), //UserAccountDrawerHeader
-          ), //DrawerHeader
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text(' My Profile '),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.book),
-            title: const Text(' My Course '),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.workspace_premium),
-            title: const Text(' Go Premium '),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.video_label),
-            title: const Text(' Saved Videos '),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.edit),
-            title: const Text(' Edit Profile '),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('LogOut'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: padding ?? EdgeInsets.zero,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          gradient: LinearGradient(
+              colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+        ),
+        child: child ?? const SizedBox(),
       ),
     );
   }
