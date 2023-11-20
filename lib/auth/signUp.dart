@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/auth/widgets.dart';
+import 'package:real_twist/modals/sign_up_model.dart';
 import 'package:real_twist/utils/Back_handler.dart';
 import 'package:real_twist/utils/form_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -219,14 +220,19 @@ class _SignupViewState extends State<SignupView> {
                   onTap: () {
                     debugPrint(confirmPasswordController.value.text);
                     if (signUpFormKey.currentState!.validate()) {
-                      Navigator.push(
+                      _hitSignUpApi(
+                          name: nameController.text.trim(),
+                          phoneNumber: phoneController.text.trim(),
+                          password: passwordController.text.trim()
+                      );
+                      /*Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
                           const OtpVerificationScreen(
                               phoneNumber: '9088099176'),
                         ),
-                      );
+                      );*/
                     }
                   },
                 ),
@@ -256,7 +262,7 @@ class _SignupViewState extends State<SignupView> {
   }
 
   Future<void> _hitSignUpApi(
-      {String? name, String? phoneNumber, String? email, String? password,}) async {
+      {String? name, String? phoneNumber, String? password,}) async {
     try {
       customLoader!.show(context);
       const apiUrl = "http://178.16.138.186:6000/api/login";
@@ -267,17 +273,17 @@ class _SignupViewState extends State<SignupView> {
           // 'phoneNumber': phone.toString(),
           // 'countryCode': countryCode.toString(),
           // 'password': password.toString(),
-
-          'phoneNumber': "7452823763",
+          'name': name.toString(),
+          'phoneNumber': phoneNumber.toString(),
           'countryCode': "+91",
-          'password': "Bhandari@123",
+          'password': password.toString(),
         }),
       );
-      final loginData = LoginData.fromJson(json.decode(response.body));
+      final signUpData = SignUpResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Login ${loginData.message}"),
+          content: Text("${signUpData.message}"),
         ));
         SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
@@ -287,21 +293,24 @@ class _SignupViewState extends State<SignupView> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const OtpVerificationScreen(phoneNumber: "7452823763"),
+            builder: (context) => OtpVerificationScreen(phoneNumber: signUpData.data!.phoneNumber.toString() ?? "000000",
+              verificationCode: signUpData.data!.verificationCode.toString() ?? "0000",
+            userId: signUpData.data!.sId.toString() ?? "0000",
+            ),
           ),
         ).then((value) =>
         {
           sharedPreferences.setString(
-              AppStrings.spUserId, loginData.data!.userId.toString()),
+              AppStrings.spId, signUpData.data!.sId.toString()),
           sharedPreferences.setString(
-              AppStrings.spAuthToken, loginData.data!.userId.toString()),
+              AppStrings.spCode, signUpData.data!.verificationCode.toString()),
         });
       } else {
         // API call failed
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("${loginData.message}"),
+            content: Text("${signUpData.message}"),
           ),
         );
       }

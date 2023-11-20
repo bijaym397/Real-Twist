@@ -2,12 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
+import 'package:real_twist/main.dart';
+import 'package:real_twist/modals/otp_verification_modal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String phoneNumber;
+  final String verificationCode;
+  final String userId;
 
-  const OtpVerificationScreen({Key? key, required this.phoneNumber})
+  const OtpVerificationScreen({Key? key, required this.phoneNumber, required this.verificationCode, required this.userId})
       : super(key: key);
 
   @override
@@ -18,41 +24,63 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final TextEditingController otpController = TextEditingController();
 
   Future<void> _hitVerifyOtpApi() async {
-    final apiUrl = '{{host}}verifyOtp';
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'userId': '654ca1fe7470d369ff94735c',
-        'phoneNumber': widget.phoneNumber,
-        'verificationCode': int.tryParse(otpController.text) ?? 0,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      // API call successful
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("OTP verification successful."),
-        ),
+    try{
+      customLoader!.show(context);
+      const apiUrl = 'http://178.16.138.186:6000/api/verifyOtp';
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'userId': widget.userId ?? '654ca1fe7470d369ff94735c',
+          'phoneNumber': widget.phoneNumber,
+          'verificationCode': int.tryParse(otpController.text) ?? 0,
+        }),
       );
+      final verificationData = OtpVerificationResponse.fromJson(json.decode(response.body));
 
-      // Navigate to the home screen (replace with the actual home screen)
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeView(),
-        ),
-      );
-      // } else {
-      //   // API call failed
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       content: const Text("OTP verification failed. Please try again."),
-      //     ),
-      //   );
-      // }
+      if (response.statusCode == 200) {
+        customLoader!.hide();
+        // API call successful
+        SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("OTP verification successful."),
+          ),
+        );
+        sharedPreferences.setString(
+            AppStrings.spAuthToken, verificationData.data!.authToken.toString());
+        // Navigate to the home screen (replace with the actual home screen)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeView(),
+          ),
+        );
+        // } else {
+        //   // API call failed
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       content: const Text("OTP verification failed. Please try again."),
+        //     ),
+        //   );
+        // }
+      }
+      else {
+        // API call failed
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("OTP verification failed. Please try again."),
+          ),
+        );
+      }
     }
+    catch(e){
+      customLoader!.hide();
+      return debugPrint(e.toString());
+    }
+
   }
 
   @override
