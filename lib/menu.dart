@@ -72,27 +72,27 @@ class DrawerView extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.book),
-            title: const Text(' My Course '),
+            title: const Text('My Course '),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.workspace_premium),
-            title: const Text('Dpo'),
+            leading: const Icon(Icons.monetization_on),
+            title: const Text('Deposit'),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.video_label),
-            title: const Text(' Withd '),
+            leading: const Icon(Icons.monetization_on_outlined),
+            title: const Text('Withdrawal '),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.edit),
+            leading: const Icon(Icons.key),
             title: const Text('Change Password'),
             onTap: () async {
               Navigator.pop(context);
@@ -101,7 +101,7 @@ class DrawerView extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Invest'),
+            title: const Text('My Invest'),
             onTap: () {
               // Navigator.pop(context);
               _showTextFieldPopup(context);

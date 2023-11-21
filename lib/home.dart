@@ -422,6 +422,7 @@ class BannerImg extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.pink,
           borderRadius: BorderRadius.circular(8.0),
@@ -429,6 +430,21 @@ class BannerImg extends StatelessWidget {
             image: AssetImage(imgUrl ?? "assets/user.png"),
             fit: BoxFit.cover,
           ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "More Game",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
     );
