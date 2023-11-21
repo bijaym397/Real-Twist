@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:real_twist/constants/strings.dart';
+import 'package:real_twist/modals/user_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 import 'auth/login.dart';
 
 class DrawerView extends StatelessWidget {
-  const DrawerView({Key? key}) : super(key: key);
+  final UserApiResponse? userDetails;
+  const DrawerView({Key? key, required this.userDetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +25,28 @@ class DrawerView extends StatelessWidget {
                 gradient: LinearGradient(
                     colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
               ),
-              child: const UserAccountsDrawerHeader(
+              child: UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.transparent),
                 accountName: Text(
-                  "Abhishek Mishra",
+                  // "na",
+                  userDetails!.data!.name.toString().isNotEmpty ? userDetails!.data!.name.toString() : "N/A",
                   style: TextStyle(fontSize: 18),
                 ),
-                accountEmail: Text("abhishekm977@gmail.com"),
+                accountEmail:
+                // Text(""),
+                Text(userDetails!.data!.phoneNumber.toString().isNotEmpty ? userDetails!.data!.phoneNumber.toString() : "N/A",),
                 currentAccountPictureSize: Size.square(50),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Color.fromARGB(255, 165, 255, 137),
                   child: Text(
-                    "A",
+                    (() {
+                      final firstName = userDetails!.data!.name.toString();
+                      if ((firstName.isNotEmpty == true)) {
+                        return (firstName[0].toUpperCase());
+                      } else {
+                        return "NA";
+                      }
+                    })(),
                     style: TextStyle(fontSize: 30.0, color: Colors.blue),
                   ), //Text
                 ), //circleAvatar

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/payment_view.dart';
@@ -26,12 +27,14 @@ class _SplashViewState extends State<SplashView> {
       if(authToken?.isNotEmpty == true){
         Navigator.pushReplacement(
           context,
+          // MaterialPageRoute(builder: (context) => const ChangePassword()),
           MaterialPageRoute(builder: (context) => const HomeView()),
         );
       }
       else{
         Navigator.pushReplacement(
           context,
+          // MaterialPageRoute(builder: (context) => const ChangePassword()));
           MaterialPageRoute(builder: (context) => const LoginView()));
       }
     });

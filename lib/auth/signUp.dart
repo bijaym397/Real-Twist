@@ -265,7 +265,7 @@ class _SignupViewState extends State<SignupView> {
       {String? name, String? phoneNumber, String? password,}) async {
     try {
       customLoader!.show(context);
-      const apiUrl = "http://178.16.138.186:6000/api/login";
+      const apiUrl = "http://178.16.138.186:6000/api/signup";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
@@ -273,7 +273,7 @@ class _SignupViewState extends State<SignupView> {
           // 'phoneNumber': phone.toString(),
           // 'countryCode': countryCode.toString(),
           // 'password': password.toString(),
-          'name': name.toString(),
+          "name": name.toString(),
           'phoneNumber': phoneNumber.toString(),
           'countryCode': "+91",
           'password': password.toString(),
@@ -290,7 +290,7 @@ class _SignupViewState extends State<SignupView> {
         // sharedPreferences.setBool("isEntered", isEntered = true);
         // Navigate to OTP verification screen
         // ignore: use_build_context_synchronously
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => OtpVerificationScreen(phoneNumber: signUpData.data!.phoneNumber.toString() ?? "000000",

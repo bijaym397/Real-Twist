@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/login.dart';
+import 'package:real_twist/constants/strings.dart';
+import 'package:real_twist/main.dart';
+import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 import 'package:real_twist/utils/Back_handler.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'game2.dart';
@@ -16,6 +22,23 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+   UserApiResponse? userDetails;
+
+  @override
+  void initState() {
+    initSates();
+    super.initState();
+  }
+
+  initSates() async {
+    SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString(AppStrings.spAuthToken);
+    debugPrint("tokentoken ${token.toString()}");
+    userDetails = await _show(token: token);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BackHandler(
@@ -63,11 +86,42 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-        drawer: const DrawerView(),
+        drawer: DrawerView(userDetails: userDetails),
         body: const HomeSideView(),
       ),
     );
   }
+
+  Future<UserApiResponse?> _show({token}) async {
+    try{
+      debugPrint("tokendata ${token.toString()}");
+      const apiUrl = "http://178.16.138.186:6000/api/user";
+      var response =
+      await http.get(Uri.parse(apiUrl),
+        headers: {
+        'Content-Type': 'application/json',
+          'token' : token.toString(),
+      },);
+      debugPrint("responseCode ${response.statusCode.toString()}");
+      if (response.statusCode == 200) {
+        customLoader!.hide();
+        var data = UserApiResponse.fromJson(json.decode(response.body));
+        debugPrint("responserese ${data.data!.name.toString()}");
+        return data;
+      } else {
+        customLoader!.hide();
+        print(response.statusCode);
+        return null;
+      }
+    }
+    catch(e){
+      customLoader!.hide();
+      debugPrint("error ${e.toString()}");
+      return null;
+    }
+
+  }
+
 }
 
 class HomeSideView extends StatelessWidget {
