@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
+import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +9,8 @@ import 'auth/login.dart';
 
 class DrawerView extends StatelessWidget {
   final UserApiResponse? userDetails;
-  const DrawerView({Key? key, required this.userDetails}) : super(key: key);
+  final String? token;
+  const DrawerView({Key? key, required this.userDetails, this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class DrawerView extends StatelessWidget {
             decoration:
                 const BoxDecoration(color: Colors.transparent), //BoxDecoration
             child: Container(
+              // padding: EdgeInsets.only(left: 90),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: LinearGradient(
@@ -90,8 +93,9 @@ class DrawerView extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.edit),
             title: const Text('Change Password'),
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword(token: token.toString())));
             },
           ),
           ListTile(

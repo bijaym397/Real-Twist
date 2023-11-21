@@ -23,7 +23,8 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
 
-   UserApiResponse? userDetails;
+   UserApiResponse? userDetails = UserApiResponse();
+   String? token = "";
 
   @override
   void initState() {
@@ -34,9 +35,11 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-    String? token = sharedPreferences.getString(AppStrings.spAuthToken);
+    token = sharedPreferences.getString(AppStrings.spAuthToken);
     debugPrint("tokentoken ${token.toString()}");
     userDetails = await _show(token: token);
+    setState(() {
+    });
   }
 
   @override
@@ -86,7 +89,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-        drawer: DrawerView(userDetails: userDetails),
+        drawer: DrawerView(userDetails: userDetails, token : token.toString()),
         body: const HomeSideView(),
       ),
     );
