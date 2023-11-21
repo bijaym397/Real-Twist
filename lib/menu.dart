@@ -61,10 +61,11 @@ class DrawerView extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text(' My Profile '),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MyProfile(),
+                  builder: (context) =>  MyProfile(userDetails : userDetails),
                 ),
               );
             },
