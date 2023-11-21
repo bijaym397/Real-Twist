@@ -78,6 +78,7 @@ class _SpinWheelState extends State<SpinWheel> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
+        await _updateLastPlayDate();
         return jsonResponse['selectedNumber'] ?? 0;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -161,7 +162,6 @@ class _SpinWheelState extends State<SpinWheel> {
                               "You just won $rewards Points!"),
                         ),
                       );
-                      await _updateLastPlayDate();
                     },
                   ),
                 ),
@@ -179,7 +179,8 @@ class _SpinWheelState extends State<SpinWheel> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: !hasPlayedToday && !isApiCallInProgress
                       ? Colors.white
-                      : Colors.grey,
+                      : Colors.white.withAlpha(150),
+                  foregroundColor: Colors.black87,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

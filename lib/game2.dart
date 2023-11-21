@@ -78,6 +78,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
         setState(() {
           rewards = spendCoin * 2;
         });
+        _updateLastPlayDate();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("You just won $rewards Points!"),
@@ -135,7 +136,9 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                   items: [5, 10, 15, 20, 25].map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
-                      child: Text('$value Points'),
+                      child: Text('$value Points',style: const TextStyle(
+                        color: Colors.white
+                      ),),
                     );
                   }).toList(),
                   onChanged: isApiCallInProgress
@@ -192,7 +195,6 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                     ),
                     onAnimationEnd: () {
                       if (canPlay) {
-                        _updateLastPlayDate();
                         _checkCanPlay(); // Check again after playing
                       }
                     },
@@ -209,7 +211,8 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: !isApiCallInProgress
                         ? Colors.white
-                        : Colors.grey,
+                        : Colors.white.withAlpha(150),
+                    foregroundColor:  Colors.black87,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -230,7 +233,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                       );
                     }
                   },
-                  child: Text('$number', style: const TextStyle(color: Colors.black87),),
+                  child: Text('$number'),
                 ))
                     .toList(),
               ),
