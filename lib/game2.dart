@@ -134,10 +134,11 @@ class _NumberSpinnerState extends State<NumberSpinner> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Casio"),
+        title: const Text("Casino"),
       ),
       body: BlinkingBorderContainer(
-        child: Container(
+        backgroundImage: "assets/casio_table.jpg",
+        child: SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: Column(
@@ -176,60 +177,100 @@ class _NumberSpinnerState extends State<NumberSpinner> {
               ),
               const SizedBox(height: 30),
               // Casino-style board
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.brown,
-                  borderRadius: BorderRadius.circular(200.0),
-                ),
-                height: 300,
-                width: 300,
-                padding: const EdgeInsets.all(15.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(200.0),
-                    boxShadow:  [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(100), // Shadow color
-                        offset: const Offset(0.0, 0.0),
-                        blurRadius: 10.0, // Spread of the shadow
-                        spreadRadius: 5.0, // Expansion of the shadow
+              Stack(
+                children: [
+                  Container(
+                    height:  MediaQuery.of(context).size.width * 0.80,
+                    width: MediaQuery.of(context).size.width * 0.80,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color:  const Color(0xFF3A2222),
+                      borderRadius: BorderRadius.circular(200.0),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                            image: AssetImage('assets/mica_board.jpg'),
+                            fit: BoxFit.cover,
+                            opacity: 0.5
+                        ),
+                        color: Colors.brown,
+                        borderRadius: BorderRadius.circular(200.0),
                       ),
-                    ],
-                  ),
-                  child: FortuneWheel(
-                    selected: selected.stream,
-                    animateFirst: false,
-                    items : List.generate(availableNumbers.length, (index) =>
-                        FortuneItem(
-                          child: Container(
-                            color: index.isEven ? Colors.pink.shade900 : Colors.pinkAccent.shade100,  // Set background color based on condition
-                            child: Center(
-                              child: Text(
-                                availableNumbers[index].toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20,
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(200.0),
+                          boxShadow:  [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(100), // Shadow color
+                              offset: const Offset(0.0, 0.0),
+                              blurRadius: 10.0, // Spread of the shadow
+                              spreadRadius: 5.0, // Expansion of the shadow
+                            ),
+                          ],
+                        ),
+                        child: FortuneWheel(
+                          selected: selected.stream,
+                          animateFirst: false,
+                          items : List.generate(availableNumbers.length, (index) =>
+                              FortuneItem(
+                                child: Container(
+                                  color: availableNumbers[index] == 0 ? Colors.green.shade800 : index.isEven ? Colors.red.shade400 : Colors.black87,  // Set background color based on condition
+                                  child: Center(
+                                    child: Text(
+                                      availableNumbers[index].toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
                           ),
+                          onAnimationEnd: () {
+                            if (canPlay) {
+                              _checkCanPlay(); // Check again after playing
+                            }
+                          },
                         ),
+                      ),
                     ),
-                    onAnimationEnd: () {
-                      if (canPlay) {
-                        _checkCanPlay(); // Check again after playing
-                      }
-                    },
                   ),
-                ),
+
+
+                  SizedBox(
+                    height:  MediaQuery.of(context).size.width * 0.80,
+                    width: MediaQuery.of(context).size.width * 0.80,
+                    child: Center(
+                      child: Container(
+                        height: 25,
+                        width: 25,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFD700),
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow:  [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(100), // Shadow color
+                              offset: const Offset(0.0, 0.0),
+                              blurRadius: 10.0, // Spread of the shadow
+                              spreadRadius: 5.0, // Expansion of the shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
 
               const SizedBox(height: 25),
               Wrap(
                 spacing: 10,
+                alignment: WrapAlignment.center,
                 children: availableNumbers
-                    .getRange(0, 4)
                     .map((number) => ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: !isApiCallInProgress

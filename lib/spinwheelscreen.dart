@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:real_twist/utils/blinking_border_container.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -101,98 +102,139 @@ class _SpinWheelState extends State<SpinWheel> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Game One"),
+        title: const Text("Play and win"),
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.black87,
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.brown,
-                  borderRadius: BorderRadius.circular(200.0),
-                ),
-                height: 300,
-                width: 300,
-                padding: const EdgeInsets.all(15.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow:  [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(100), // Shadow color
-                        offset: const Offset(0.0, 0.0),
-                        blurRadius: 10.0, // Spread of the shadow
-                        spreadRadius: 5.0, // Expansion of the shadow
+      body: BlinkingBorderContainer(
+        backgroundImage: "assets/casio_table.jpg",
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      height:  MediaQuery.of(context).size.width * 0.80,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color:  const Color(0xFF3A2222),
+                        borderRadius: BorderRadius.circular(200.0),
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(200.0),
-                  ),
-                  child: FortuneWheel(
-                    selected: selected.stream,
-                    animateFirst: false,
-                    items : List.generate(items.length, (index) =>
-                        FortuneItem(
-                          child: Container(
-                            color: index.isEven ? Colors.pink.shade900 : Colors.pinkAccent.shade100, // Set background color based on condition
-                            child: Center(
-                              child: Text(
-                                items[index].toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20,
-                                ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: const DecorationImage(
+                              image: AssetImage('assets/mica_board.jpg'),
+                              fit: BoxFit.cover,
+                              opacity: 0.5
+                          ),
+                          color: Colors.brown,
+                          borderRadius: BorderRadius.circular(200.0),
+                        ),
+                        padding: const EdgeInsets.all(15.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow:  [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(100), // Shadow color
+                                offset: const Offset(0.0, 0.0),
+                                blurRadius: 10.0, // Spread of the shadow
+                                spreadRadius: 5.0, // Expansion of the shadow
                               ),
+                            ],
+                            borderRadius: BorderRadius.circular(200.0),
+                          ),
+                          child: FortuneWheel(
+                            selected: selected.stream,
+                            animateFirst: false,
+                            items : List.generate(items.length, (index) =>
+                                FortuneItem(
+                                  child: Container(
+                                    color: items[index] == 0 ? Colors.green.shade800 : index.isEven ? Colors.red.shade400 : Colors.black87,                        child: Center(
+                                      child: Text(
+                                        items[index].toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                             ),
+                            onAnimationEnd: () async{
+                              setState(() {
+                                rewards = items[selected.value];
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      "You just won $rewards Points!"),
+                                ),
+                              );
+                            },
                           ),
                         ),
+                      ),
                     ),
-                    onAnimationEnd: () async{
-                      setState(() {
-                        rewards = items[selected.value];
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              "You just won $rewards Points!"),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width * 0.80,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      child: Center(
+                        child: Container(
+                          height: 25,
+                          width: 25,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFD700),
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(100),
+                                // Shadow color
+                                offset: const Offset(0.0, 0.0),
+                                blurRadius: 10.0,
+                                // Spread of the shadow
+                                spreadRadius: 5.0, // Expansion of the shadow
+                              ),
+                            ],
+                          ),
                         ),
-                      );
-                    },
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 35,),
+                ElevatedButton(
+                  onPressed: !hasPlayedToday && !isApiCallInProgress
+                      ? () async {
+                    final selectedNumber = await _spinCoinApi();
+                    setState(() {
+                      selected.value = items.indexOf(selectedNumber);
+                    });
+                  }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: !hasPlayedToday && !isApiCallInProgress
+                        ? Colors.white
+                        : Colors.white.withAlpha(150),
+                    foregroundColor: Colors.black87,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Container(
+                    height: 50,
+                    width: 130,
+                    alignment: Alignment.center,
+                    child: const Text("SPIN", style: TextStyle(color: Colors.black87),),
                   ),
                 ),
-              ),
-              const SizedBox(height: 35,),
-              ElevatedButton(
-                onPressed: !hasPlayedToday && !isApiCallInProgress
-                    ? () async {
-                  final selectedNumber = await _spinCoinApi();
-                  setState(() {
-                    selected.value = items.indexOf(selectedNumber);
-                  });
-                }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: !hasPlayedToday && !isApiCallInProgress
-                      ? Colors.white
-                      : Colors.white.withAlpha(150),
-                  foregroundColor: Colors.black87,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Container(
-                  height: 50,
-                  width: 130,
-                  alignment: Alignment.center,
-                  child: const Text("SPIN", style: TextStyle(color: Colors.black87),),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
