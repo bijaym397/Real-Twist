@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:http/http.dart' as http;
+import 'package:real_twist/utils/blinking_border_container.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -73,17 +74,40 @@ class _NumberSpinnerState extends State<NumberSpinner> {
        final jsonResponse = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        // final selectedNumberFromApi = jsonResponse['selectedNumber'] ?? 0;
-        // selected.value = availableNumbers.indexOf(selectedNumberFromApi);
-        setState(() {
-          rewards = spendCoin * 2;
-        });
-        _updateLastPlayDate();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("You just won $rewards Points!"),
-          ),
+        final bodyData = jsonResponse['data'];
+        await Future.delayed(const Duration(seconds: 30));
+        final gameResultApiURL = 'http://178.16.138.186:5000/api/status/${bodyData['_id'] ?? ""}';
+        final gameResultResponse = await http.get(
+          Uri.parse(gameResultApiURL),
+          headers: {
+            'Content-Type': 'application/json',
+            'token': pref.getString(AppStrings.spAuthToken) ?? "",
+          },
         );
+
+        final gameResultJsonResponse = json.decode(gameResultResponse.body);
+
+        if(gameResultResponse.statusCode == 200){
+          final gameResultBodyData = gameResultJsonResponse['data'];
+          setState(() {
+            rewards = gameResultBodyData['winCoin'] ?? 0;
+          });
+          _updateLastPlayDate();
+          setState(() {
+            selected.value = availableNumbers.indexOf(gameResultBodyData['winnerNumber'] ?? 0);
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("You just won $rewards Points!"),
+            ),
+          );
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(gameResultJsonResponse['message'] ?? "Error while loading data"),
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -110,13 +134,12 @@ class _NumberSpinnerState extends State<NumberSpinner> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Game Two"),
+        title: const Text("Casio"),
       ),
-      body: Center(
+      body: BlinkingBorderContainer(
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          color: Colors.black87,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
