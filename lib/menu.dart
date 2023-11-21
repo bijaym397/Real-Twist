@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,7 +58,12 @@ class DrawerView extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text(' My Profile '),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MyProfile(),
+                ),
+              );
             },
           ),
           ListTile(
@@ -69,23 +75,39 @@ class DrawerView extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.workspace_premium),
-            title: const Text(' Go Premium '),
+            title: const Text('Dpo'),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
             leading: const Icon(Icons.video_label),
-            title: const Text(' Saved Videos '),
+            title: const Text(' Withd '),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
             leading: const Icon(Icons.edit),
-            title: const Text(' Edit Profile '),
+            title: const Text('Change Password'),
             onTap: () {
               Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Invest'),
+            onTap: () {
+              // Navigator.pop(context);
+              _showTextFieldPopup(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Total Income'),
+            onTap: () {
+              // Navigator.pop(context);
+              _showTextFieldPopup(context);
             },
           ),
           ListTile(
