@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class BlinkingBorderContainer extends StatefulWidget {
 
   final Widget child;
+  final String backgroundImage;
 
-  const BlinkingBorderContainer({super.key, required this.child});
+  const BlinkingBorderContainer({super.key, required this.child, required this.backgroundImage});
 
   @override
   _BlinkingBorderContainerState createState() => _BlinkingBorderContainerState();
@@ -32,12 +33,20 @@ class _BlinkingBorderContainerState extends State<BlinkingBorderContainer> {
     Color borderColor = isDottedVisible ? Colors.yellow : Colors.red;
 
     return Container(
-      color: Colors.black87,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(widget.backgroundImage),
+          fit: BoxFit.cover,
+          opacity: 0.2
+        ),
+        color: Colors.black87,
+      ),
       padding: const EdgeInsets.all(10),
       child: DottedBorder(
         color: borderColor,
-        strokeWidth: 5,
-        dashPattern: isDottedVisible ? const [8, 4] : const [10, 6],
+        strokeWidth: 6,
+        dashPattern: isDottedVisible ? const [1, 25] : const [1, 30],
+        strokeCap:StrokeCap.round,
         child: Container(
           width: double.infinity,
           height: double.infinity,
