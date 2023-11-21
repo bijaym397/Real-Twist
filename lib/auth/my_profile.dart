@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../home.dart';
+
 final String name = "Bijay";
 final String img = "assets/user.png";
 
@@ -46,6 +48,66 @@ class MyProfile extends StatelessWidget {
             "Bijay Mandal",
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            "9088099186",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            "bijay@gmail.com",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+          ),
+      const SizedBox(height: 50),
+          const Row(
+            children: [
+              Expanded(
+                child: CommonCard(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "My Investment",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "11075.9692",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: 24),
+              Expanded(
+                child: CommonCard(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Total Income",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "158.8",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

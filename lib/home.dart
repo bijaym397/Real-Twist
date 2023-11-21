@@ -62,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ],
+          centerTitle: true,
         ),
         drawer: const DrawerView(),
         body: const HomeSideView(),
@@ -79,9 +80,20 @@ class HomeSideView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const CommonCard(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            child: Column(
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            decoration: BoxDecoration(
+              // color: Colors.pink.shade500,
+              gradient: LinearGradient(
+                  colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+              // image: DecorationImage(
+              //     image: const AssetImage("assets/banner.jpeg"),
+              //     fit: BoxFit.fill,
+              //     colorFilter: ColorFilter.mode(
+              //         Colors.black.withOpacity(.2), BlendMode.dstATop)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
@@ -97,213 +109,28 @@ class HomeSideView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          Row(
-            children: [
-              const Expanded(
-                child: CommonCard(
-                  padding: EdgeInsets.symmetric(vertical: 18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Total Gyre",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 14),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        "11235.57",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400, fontSize: 16),
-                      ),
-                    ],
-                  ),
+
+          /// Total Investment
+          const CommonCard(
+            padding: EdgeInsets.symmetric(vertical: 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "My Investment",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
-              ),
-              const SizedBox(width: 24),
-              Expanded(
-                child: CommonCard(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Card(
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Container(
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            gradient: LinearGradient(colors: [
-                              Colors.purple.shade900,
-                              Colors.purple.shade300
-                            ]),
-                          ),
-                          child: const Text(
-                            "GYRE 0.805900",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 14),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Card(
-                        elevation: 8,
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Container(
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            gradient: LinearGradient(colors: [
-                              Colors.purple.shade900,
-                              Colors.purple.shade300
-                            ]),
-                          ),
-                          child: const Text(
-                            "USDT O",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                SizedBox(height: 8),
+                Text(
+                  "11075.9692",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          const Row(
-            children: [
-              Expanded(
-                child: CommonCard(
-                  padding: EdgeInsets.symmetric(vertical: 18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "My Investment",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 14),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        "11075.9692",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(width: 24),
-              Expanded(
-                child: CommonCard(
-                  padding: EdgeInsets.symmetric(vertical: 18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Total Income",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 14),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        "158.8",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          CommonCard(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  const Text(
-                    "Deposit/Withdrawal Gyre",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Settle your transactions quickly",
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(.8),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  const SizedBox(height: 24),
-                  const Icon(Icons.payments_outlined, size: 80),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Card(
-                          elevation: 8,
-                          child: Container(
-                            width: double.infinity,
-                            height: 40,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              gradient: LinearGradient(colors: [
-                                Colors.purple.shade600,
-                                Colors.purple.shade300
-                              ]),
-                            ),
-                            child: const Text(
-                              "Deposit",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Card(
-                          elevation: 8,
-                          child: Container(
-                            width: double.infinity,
-                            height: 40,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              gradient: LinearGradient(colors: [
-                                Colors.purple.shade600,
-                                Colors.purple.shade300,
-                              ]),
-                            ),
-                            child: const Text(
-                              "Withdraw",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
           const SizedBox(height: 24),
+
+          /// Spin game
           GestureDetector(
             onTap: () => Navigator.push<void>(
               context,
@@ -359,6 +186,28 @@ class HomeSideView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
+
+          /// Total Income
+          const CommonCard(
+            padding: EdgeInsets.symmetric(vertical: 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Total Income",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "158.8",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          /// Casino
           GestureDetector(
             onTap: () => Navigator.push<void>(
               context,
@@ -367,55 +216,87 @@ class HomeSideView extends StatelessWidget {
               ),
             ),
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 24),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                // color: Colors.pink.shade500,
                 gradient: LinearGradient(
-                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                    colors: [Colors.pink.shade900, Colors.black]),
                 image: DecorationImage(
-                    image: const AssetImage("assets/spin.jpeg"),
+                    image: const AssetImage("assets/casino.jpeg"),
                     fit: BoxFit.fill,
                     colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(.3), BlendMode.dstATop)),
+                        Colors.black.withOpacity(.2), BlendMode.dstATop)),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child:  Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const Text(
-                    "Play And Win",
+                    "CASINO",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w900),
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    "Play Daily and Earn Rewards",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 16),
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.asset("assets/spin2.png", height: 100)),
-                  const SizedBox(height: 16),
-                  const Text(
-                    "Spin Wheel",
+                    "WELCOME BONUS",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  const Text(
+                    "UP TO \$300",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
                         fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 45,
+                    width: 155,
+                    child: CommonCard(
+                      onTap: () {},
+                      child: const Center(
+                        child: Text(
+                          "Play Now",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(
-            height: 48,
-          )
+          const SizedBox(height: 24),
+
+          /// Refer A Friend
+          GestureDetector(
+            onTap: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const NumberSpinner(),
+              ),
+            ),
+            child: Container(
+              height: 200,
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                image: DecorationImage(
+                  image: const AssetImage("assets/rafer.png"),
+                  fit: BoxFit.fill,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+          const SizedBox(height: 48)
         ],
       ),
     );
