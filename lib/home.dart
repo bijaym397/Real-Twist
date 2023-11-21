@@ -373,7 +373,7 @@ class HomeSideView extends StatelessWidget {
                 gradient: LinearGradient(
                     colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
                 image: DecorationImage(
-                    image: const AssetImage("assets/assets/spin.jpeg"),
+                    image: const AssetImage("assets/spin.jpeg"),
                     fit: BoxFit.fill,
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(.3), BlendMode.dstATop)),
