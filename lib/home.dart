@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/constants/strings.dart';
@@ -22,9 +23,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
-   UserApiResponse? userDetails = UserApiResponse();
-   String? token = "";
+  UserApiResponse? userDetails = UserApiResponse();
+  String? token = "";
 
   @override
   void initState() {
@@ -33,13 +33,11 @@ class _HomeViewState extends State<HomeView> {
   }
 
   initSates() async {
-    SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
     debugPrint("tokentoken ${token.toString()}");
     userDetails = await _show(token: token);
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -90,22 +88,23 @@ class _HomeViewState extends State<HomeView> {
           ],
           centerTitle: true,
         ),
-        drawer: DrawerView(userDetails: userDetails, token : token.toString()),
+        drawer: DrawerView(userDetails: userDetails, token: token.toString()),
         body: const HomeSideView(),
       ),
     );
   }
 
   Future<UserApiResponse?> _show({token}) async {
-    try{
+    try {
       debugPrint("tokendata ${token.toString()}");
       const apiUrl = "http://178.16.138.186:6000/api/user";
-      var response =
-      await http.get(Uri.parse(apiUrl),
+      var response = await http.get(
+        Uri.parse(apiUrl),
         headers: {
-        'Content-Type': 'application/json',
-          'token' : token.toString(),
-      },);
+          'Content-Type': 'application/json',
+          'token': token.toString(),
+        },
+      );
       debugPrint("responseCode ${response.statusCode.toString()}");
       if (response.statusCode == 200) {
         customLoader!.hide();
@@ -117,15 +116,12 @@ class _HomeViewState extends State<HomeView> {
         print(response.statusCode);
         return null;
       }
-    }
-    catch(e){
+    } catch (e) {
       customLoader!.hide();
       debugPrint("error ${e.toString()}");
       return null;
     }
-
   }
-
 }
 
 class HomeSideView extends StatelessWidget {
@@ -137,17 +133,49 @@ class HomeSideView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          /// Banner
+          CarouselSlider(
+            items: [
+              const BannerImg(imgUrl: "assets/b2.png"),
+              BannerImg(
+                imgUrl: "assets/b1.png",
+                onTap: () => Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const SpinWheel(),
+                  ),
+                ),
+              ),
+              BannerImg(
+                imgUrl: "assets/b3.jpeg",
+                onTap: () => Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const NumberSpinner(),
+                  ),
+                ),
+              ),
+            ],
+            options: CarouselOptions(
+              height: 200.0,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              autoPlayInterval: Duration(seconds: 10),
+              viewportFraction: 1,
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          /// Total coin Showing
           Container(
             padding: const EdgeInsets.symmetric(vertical: 24),
             decoration: BoxDecoration(
-              // color: Colors.pink.shade500,
               gradient: LinearGradient(
                   colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
-              // image: DecorationImage(
-              //     image: const AssetImage("assets/banner.jpeg"),
-              //     fit: BoxFit.fill,
-              //     colorFilter: ColorFilter.mode(
-              //         Colors.black.withOpacity(.2), BlendMode.dstATop)),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Column(
@@ -284,7 +312,7 @@ class HomeSideView extends StatelessWidget {
                         Colors.black.withOpacity(.2), BlendMode.dstATop)),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child:  Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -379,6 +407,29 @@ class CommonCard extends StatelessWidget {
               colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
         ),
         child: child ?? const SizedBox(),
+      ),
+    );
+  }
+}
+
+class BannerImg extends StatelessWidget {
+  const BannerImg({Key? key, this.imgUrl, this.onTap}) : super(key: key);
+  final String? imgUrl;
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.pink,
+          borderRadius: BorderRadius.circular(8.0),
+          image: DecorationImage(
+            image: AssetImage(imgUrl ?? "assets/user.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }
