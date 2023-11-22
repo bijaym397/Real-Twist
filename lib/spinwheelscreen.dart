@@ -45,6 +45,7 @@ class _SpinWheelState extends State<SpinWheel> {
   Future<void> _updateLastPlayDate() async {
     prefs = await SharedPreferences.getInstance();
     prefs.setString('last_play_date', DateTime.now().toIso8601String());
+    _checkIfPlayedToday();
   }
 
   @override
@@ -59,7 +60,7 @@ class _SpinWheelState extends State<SpinWheel> {
     super.dispose();
   }
 
-  Future<int> _spinCoinApi() async {
+  _spinCoinApi() async {
     setState(() {
       isApiCallInProgress = true;
     });
@@ -76,18 +77,24 @@ class _SpinWheelState extends State<SpinWheel> {
         },
         body: '{"coinNumbers":$items}',
       );
-
+      final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
         await _updateLastPlayDate();
-        return jsonResponse['selectedNumber'] ?? 0;
+        setState(() {
+          selected.value = items.indexOf(jsonResponse["data"]['selectedNumber'] ?? 0);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  "You won $rewards Points!"),
+            ),
+          );
+        });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to load data'),
+            content: Text(jsonResponse['message'] ?? 'Failed to load data'),
           ),
         );
-        return 0;
       }
     } finally {
       setState(() {
@@ -170,12 +177,6 @@ class _SpinWheelState extends State<SpinWheel> {
                               setState(() {
                                 rewards = items[selected.value];
                               });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      "You just won $rewards Points!"),
-                                ),
-                              );
                             },
                           ),
                         ),
@@ -210,12 +211,7 @@ class _SpinWheelState extends State<SpinWheel> {
                 const SizedBox(height: 35,),
                 ElevatedButton(
                   onPressed: !hasPlayedToday && !isApiCallInProgress
-                      ? () async {
-                    final selectedNumber = await _spinCoinApi();
-                    setState(() {
-                      selected.value = items.indexOf(selectedNumber);
-                    });
-                  }
+                      ? () {_spinCoinApi();}
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: !hasPlayedToday && !isApiCallInProgress
