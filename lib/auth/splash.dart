@@ -27,14 +27,12 @@ class _SplashViewState extends State<SplashView> {
       if(authToken?.isNotEmpty == true){
         Navigator.pushReplacement(
           context,
-          // MaterialPageRoute(builder: (context) => const ChangePassword()),
           MaterialPageRoute(builder: (context) => const HomeView()),
         );
       }
       else{
         Navigator.pushReplacement(
           context,
-          // MaterialPageRoute(builder: (context) => const ChangePassword()));
           MaterialPageRoute(builder: (context) => const LoginView()));
       }
     });

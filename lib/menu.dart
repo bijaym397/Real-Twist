@@ -8,7 +8,7 @@ import 'home.dart';
 import 'auth/login.dart';
 
 class DrawerView extends StatelessWidget {
-  final UserApiResponse? userDetails;
+  final UserApiResponse userDetails;
   final String? token;
   const DrawerView({Key? key, required this.userDetails, this.token}) : super(key: key);
 
@@ -29,23 +29,14 @@ class DrawerView extends StatelessWidget {
                 gradient: LinearGradient(
                     colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
               ),
-              child: UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Colors.transparent),
-                accountName: Text(
-                  // "na",
-                  userDetails!.data?.name.toString() ??
-                  "N/A",
-                  style: TextStyle(fontSize: 18),
-                ),
-                accountEmail:
-                // Text(""),
-                Text(userDetails!.data?.phoneNumber.toString() ?? "N/A",),
-                currentAccountPictureSize: Size.square(50),
-                currentAccountPicture: CircleAvatar(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                CircleAvatar(
                   backgroundColor: Color.fromARGB(255, 165, 255, 137),
                   child: Text(
                     (() {
-                      final firstName = userDetails!.data?.name.toString();
+                      final firstName = userDetails.data?.name.toString();
                       if ((firstName?.isNotEmpty == true)) {
                         return (firstName![0].toUpperCase());
                       } else {
@@ -54,8 +45,15 @@ class DrawerView extends StatelessWidget {
                     })(),
                     style: TextStyle(fontSize: 30.0, color: Colors.blue),
                   ), //Text
-                ), //circleAvatar
-              ),
+                ),
+                const SizedBox(height: 10,),
+                Text(
+                  userDetails.data?.name.toString() ??
+                      "N/A",
+                  style: const TextStyle(fontSize: 18),
+                ),
+                Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
+              ],)
             ), //UserAccountDrawerHeader
           ), //DrawerHeader
           ListTile(

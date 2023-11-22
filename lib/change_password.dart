@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/login.dart';
+import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
 import 'package:http/http.dart' as http;
@@ -163,7 +164,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     try {
       debugPrint("toeknt ${widget.token.toString()}");
       customLoader!.show(context);
-      const apiUrl = "http://178.16.138.186:6000/api/change-password";
+      const apiUrl = "${Api.baseUrl}${Api.changePassword}";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
