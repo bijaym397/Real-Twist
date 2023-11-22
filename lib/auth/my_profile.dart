@@ -69,7 +69,7 @@ class MyProfile extends StatelessWidget {
               const SizedBox(height: 10),
               const Text(
                 // userDetails.data?.email.toString() : "N/A",
-                "bijay@gmail.com",
+                "N/A",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
               ),
