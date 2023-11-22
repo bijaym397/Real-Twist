@@ -40,4 +40,9 @@ abstract class Api {
   static const String iosAppLinked = "https://flutter.dev/";
   static const String androidAppLinked = "https://flutter.dev/";
 
+
+  //Game endpoints
+  static const String spendCoin = "spincoin/spend";
+  static const String spinCoinStatus = "spincoin/status/";
+
 }
