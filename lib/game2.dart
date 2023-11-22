@@ -55,8 +55,8 @@ class _NumberSpinnerState extends State<NumberSpinner> {
 
   Future<void> _spinCoinApi() async {
     setState(() {
-      isApiCallInProgress = true;
       numberSelectedByUser = selectedNumber;
+      isApiCallInProgress = true;
     });
 
     showLoaderDialog(context);
@@ -298,6 +298,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                         : () async {
                       await _checkCanPlay();
                       if (canPlay) {
+                        selectedNumber = number;
                         await _spinCoinApi();
                       } else {
                         // User has already played today
