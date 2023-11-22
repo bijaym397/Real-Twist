@@ -221,9 +221,7 @@ class _LoginViewState extends State<LoginView> {
                           ? Icons.visibility_off_rounded
                               : Icons.visibility_rounded,
                           ),
-                        /*onTap: () {
 
-                        }*/
                       ),
                   ),
                 ),
