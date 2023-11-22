@@ -1,7 +1,7 @@
 ///Base URL
 abstract class BaseUrl {
   static const String liveBaseUrl = "";
-  static const String stageBaseUrl = "http://178.16.138.186:6000/api/";
+  static const String stageBaseUrl = "http://178.16.138.186:5000/api/";
 }
 
 abstract class Api {
@@ -36,5 +36,10 @@ abstract class Api {
 
   static const String iosAppLinked = "https://flutter.dev/";
   static const String androidAppLinked = "https://flutter.dev/";
+
+
+  //Game endpoints
+  static const String spendCoin = "spincoin/spend";
+  static const String spinCoinStatus = "spincoin/status/";
 
 }

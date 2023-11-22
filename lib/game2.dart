@@ -7,6 +7,7 @@ import 'package:real_twist/utils/blinking_border_container.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'constants/api.dart';
 import 'constants/strings.dart';
 
 class NumberSpinner extends StatefulWidget {
@@ -41,8 +42,8 @@ class _NumberSpinnerState extends State<NumberSpinner> {
       final currentDate = DateTime.now();
       final lastDate = DateTime.parse(lastPlayDate);
 
-      // Check if at least 30 minutes have passed since the last play
-      canPlay = currentDate.difference(lastDate).inMinutes >= 30;
+      // Check if at least 30 seconds have passed since the last play
+      canPlay = currentDate.difference(lastDate).inSeconds >= 30;
     }
   }
 
@@ -58,7 +59,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
 
     final pref = await SharedPreferences.getInstance();
     try {
-      const apiUrl = 'http://178.16.138.186:5000/api/spincoin/spend';
+      const apiUrl = Api.baseUrl+Api.spendCoin;
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -74,9 +75,8 @@ class _NumberSpinnerState extends State<NumberSpinner> {
        final jsonResponse = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        final bodyData = jsonResponse['data'];
         await Future.delayed(const Duration(seconds: 30));
-        final gameResultApiURL = 'http://178.16.138.186:5000/api/status/${bodyData['_id'] ?? ""}';
+        final gameResultApiURL =  "${Api.baseUrl}${Api.spinCoinStatus}${jsonResponse['data']['_id'] ?? ""}";
         final gameResultResponse = await http.get(
           Uri.parse(gameResultApiURL),
           headers: {
@@ -85,8 +85,9 @@ class _NumberSpinnerState extends State<NumberSpinner> {
           },
         );
 
+        debugPrint("fdgdgdgdg ${Api.baseUrl}${Api.spinCoinStatus}${jsonResponse['data']['_id'] ?? ""}");
+        debugPrint("fdgdgdgdg ${gameResultResponse.body}");
         final gameResultJsonResponse = json.decode(gameResultResponse.body);
-
         if(gameResultResponse.statusCode == 200){
           final gameResultBodyData = gameResultJsonResponse['data'];
           setState(() {
@@ -146,6 +147,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 25,),
                 // Dropdown to select point value
                 Container(
                   decoration: BoxDecoration(
@@ -285,6 +287,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                     onPressed: isApiCallInProgress
                         ? null
                         : () async {
+                      await _checkCanPlay();
                       if (canPlay) {
                         await _spinCoinApi();
                       } else {
@@ -293,7 +296,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                             .showSnackBar(
                           const SnackBar(
                             content: Text(
-                                "Please wait for some time."),
+                                "Please wait for 30 seconds."),
                           ),
                         );
                       }
