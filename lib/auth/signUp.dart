@@ -224,7 +224,8 @@ class _SignupViewState extends State<SignupView> {
                       _hitSignUpApi(
                           name: nameController.text.trim(),
                           phoneNumber: phoneController.text.trim(),
-                          password: passwordController.text.trim()
+                          password: passwordController.text.trim(),
+                        email: emailController.text.trim(),
                       );
                     }
                   },
@@ -247,7 +248,7 @@ class _SignupViewState extends State<SignupView> {
   }
 
   Future<void> _hitSignUpApi(
-      {String? name, String? phoneNumber, String? password,}) async {
+      {String? name, String? phoneNumber, String? password, String? email}) async {
     try {
       customLoader!.show(context);
       const apiUrl = "${Api.baseUrl}${Api.signup}";
@@ -259,6 +260,7 @@ class _SignupViewState extends State<SignupView> {
           'phoneNumber': phoneNumber.toString(),
           'countryCode': "+91",
           'password': password.toString(),
+          "email": email.toString(),
         }),
       );
       final signUpData = SignUpResponse.fromJson(json.decode(response.body));

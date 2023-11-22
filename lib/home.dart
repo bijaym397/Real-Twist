@@ -191,7 +191,7 @@ class HomeSideView extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "1,00,00,000",
+                  "5,00,00,000",
                   style: TextStyle(fontWeight: FontWeight.w900, fontSize: 22),
                 ),
               ],
