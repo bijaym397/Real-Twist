@@ -159,14 +159,19 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 const SizedBox(height: 24),
                 SizedBox(
                   height: 45,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    child: const Text("Verify OTP", style: TextStyle(fontSize: 18)),
-                    onPressed: (){
+                  child: CommonCard(
+                    onTap: (){
                       if(otpFormKey.currentState!.validate()){
                         _hitVerifyOtpApi();
                       }
-                    }
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Verify OTP',
+                        style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ),
                 ),
               ],

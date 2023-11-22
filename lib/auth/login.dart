@@ -172,6 +172,7 @@ class _LoginViewState extends State<LoginView> {
                   },
                   // validator: FromValidator.phoneValidator,
                   textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.phone,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.phone),
@@ -244,7 +245,7 @@ class _LoginViewState extends State<LoginView> {
                   height: 45,
                   child: CommonCard(
                     onTap: () {
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeView()));
+                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
                       if (loginFormKey.currentState!.validate()) {
                         _hitLoginApi(
                           phone: phoneController.text.trim(),
