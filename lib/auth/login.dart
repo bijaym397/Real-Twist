@@ -105,6 +105,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
@@ -299,7 +300,7 @@ class _LoginViewState extends State<LoginView> {
       {String? phone, String? password}) async {
     try {
       customLoader!.show(context);
-      const apiUrl = "http://178.16.138.186:6000/api/login";
+      const apiUrl = "${Api.baseUrl}${Api.login}";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
@@ -321,7 +322,7 @@ class _LoginViewState extends State<LoginView> {
             AppStrings.spUserId, loginData.data!.userId.toString());
         sharedPreferences.setString(
             AppStrings.spAuthToken, loginData.data!.authToken.toString());
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const HomeView(),
@@ -345,7 +346,7 @@ class _LoginViewState extends State<LoginView> {
   Future<void> _hitForgotApi({String? phone}) async {
     try {
       customLoader!.show(context);
-      const apiUrl = "http://178.16.138.186:6000/api/forgot-password";
+      const apiUrl = "${Api.baseUrl}${Api.forgotPassword}";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},

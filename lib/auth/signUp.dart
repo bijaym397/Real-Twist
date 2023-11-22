@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/auth/widgets.dart';
+import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/modals/sign_up_model.dart';
 import 'package:real_twist/utils/Back_handler.dart';
 import 'package:real_twist/utils/form_validator.dart';
@@ -225,14 +226,6 @@ class _SignupViewState extends State<SignupView> {
                           phoneNumber: phoneController.text.trim(),
                           password: passwordController.text.trim()
                       );
-                      /*Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                          const OtpVerificationScreen(
-                              phoneNumber: '9088099176'),
-                        ),
-                      );*/
                     }
                   },
                 ),
@@ -243,14 +236,6 @@ class _SignupViewState extends State<SignupView> {
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => const LoginView()),(Route<dynamic> route) => false);
-                    /* if (signUpFormKey.currentState!.validate()) {
-                      _hitSignUpApi(
-                        name: nameController.text.trim(),
-                        phoneNumber: phoneController.text.trim(),
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      );
-                      }*/
                     }
                 ),
               ],
@@ -265,14 +250,11 @@ class _SignupViewState extends State<SignupView> {
       {String? name, String? phoneNumber, String? password,}) async {
     try {
       customLoader!.show(context);
-      const apiUrl = "http://178.16.138.186:6000/api/signup";
+      const apiUrl = "${Api.baseUrl}${Api.signup}";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          // 'phoneNumber': phone.toString(),
-          // 'countryCode': countryCode.toString(),
-          // 'password': password.toString(),
           "name": name.toString(),
           'phoneNumber': phoneNumber.toString(),
           'countryCode': "+91",

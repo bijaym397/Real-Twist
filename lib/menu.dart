@@ -33,20 +33,21 @@ class DrawerView extends StatelessWidget {
                 decoration: BoxDecoration(color: Colors.transparent),
                 accountName: Text(
                   // "na",
-                  userDetails!.data!.name.toString().isNotEmpty ? userDetails!.data!.name.toString() : "N/A",
+                  userDetails!.data?.name.toString() ??
+                  "N/A",
                   style: TextStyle(fontSize: 18),
                 ),
                 accountEmail:
                 // Text(""),
-                Text(userDetails!.data!.phoneNumber.toString().isNotEmpty ? userDetails!.data!.phoneNumber.toString() : "N/A",),
+                Text(userDetails!.data?.phoneNumber.toString() ?? "N/A",),
                 currentAccountPictureSize: Size.square(50),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Color.fromARGB(255, 165, 255, 137),
                   child: Text(
                     (() {
-                      final firstName = userDetails!.data!.name.toString();
-                      if ((firstName.isNotEmpty == true)) {
-                        return (firstName[0].toUpperCase());
+                      final firstName = userDetails!.data?.name.toString();
+                      if ((firstName?.isNotEmpty == true)) {
+                        return (firstName![0].toUpperCase());
                       } else {
                         return "NA";
                       }

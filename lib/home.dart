@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/login.dart';
+import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 import 'package:real_twist/utils/Back_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'game2.dart';
@@ -35,7 +38,6 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
-    debugPrint("tokentoken ${token.toString()}");
     userDetails = await _show(token: token);
     setState(() {});
   }
@@ -96,8 +98,7 @@ class _HomeViewState extends State<HomeView> {
 
   Future<UserApiResponse?> _show({token}) async {
     try {
-      debugPrint("tokendata ${token.toString()}");
-      const apiUrl = "http://178.16.138.186:6000/api/user";
+      const apiUrl = "${Api.baseUrl}${Api.user}";
       var response = await http.get(
         Uri.parse(apiUrl),
         headers: {
@@ -105,15 +106,12 @@ class _HomeViewState extends State<HomeView> {
           'token': token.toString(),
         },
       );
-      debugPrint("responseCode ${response.statusCode.toString()}");
       if (response.statusCode == 200) {
         customLoader!.hide();
         var data = UserApiResponse.fromJson(json.decode(response.body));
-        debugPrint("responserese ${data.data!.name.toString()}");
         return data;
       } else {
         customLoader!.hide();
-        print(response.statusCode);
         return null;
       }
     } catch (e) {
@@ -361,12 +359,24 @@ class HomeSideView extends StatelessWidget {
 
           /// Refer A Friend
           GestureDetector(
-            onTap: () => Navigator.push<void>(
+            onTap: () {
+              share(shareUrl: Platform.isAndroid
+                                  ? Api.androidAppLinked
+                                  : Platform.isIOS
+                                  ? Api.iosAppLinked
+                                  : Api.iosAppLinked);
+            },
+    // urlLauncher(url: Platform.isAndroid
+            //                 ? Api.androidAppLinked
+            //                 : Platform.isIOS
+            //                 ? Api.iosAppLinked
+            //                 : Api.iosAppLinked),
+    /*Navigator.push<void>(
               context,
               MaterialPageRoute<void>(
                 builder: (BuildContext context) => const NumberSpinner(),
               ),
-            ),
+            ),*/
             child: Container(
               height: 200,
               padding: const EdgeInsets.symmetric(vertical: 24),
