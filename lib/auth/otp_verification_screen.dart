@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/change_password.dart';
+import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
@@ -31,10 +32,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   Future<void> _hitVerifyOtpApi() async {
     try{
-      debugPrint("tokekne ${widget.token}");
       customLoader!.show(context);
-      const apiUrl = '${"http://178.16.138.186:6000/api/"}${"verify-otp"}';
-      const forgotApiUrl = '${"http://178.16.138.186:6000/api/"}${"verify-password-otp"}';
+      const apiUrl = '${Api.baseUrl}${Api.verifyOtp}';
+      const forgotApiUrl = '${Api.baseUrl}${Api.verifyPasswordOtp}';
       Map payload = widget.token?.isNotEmpty == true ? {
         'token' : widget.token,
         'verificationCode': int.tryParse(otpController.text) ?? 0,
@@ -47,18 +47,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       final response = await http.post(
         Uri.parse(widget.token?.isNotEmpty == true ? forgotApiUrl : apiUrl),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(payload)/*widget.token?.isEmpty == true ? jsonEncode({
-            'token' : widget.token,
-            'verificationCode': int.tryParse(otpController.text) ?? 0,
-        }) :
-        jsonEncode({
-          'userId': widget.userId.toString() ?? '654ca1fe7470d369ff94735c',
-          'phoneNumber': widget.phoneNumber.toString(),
-          'verificationCode': int.tryParse(otpController.text) ?? 0,
-        }),*/
+        body: jsonEncode(payload)
       );
-      debugPrint("requested data ${payload.toString()}");
-      debugPrint("check c ${response.statusCode}");
       final verificationData = OtpVerificationResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
         customLoader!.hide();

@@ -34,7 +34,7 @@ class BottomText extends StatelessWidget {
               ),
               TextSpan(
                 text: text2 ?? "Sign Up",
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     color: Colors.white

@@ -7,12 +7,14 @@ class NotificationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle:  true,
+        backgroundColor: Colors.pink.shade800,
         title: const Text("Notification"),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
           //replace with our own icon data.
         ),
       ),
@@ -25,7 +27,7 @@ class NotificationView extends StatelessWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text("204$index",
-                    style: TextStyle(color: Colors.green, fontSize: 15)),
+                    style: const TextStyle(color: Colors.green, fontSize: 15)),
               ),);
           }),
     );
