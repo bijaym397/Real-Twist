@@ -6,13 +6,13 @@ import '../home.dart';
 
 
 class MyProfile extends StatelessWidget {
-  final UserApiResponse? userDetails;
+  final UserApiResponse userDetails;
   final String? img = "assets/user.png";
-  const MyProfile({Key? key, this.userDetails}) : super(key: key);
+  const MyProfile({Key? key, required this.userDetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String name = userDetails!.data?.name.toString() ?? "N/A";
+    String name = userDetails.data?.name.toString() ?? "N/A";
     const String img = "assets/user.png";
     return Scaffold(
       backgroundColor: Colors.black,
@@ -62,13 +62,13 @@ class MyProfile extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                  userDetails!.data?.phoneNumber.toString() ?? "9988X-XXXXX",
+                  userDetails.data?.phoneNumber.toString() ?? "9988X-XXXXX",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
               ),
               const SizedBox(height: 10),
               const Text(
-                // userDetails!.data!.email.toString().isNotEmpty ? userDetails!.data!.email.toString() : "N/A",
+                // userDetails.data?.email.toString() : "N/A",
                 "bijay@gmail.com",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
