@@ -25,6 +25,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
   bool canPlay = true;
   late SharedPreferences prefs;
   bool isApiCallInProgress = false;
+  int? numberSelectedByUser;
 
   List<int> availableNumbers = [10, 5, 20, 18, 12, 15, 2, 0, 25, 8];
 
@@ -55,7 +56,11 @@ class _NumberSpinnerState extends State<NumberSpinner> {
   Future<void> _spinCoinApi() async {
     setState(() {
       isApiCallInProgress = true;
+      numberSelectedByUser = selectedNumber;
     });
+
+    showLoaderDialog(context);
+
 
     final pref = await SharedPreferences.getInstance();
     try {
@@ -85,29 +90,30 @@ class _NumberSpinnerState extends State<NumberSpinner> {
           },
         );
 
-        debugPrint("fdgdgdgdg ${Api.baseUrl}${Api.spinCoinStatus}${jsonResponse['data']['_id'] ?? ""}");
-        debugPrint("fdgdgdgdg ${gameResultResponse.body}");
+
         final gameResultJsonResponse = json.decode(gameResultResponse.body);
         if(gameResultResponse.statusCode == 200){
-          final gameResultBodyData = gameResultJsonResponse['data'];
           setState(() {
-            rewards = gameResultBodyData['winCoin'] ?? 0;
+            rewards = gameResultJsonResponse['data']['winCoin'] ?? 0;
           });
-          _updateLastPlayDate();
           setState(() {
-            selected.value = availableNumbers.indexOf(gameResultBodyData['winnerNumber'] ?? 0);
+            final number = gameResultJsonResponse['data']['winNumber'] ?? 0;
+            selected.value = availableNumbers.indexOf(number);
           });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("You just won $rewards Points!"),
+              content: Text("You won $rewards Points!"),
             ),
           );
+          _updateLastPlayDate();
+          Navigator.pop(context);
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(gameResultJsonResponse['message'] ?? "Error while loading data"),
             ),
           );
+          Navigator.pop(context);
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -115,6 +121,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
             content: Text(jsonResponse['message'] ?? "Error while loading data"),
           ),
         );
+        Navigator.pop(context);
       }
     } catch (e) {
       // Handle API call error
@@ -123,9 +130,11 @@ class _NumberSpinnerState extends State<NumberSpinner> {
           content: Text(e.toString()),
         ),
       );
+      Navigator.pop(context);
     } finally {
       setState(() {
         isApiCallInProgress = false;
+        numberSelectedByUser = null;
       });
     }
   }
@@ -278,7 +287,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: !isApiCallInProgress
                           ? Colors.white
-                          : Colors.white.withAlpha(150),
+                          : numberSelectedByUser == number ? Colors.red.shade400 : Colors.white.withAlpha(150),
                       foregroundColor:  Colors.black87,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -296,7 +305,8 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                             .showSnackBar(
                           const SnackBar(
                             content: Text(
-                                "Please wait for 30 seconds."),
+                                "Please wait for 30 seconds."
+                            ),
                           ),
                         );
                       }
@@ -310,6 +320,24 @@ class _NumberSpinnerState extends State<NumberSpinner> {
           ),
         ),
       ),
+    );
+  }
+
+
+
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(margin: const EdgeInsets.only(left: 7),child:const Text("Loading..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
     );
   }
 }
