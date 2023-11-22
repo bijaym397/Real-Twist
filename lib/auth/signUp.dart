@@ -269,9 +269,6 @@ class _SignupViewState extends State<SignupView> {
         ));
         SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-        // sharedPreferences.setBool("isEntered", isEntered = true);
-        // Navigate to OTP verification screen
-        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

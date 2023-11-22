@@ -1,7 +1,7 @@
 ///Base URL
 abstract class BaseUrl {
   static const String liveBaseUrl = "";
-  static const String stageBaseUrl = "http://178.16.138.186:6000/api/";
+  static const String stageBaseUrl = "http://178.16.138.186:5000/api/";
 }
 
 abstract class Api {
@@ -14,6 +14,9 @@ abstract class Api {
   static const String signup = "signup";
   static const String forgotPassword = "forgot-password";
   static const String user = "user";
+  static const String verifyOtp = "verify-otp";
+  static const String verifyPasswordOtp = "verify-password-otp";
+  static const String changePassword = "change-password";
 
 
   static const String socialData = "users/userSignupBySocial";
@@ -22,7 +25,7 @@ abstract class Api {
   static const String getProfile = "users/get-profile/";
   static const String uploadProfileImage = "users/upload-image/";
   static const String editProfile = "users/edit-profile/";
-  static const String changePassword = "profile/change-password/";
+
 
   static const String uploadPrescription = "users/upload-prescription/";
   static const String getPrescription = "users/get-prescription/";

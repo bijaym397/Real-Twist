@@ -38,7 +38,12 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
-    userDetails = await _show(token: token);
+    if(token != null) {
+      userDetails = await _show(token: token);
+    }
+    if(userDetails != null){
+      userDetails = userDetails;
+    }
     setState(() {});
   }
 
@@ -90,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
           ],
           centerTitle: true,
         ),
-        drawer: DrawerView(userDetails: userDetails, token: token.toString()),
+        drawer: DrawerView(userDetails: userDetails!, token: token.toString()),
         body: const HomeSideView(),
       ),
     );
