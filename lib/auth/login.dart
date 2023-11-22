@@ -244,6 +244,7 @@ class _LoginViewState extends State<LoginView> {
                   height: 45,
                   child: CommonCard(
                     onTap: () {
+                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeView()));
                       if (loginFormKey.currentState!.validate()) {
                         _hitLoginApi(
                           phone: phoneController.text.trim(),
