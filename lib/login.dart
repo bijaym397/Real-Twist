@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:real_twist/otp_verification_screen.dart'; // Import the OTP verification screen
-import 'package:http/http.dart' as http;
+import 'package:real_twist/otp_verification_screen.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -28,8 +26,8 @@ class _LoginViewState extends State<LoginView> {
     // if (response.statusCode == 200) {
       // API call successful
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("OTP sent to your phone."),
+        const SnackBar(
+          content: Text("OTP sent to your phone."),
         ),
       );
 

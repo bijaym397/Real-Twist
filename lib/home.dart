@@ -134,7 +134,7 @@ class HomeSideView extends StatelessWidget {
           /// Banner
           CarouselSlider(
             items: [
-              const BannerImg(imgUrl: "assets/b2.png"),
+
               BannerImg(
                 imgUrl: "assets/b1.png",
                 onTap: () => Navigator.push<void>(
@@ -153,6 +153,7 @@ class HomeSideView extends StatelessWidget {
                   ),
                 ),
               ),
+              const BannerImg(imgUrl: "assets/b111.jpeg", ind: 1,),
             ],
             options: CarouselOptions(
               height: 200.0,
@@ -162,7 +163,7 @@ class HomeSideView extends StatelessWidget {
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: Duration(milliseconds: 800),
-              autoPlayInterval: Duration(seconds: 10),
+              autoPlayInterval: Duration(seconds: 6),
               viewportFraction: 1,
             ),
           ),
@@ -423,8 +424,9 @@ class CommonCard extends StatelessWidget {
 }
 
 class BannerImg extends StatelessWidget {
-  const BannerImg({Key? key, this.imgUrl, this.onTap}) : super(key: key);
+  const BannerImg({Key? key, this.imgUrl, this.onTap, this.ind}) : super(key: key);
   final String? imgUrl;
+  final int? ind;
   final Function()? onTap;
 
   @override
@@ -441,21 +443,25 @@ class BannerImg extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
+        child: ind == 1 ?  Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              "More Game",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "More Game",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.orange.shade600,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
+            SizedBox(height: 20,)
           ],
-        ),
+        ) : SizedBox(),
       ),
     );
   }

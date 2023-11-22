@@ -72,13 +72,6 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.book),
-            title: const Text('My Course '),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.monetization_on),
             title: const Text('Deposit'),
             onTap: () {
@@ -101,7 +94,7 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
+            leading: const Icon(Icons.ac_unit_outlined),
             title: const Text('My Invest'),
             onTap: () {
               // Navigator.pop(context);
@@ -109,8 +102,16 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
+            leading: const Icon(Icons.incomplete_circle),
             title: const Text('Total Income'),
+            onTap: () {
+              // Navigator.pop(context);
+              _showTextFieldPopup(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.share_rounded),
+            title: const Text("Refer Friends & Earn"),
             onTap: () {
               // Navigator.pop(context);
               _showTextFieldPopup(context);
