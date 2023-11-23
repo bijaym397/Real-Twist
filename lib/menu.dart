@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
+import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
@@ -9,8 +10,9 @@ import 'auth/login.dart';
 
 class DrawerView extends StatelessWidget {
   final UserApiResponse userDetails;
+  final HomeDetailsResponse homeDetails;
   final String? token;
-  const DrawerView({Key? key, required this.userDetails, this.token}) : super(key: key);
+  const DrawerView({Key? key, required this.userDetails, required this.homeDetails, this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class DrawerView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>  MyProfile(userDetails : userDetails),
+                  builder: (context) =>  MyProfile(userDetails : userDetails, homeDetails: homeDetails),
                 ),
               );
             },
