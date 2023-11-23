@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 
 import '../home.dart';
@@ -7,8 +8,9 @@ import '../home.dart';
 
 class MyProfile extends StatelessWidget {
   final UserApiResponse userDetails;
+  final HomeDetailsResponse homeDetails;
   final String? img = "assets/user.png";
-  const MyProfile({Key? key, required this.userDetails}) : super(key: key);
+  const MyProfile({Key? key, required this.userDetails, required this.homeDetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,7 @@ class MyProfile extends StatelessWidget {
               ),
           const SizedBox(height: 50),
               const Spacer(),
-              const Row(
+               Row(
                 children: [
                   Expanded(
                     child: CommonCard(
@@ -83,37 +85,36 @@ class MyProfile extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             "My Investment",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 14),
                           ),
-                          SizedBox(height: 8),
-                          Text(
-                            "11075.9692",
-                            style: TextStyle(
+                          const SizedBox(height: 8),
+                          Text( homeDetails.data?.totalInvestment?.toStringAsFixed(2) ?? "0.00",
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w500, fontSize: 16),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(width: 24),
+                  const SizedBox(width: 24),
                   Expanded(
                     child: CommonCard(
-                      padding: EdgeInsets.symmetric(vertical: 4),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             "Total Income",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 14),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
-                            "158.8",
-                            style: TextStyle(
+                            homeDetails.data?.totalIncome?.toStringAsFixed(2) ?? "0.00",
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w500, fontSize: 16),
                           ),
                         ],
