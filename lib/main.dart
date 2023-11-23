@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:real_twist/auth/splash.dart';
 import 'package:real_twist/utils/custom_loader.dart';
 
+import 'admin/dashboard.dart';
+
 CustomLoader? customLoader;
 
 void main() async {
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Real Twist',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark),
-      home: const SplashView(),
+      home: const DashboardView(),
     );
   }
 }
