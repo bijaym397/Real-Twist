@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/user_modal.dart';
+import 'package:real_twist/payments/icome_view.dart';
+import 'package:real_twist/payments/my_invest.dart';
+import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'constants/api.dart';
 import 'home.dart';
 import 'auth/login.dart';
 
@@ -95,31 +101,36 @@ class DrawerView extends StatelessWidget {
             leading: const Icon(Icons.ac_unit_outlined),
             title: const Text('My Invest'),
             onTap: () {
-              // Navigator.pop(context);
-              _showTextFieldPopup(context);
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyInvestView()));
             },
           ),
           ListTile(
             leading: const Icon(Icons.incomplete_circle),
             title: const Text('Total Income'),
             onTap: () {
-              // Navigator.pop(context);
-              _showTextFieldPopup(context);
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
             },
           ),
           ListTile(
             leading: const Icon(Icons.share_rounded),
             title: const Text("Refer Friends & Earn"),
             onTap: () {
-              // Navigator.pop(context);
-              _showTextFieldPopup(context);
-            },
+              share(
+                  shareUrl: Platform.isAndroid
+                      ? Api.androidAppLinked
+                      : Platform.isIOS
+                      ? Api.iosAppLinked
+                      : Api.iosAppLinked);
+              Navigator.pop(context);
+            }
           ),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('LogOut'),
             onTap: () {
-              // Navigator.pop(context);
+              Navigator.pop(context);
               _showTextFieldPopup(context);
             },
           ),

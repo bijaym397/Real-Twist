@@ -136,7 +136,10 @@ class HomeSideView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
-          CoinDetails(totalCoin: "0", coinPrice: "00.00",),
+          CoinDetails(
+            totalCoin: "0",
+            coinPrice: "00.00",
+          ),
 
           /// Banner
           CarouselSlider(
@@ -350,14 +353,12 @@ class HomeSideView extends StatelessWidget {
 
           /// Refer A Friend
           GestureDetector(
-            onTap: () {
-              share(
-                  shareUrl: Platform.isAndroid
-                      ? Api.androidAppLinked
-                      : Platform.isIOS
-                          ? Api.iosAppLinked
-                          : Api.iosAppLinked);
-            },
+            onTap: () => share(
+                shareUrl: Platform.isAndroid
+                    ? Api.androidAppLinked
+                    : Platform.isIOS
+                        ? Api.iosAppLinked
+                        : Api.iosAppLinked),
             child: Container(
               height: 200,
               padding: const EdgeInsets.symmetric(vertical: 24),
@@ -451,7 +452,9 @@ class BannerImg extends StatelessWidget {
 }
 
 class CoinDetails extends StatelessWidget {
-  const CoinDetails({Key? key, required this.totalCoin, required this.coinPrice}) : super(key: key);
+  const CoinDetails(
+      {Key? key, required this.totalCoin, required this.coinPrice})
+      : super(key: key);
   final String totalCoin;
   final String coinPrice;
 
