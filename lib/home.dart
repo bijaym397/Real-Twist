@@ -38,10 +38,10 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
-    if(token != null) {
+    if (token != null) {
       userDetails = await _show(token: token);
     }
-    if(userDetails != null){
+    if (userDetails != null) {
       userDetails = userDetails;
     }
     setState(() {});
@@ -134,12 +134,13 @@ class HomeSideView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
+          CoinDetails(totalCoin: "0", coinPrice: "00.00",),
+
           /// Banner
           CarouselSlider(
             items: [
-
               BannerImg(
                 imgUrl: "assets/b1.png",
                 onTap: () => Navigator.push<void>(
@@ -158,7 +159,10 @@ class HomeSideView extends StatelessWidget {
                   ),
                 ),
               ),
-              const BannerImg(imgUrl: "assets/b111.jpeg", ind: 1,),
+              const BannerImg(
+                imgUrl: "assets/b111.jpeg",
+                ind: 1,
+              ),
             ],
             options: CarouselOptions(
               height: 200.0,
@@ -174,31 +178,6 @@ class HomeSideView extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          /// Total coin Showing
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Total Coin",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  "5,00,00,000",
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 22),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-
           /// Total Investment
           const CommonCard(
             padding: EdgeInsets.symmetric(vertical: 18),
@@ -207,12 +186,12 @@ class HomeSideView extends StatelessWidget {
               children: [
                 Text(
                   "My Investment",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 SizedBox(height: 8),
                 Text(
                   "11075.9692",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
                 ),
               ],
             ),
@@ -284,12 +263,12 @@ class HomeSideView extends StatelessWidget {
               children: [
                 Text(
                   "Total Income",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 SizedBox(height: 8),
                 Text(
                   "158.8",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                 ),
               ],
             ),
@@ -347,7 +326,13 @@ class HomeSideView extends StatelessWidget {
                     height: 45,
                     width: 155,
                     child: CommonCard(
-                      onTap: () {},
+                      onTap: () => Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const NumberSpinner(),
+                        ),
+                      ),
                       child: const Center(
                         child: Text(
                           "Play Now",
@@ -366,31 +351,21 @@ class HomeSideView extends StatelessWidget {
           /// Refer A Friend
           GestureDetector(
             onTap: () {
-              share(shareUrl: Platform.isAndroid
-                                  ? Api.androidAppLinked
-                                  : Platform.isIOS
-                                  ? Api.iosAppLinked
-                                  : Api.iosAppLinked);
+              share(
+                  shareUrl: Platform.isAndroid
+                      ? Api.androidAppLinked
+                      : Platform.isIOS
+                          ? Api.iosAppLinked
+                          : Api.iosAppLinked);
             },
-    // urlLauncher(url: Platform.isAndroid
-            //                 ? Api.androidAppLinked
-            //                 : Platform.isIOS
-            //                 ? Api.iosAppLinked
-            //                 : Api.iosAppLinked),
-    /*Navigator.push<void>(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => const NumberSpinner(),
-              ),
-            ),*/
             child: Container(
               height: 200,
               padding: const EdgeInsets.symmetric(vertical: 24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
-                image: DecorationImage(
-                  image: const AssetImage("assets/rafer.png"),
+                image: const DecorationImage(
+                  image: AssetImage("assets/rafer.png"),
                   fit: BoxFit.fill,
                 ),
                 borderRadius: BorderRadius.circular(8),
@@ -429,7 +404,8 @@ class CommonCard extends StatelessWidget {
 }
 
 class BannerImg extends StatelessWidget {
-  const BannerImg({Key? key, this.imgUrl, this.onTap, this.ind}) : super(key: key);
+  const BannerImg({Key? key, this.imgUrl, this.onTap, this.ind})
+      : super(key: key);
   final String? imgUrl;
   final int? ind;
   final Function()? onTap;
@@ -448,26 +424,117 @@ class BannerImg extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: ind == 1 ?  Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "More Game",
+        child: ind == 1
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "More Game",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.orange.shade600,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20)
+                ],
+              )
+            : const SizedBox(),
+      ),
+    );
+  }
+}
+
+class CoinDetails extends StatelessWidget {
+  const CoinDetails({Key? key, required this.totalCoin, required this.coinPrice}) : super(key: key);
+  final String totalCoin;
+  final String coinPrice;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          height: 70,
+          width: 150,
+          margin: EdgeInsets.only(bottom: 26),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+            borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(100),
+                bottomRight: Radius.circular(100)),
+          ),
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Real Twist",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.orange.shade600,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
+              Text(
+                "CRS 1.00",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 24),
+        Expanded(
+          child: Container(
+            height: 80,
+            margin: EdgeInsets.only(bottom: 26),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.pinkAccent.shade100, Colors.pink.shade900]),
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(100),
+                  bottomLeft: Radius.circular(100)),
             ),
-            SizedBox(height: 20,)
-          ],
-        ) : SizedBox(),
-      ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Total Coin",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                Text(
+                  "5,00,00,000",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
