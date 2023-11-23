@@ -110,6 +110,7 @@ class _SpinWheelState extends State<SpinWheel> {
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         title: const Text("Play and win"),
+        centerTitle: true,
       ),
       body: BlinkingBorderContainer(
         backgroundImage: "assets/casio_table.jpg",
@@ -129,7 +130,7 @@ class _SpinWheelState extends State<SpinWheel> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         color:  const Color(0xFF3A2222),
-                        borderRadius: BorderRadius.circular(200.0),
+                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                       ),
                       child: Container(
                         decoration: BoxDecoration(
@@ -139,7 +140,7 @@ class _SpinWheelState extends State<SpinWheel> {
                               opacity: 0.5
                           ),
                           color: Colors.brown,
-                          borderRadius: BorderRadius.circular(200.0),
+                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                         ),
                         padding: const EdgeInsets.all(15.0),
                         child: Container(
@@ -152,7 +153,7 @@ class _SpinWheelState extends State<SpinWheel> {
                                 spreadRadius: 5.0, // Expansion of the shadow
                               ),
                             ],
-                            borderRadius: BorderRadius.circular(200.0),
+                            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                           ),
                           child: FortuneWheel(
                             selected: selected.stream,
