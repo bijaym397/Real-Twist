@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NotificationView extends StatelessWidget {
-  const NotificationView({Key? key}) : super(key: key);
+class MyInvestView extends StatelessWidget {
+  const MyInvestView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +9,7 @@ class NotificationView extends StatelessWidget {
       appBar: AppBar(
         centerTitle:  true,
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Notification"),
+        title: const Text("My Invest"),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
