@@ -47,6 +47,9 @@ abstract class Api {
   static const String spinCoinStatus = "spincoin/status/";
 
 
+  //Payment endpoints
+  static const String payment = "payment/create-payu-checkout";
+
   static const String userType = "user";
 
 }
