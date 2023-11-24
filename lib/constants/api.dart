@@ -18,6 +18,7 @@ abstract class Api {
   static const String verifyPasswordOtp = "verify-password-otp";
   static const String changePassword = "change-password";
   static const String homeDetails = "user/details";
+  static const String coinsPrice = "admin/coinsprice";
 
   static const String socialData = "users/userSignupBySocial";
   static const String getStaticPages = "/get_page_content/";
