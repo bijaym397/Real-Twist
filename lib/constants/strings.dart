@@ -5,6 +5,7 @@ class AppStrings {
   static const String spLoginSocial = "social";
   static const String spUserId = "userId";
   static const String spAuthToken = "authToken";
+  static const String spUserType = "userType";
   static const String spFirstName = "firstName";
   static const String spLastName = "lastName";
   static const String spEmail = "email";
@@ -20,5 +21,6 @@ class AppStrings {
   static const String loginPopup = "Please login to access this feature!";
   static const String spCode = "code";
   static const String spId = "id";
+
 
 }
