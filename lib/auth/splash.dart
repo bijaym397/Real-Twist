@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/admin/dashboard.dart';
 import 'package:real_twist/change_password.dart';
+import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/payment_view.dart';
@@ -18,22 +20,26 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-   initStates();
+    initStates();
   }
 
   initStates() async {
     var authToken = await getToken();
+    var userType = await getUser();
     Future.delayed(const Duration(seconds: 3), () {
       if(authToken?.isNotEmpty == true){
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeView()),
-        );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => userType != Api.userType
+                    ? const DashboardView()
+                    : const HomeView()),
+          );
       }
       else{
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginView()));
+            context,
+            MaterialPageRoute(builder: (context) => const LoginView()));
       }
     });
   }
@@ -43,6 +49,13 @@ class _SplashViewState extends State<SplashView> {
     await SharedPreferences.getInstance();
     var token = sharedPreferences.getString(AppStrings.spAuthToken);
     return token;
+  }
+
+  Future<String?> getUser() async {
+    SharedPreferences sharedPreferences =
+    await SharedPreferences.getInstance();
+    var user = sharedPreferences.getString(AppStrings.spUserType);
+    return user;
   }
 
   @override

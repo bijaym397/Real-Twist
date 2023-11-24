@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:real_twist/admin/dashboard.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
@@ -59,7 +60,8 @@ class _LoginViewState extends State<LoginView> {
                   controller: phoneController,
                   maxLength: 10,
                   validator: (value) {
-                    if (value == null || value.trim().isEmpty) return "*Required";
+                    if (value == null || value.trim().isEmpty)
+                      return "*Required";
                     if (value.length < 10) {
                       return "Length should be 10";
                     }
@@ -71,13 +73,13 @@ class _LoginViewState extends State<LoginView> {
                   keyboardType: TextInputType.phone,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.phone),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter Your Phone Number',
-                      labelText: "Enter Your Phone Number",
-                      counterText: "",
+                    prefixIcon: Icon(Icons.phone),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter Your Phone Number',
+                    labelText: "Enter Your Phone Number",
+                    counterText: "",
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -86,7 +88,8 @@ class _LoginViewState extends State<LoginView> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: passwordController,
                   validator: (value) {
-                    if (value == null || value.trim().isEmpty) return "*Required";
+                    if (value == null || value.trim().isEmpty)
+                      return "*Required";
                     if (value.length < 8) {
                       return "Password must contain at least 8 characters.";
                     }
@@ -99,28 +102,23 @@ class _LoginViewState extends State<LoginView> {
                   textInputAction: TextInputAction.done,
                   obscureText: hidePassword,
                   decoration: InputDecoration(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                      prefixIcon: const Icon(Icons.key),
-                      border: const OutlineInputBorder(),
-                      hintText: 'Enter You Password',
-                      labelText: "Enter You Password",
-                      suffixIcon: InkWell(
-                        onTap: (){
-                          hidePassword = !hidePassword;
-                          setState(() {
-
-                          });
-                        },
-                          child: Icon(
-                          hidePassword
-                          ? Icons.visibility_off_rounded
-                              : Icons.visibility_rounded,
-                          ),
-                        /*onTap: () {
-
-                        }*/
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    prefixIcon: const Icon(Icons.key),
+                    border: const OutlineInputBorder(),
+                    hintText: 'Enter You Password',
+                    labelText: "Enter You Password",
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        hidePassword = !hidePassword;
+                        setState(() {});
+                      },
+                      child: Icon(
+                        hidePassword
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
                       ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -132,8 +130,8 @@ class _LoginViewState extends State<LoginView> {
                       },
                       child: const Text(
                         "Forgot Password",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
                       ),
                     )),
                 const SizedBox(height: 32),
@@ -152,8 +150,8 @@ class _LoginViewState extends State<LoginView> {
                     child: const Center(
                       child: Text(
                         'Login',
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -162,7 +160,9 @@ class _LoginViewState extends State<LoginView> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const SignupView()),(Route<dynamic> route) => false);
+                        MaterialPageRoute(
+                            builder: (context) => const SignupView()),
+                        (Route<dynamic> route) => false);
                   },
                   child: RichText(
                     textAlign: TextAlign.center,
@@ -194,8 +194,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Future<void> _hitLoginApi(
-      {String? phone, String? password}) async {
+  Future<void> _hitLoginApi({String? phone, String? password}) async {
     try {
       customLoader!.show(context);
       const apiUrl = "${Api.baseUrl}${Api.login}";
@@ -208,7 +207,7 @@ class _LoginViewState extends State<LoginView> {
           'password': password.toString(),
         }),
       );
-      final loginData = LoginData.fromJson(json.decode(response.body));
+      final loginData = LoginDataResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -220,11 +219,15 @@ class _LoginViewState extends State<LoginView> {
             AppStrings.spUserId, loginData.data!.userId.toString());
         sharedPreferences.setString(
             AppStrings.spAuthToken, loginData.data!.authToken.toString());
+        sharedPreferences.setString(
+            AppStrings.spUserType, loginData.data!.user!.userType.toString());
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeView(),
-          ),
+              builder: (context) => Api.userType != loginData.data!.user!.userType.toString()
+                  ? const DashboardView()
+                  : const HomeView()),
         );
       } else {
         // API call failed
@@ -259,8 +262,10 @@ class _LoginViewState extends State<LoginView> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("${forgotData.message}"),
         ));
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => OtpVerificationScreen(
-        token: forgotData.data!.token.toString(),phoneNumber: phone.toString())));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => OtpVerificationScreen(
+                token: forgotData.data!.token.toString(),
+                phoneNumber: phone.toString())));
       } else {
         // API call failed
         customLoader!.hide();
@@ -301,7 +306,7 @@ class _LoginViewState extends State<LoginView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Text('Forgot Password',style: TextStyle(fontSize: 20)),
+                  const Text('Forgot Password', style: TextStyle(fontSize: 20)),
                   TextFormField(
                     controller: textFieldController,
                     focusNode: forgotFocusNode,
@@ -320,7 +325,7 @@ class _LoginViewState extends State<LoginView> {
                     },
                     decoration: const InputDecoration(
                       contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                       prefixIcon: Icon(Icons.key),
                       border: OutlineInputBorder(),
                       hintText: 'xxxxx xxxxx',
@@ -348,8 +353,9 @@ class _LoginViewState extends State<LoginView> {
                         Expanded(
                           child: CommonCard(
                             onTap: () {
-                              if(forgotFormKey.currentState!.validate()){
-                                _hitForgotApi(phone: textFieldController.text.trim());
+                              if (forgotFormKey.currentState!.validate()) {
+                                _hitForgotApi(
+                                    phone: textFieldController.text.trim());
                               }
                             },
                             child: const Center(
@@ -372,5 +378,4 @@ class _LoginViewState extends State<LoginView> {
       },
     );
   }
-
 }

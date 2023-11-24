@@ -120,12 +120,7 @@ class _SignupViewState extends State<SignupView> {
                   focusNode: emailNode,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: emailController,
-                  validator:  (value){
-                    if (value == null || value.isEmpty) {
-                      return "*Required";
-                    }
-                    return null;
-                   },
+                  validator: validateEmail,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
@@ -280,10 +275,9 @@ class _SignupViewState extends State<SignupView> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => OtpVerificationScreen(phoneNumber: signUpData.data?.phoneNumber.toString() ?? "000000",
-              verificationCode: signUpData.data?.verificationCode.toString() ?? "0000",
-            userId: signUpData.data?.sId.toString() ?? "0000",
-            referCode: true,
+            builder: (context) => OtpVerificationScreen(phoneNumber: signUpData.data!.phoneNumber.toString() ?? "000000",
+              verificationCode: signUpData.data!.verificationCode.toString() ?? "0000",
+            userId: signUpData.data!.sId.toString() ?? "0000",
             ),
           ),
         ).then((value) =>
@@ -308,6 +302,102 @@ class _SignupViewState extends State<SignupView> {
     }
   }
 
+  Future<void> _showReferDialog(BuildContext context) async {
+    TextEditingController referController = TextEditingController();
+    FocusNode referNode = FocusNode();
 
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (context) {
+        final GlobalKey<FormState> forgotFormKey = GlobalKey<FormState>();
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: Container(
+            height: 160,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Form(
+              key: forgotFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text('Refer Code', style: TextStyle(fontSize: 20)),
+                  TextFormField(
+                    controller: referController,
+                    focusNode: referNode,
+                    maxLength: 10,
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.done,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "*Required";
+                      if (value.length < 10) {
+                        return "Length should be 10";
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      prefixIcon: Icon(Icons.key),
+                      border: OutlineInputBorder(),
+                      hintText: 'xxxxx xxxxx',
+                      labelText: "Enter You Number",
+                      counterText: "",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () => Navigator.pop(context),
+                            child: const Center(
+                              child: Text(
+                                'Skip',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () {
+                              if (forgotFormKey.currentState!.validate()) {
+                                // _hitForgotApi(
+                                //     phone: textFieldController.text.trim());
+                              }
+                            },
+                            child: const Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
 }
