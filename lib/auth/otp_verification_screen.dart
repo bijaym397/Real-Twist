@@ -16,8 +16,9 @@ class OtpVerificationScreen extends StatefulWidget {
   final String? verificationCode;
   final String? userId;
   final String? token;
+  final bool? referCode;
 
-  const OtpVerificationScreen({Key? key, this.phoneNumber, this.verificationCode, this.userId, this.token})
+  const OtpVerificationScreen({Key? key, this.phoneNumber, this.verificationCode, this.userId, this.token, this.referCode})
       : super(key: key);
 
   @override
@@ -71,7 +72,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         ): Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeView(referCode : true),
+            builder: (context) => HomeView(referCode: widget.referCode),
           ),
         );
         // } else {

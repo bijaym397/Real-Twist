@@ -139,14 +139,14 @@ class _LoginViewState extends State<LoginView> {
                   height: 45,
                   child: CommonCard(
                     onTap: () {
-                      _showReferDialog(context);
+                      // _showReferDialog(context);
                       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
-                      /*if (loginFormKey.currentState!.validate()) {
+                      if (loginFormKey.currentState!.validate()) {
                         _hitLoginApi(
                           phone: phoneController.text.trim(),
                           password: passwordController.text.trim(),
                         );
-                      }*/
+                      }
                     },
                     child: const Center(
                       child: Text(

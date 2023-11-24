@@ -120,7 +120,12 @@ class _SignupViewState extends State<SignupView> {
                   focusNode: emailNode,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: emailController,
-                  validator: validateEmail,
+                  validator:  (value){
+                    if (value == null || value.isEmpty) {
+                      return "*Required";
+                    }
+                    return null;
+                   },
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
@@ -278,7 +283,7 @@ class _SignupViewState extends State<SignupView> {
             builder: (context) => OtpVerificationScreen(phoneNumber: signUpData.data?.phoneNumber.toString() ?? "000000",
               verificationCode: signUpData.data?.verificationCode.toString() ?? "0000",
             userId: signUpData.data?.sId.toString() ?? "0000",
-
+            referCode: true,
             ),
           ),
         ).then((value) =>
