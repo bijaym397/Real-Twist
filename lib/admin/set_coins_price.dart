@@ -104,12 +104,13 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
         Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          // 'token': widget.token.toString(),
-          coinsPrice.setting?.price : setCoins.toString(),
+          coinsPrice.type : "coinprice",
+          coinsPrice.setting?.price : int.tryParse(setCoins.toString()) ?? 0,
         }),
       );
       debugPrint("requested data ${jsonEncode({
-        coinsPrice.setting?.price: setCoins.toString(),
+        coinsPrice.type : "coinprice",
+        coinsPrice.setting?.price: int.tryParse(setCoins.toString()) ?? 0,
       }).toString()}");
       final coinsData = CoinsPriceResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
