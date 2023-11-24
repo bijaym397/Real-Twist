@@ -9,7 +9,7 @@ class MyInvestView extends StatelessWidget {
       appBar: AppBar(
         centerTitle:  true,
         backgroundColor: Colors.pink.shade800,
-        title: const Text("My Invest"),
+        title: const Text("My Investment"),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
