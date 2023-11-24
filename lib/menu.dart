@@ -101,7 +101,7 @@ class DrawerView extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.ac_unit_outlined),
-            title: const Text('My Invest'),
+            title: const Text('My Investment'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context) => const MyInvestView()));

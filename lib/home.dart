@@ -7,6 +7,8 @@ import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
+import 'package:real_twist/payments/icome_view.dart';
+import 'package:real_twist/payments/my_invest.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 import 'package:real_twist/utils/Back_handler.dart';
 import 'package:http/http.dart' as http;
@@ -37,11 +39,11 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
-    if(token != null) {
+    if (token != null) {
       userDetails = await _show(token: token);
       homeDetails = await _homeDetails(token: token);
     }
-    if(userDetails != null){
+    if (userDetails != null) {
       userDetails = userDetails;
       homeDetails = homeDetails;
     }
@@ -96,7 +98,10 @@ class _HomeViewState extends State<HomeView> {
           ],
           centerTitle: true,
         ),
-        drawer: DrawerView(userDetails: userDetails!, homeDetails: homeDetails!, token: token.toString()),
+        drawer: DrawerView(
+            userDetails: userDetails!,
+            homeDetails: homeDetails!,
+            token: token.toString()),
         body: HomeSideView(homeDetails: homeDetails!),
       ),
     );
@@ -151,13 +156,11 @@ class _HomeViewState extends State<HomeView> {
       return null;
     }
   }
-
-
-
 }
 
 class HomeSideView extends StatelessWidget {
   final HomeDetailsResponse homeDetails;
+
   const HomeSideView({Key? key, required this.homeDetails}) : super(key: key);
 
   @override
@@ -166,250 +169,282 @@ class HomeSideView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
-          CoinDetails(totalCoin: homeDetails.data?.totalIncome?.toStringAsFixed(2) ?? "0.00", coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",),
+          CoinDetails(
+            totalCoin:
+                homeDetails.data?.totalIncome?.toStringAsFixed(2) ?? "0.00",
+            coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(children: [
-              /// Banner
-              CarouselSlider(
-                items: [
-                  BannerImg(
-                    imgUrl: "assets/b1.png",
-                    onTap: () => Navigator.push<void>(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const SpinWheel(),
+            child: Column(
+              children: [
+                /// Banner
+                CarouselSlider(
+                  items: [
+                    BannerImg(
+                      imgUrl: "assets/b1.png",
+                      onTap: () => Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const SpinWheel(),
+                        ),
                       ),
                     ),
-                  ),
-                  BannerImg(
-                    imgUrl: "assets/b3.jpeg",
-                    onTap: () => Navigator.push<void>(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const NumberSpinner(),
+                    BannerImg(
+                      imgUrl: "assets/b3.jpeg",
+                      onTap: () => Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const NumberSpinner(),
+                        ),
                       ),
                     ),
-                  ),
-                  const BannerImg(
-                    imgUrl: "assets/b111.jpeg",
-                    ind: 1,
-                  ),
-                ],
-                options: CarouselOptions(
-                  height: 200.0,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  aspectRatio: 16 / 9,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: true,
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayInterval: const Duration(seconds: 6),
-                  viewportFraction: 1,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              /// Total Investment
-              CommonCard(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "My Investment",
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      homeDetails.data?.totalInvestment?.toStringAsFixed(2) ?? "0.00",
-                      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+                    const BannerImg(
+                      imgUrl: "assets/b111.jpeg",
+                      ind: 1,
                     ),
                   ],
+                  options: CarouselOptions(
+                    height: 200.0,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    autoPlayInterval: const Duration(seconds: 6),
+                    viewportFraction: 1,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              /// Spin game
-              GestureDetector(
-                onTap: () => Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SpinWheel(),
-                  ),
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  decoration: BoxDecoration(
-                    // color: Colors.pink.shade500,
-                    gradient: LinearGradient(
-                        colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
-                    image: DecorationImage(
-                        image: const AssetImage("assets/spin_bg.jpeg"),
-                        fit: BoxFit.fill,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(.3), BlendMode.dstATop)),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                /// Total Investment
+                CommonCard(
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyInvestView())),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Play And Win",
+                      Text(
+                        "My Investment",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 30,
+                            color: Colors.white.withOpacity(.7)),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        "Play Daily and Earn Rewards",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800),
-                      ),
-                      const SizedBox(height: 16),
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.asset("assets/spin2.png", height: 100)),
-                      const SizedBox(height: 16),
-                      const Text(
-                        "Spin Wheel",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900),
+                      Text(
+                        homeDetails.data?.totalInvestment?.toStringAsFixed(2) ??
+                            "0.00",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w800, fontSize: 22),
                       ),
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              /// Total Income
-              CommonCard(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Total Income",
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                /// Spin game
+                GestureDetector(
+                  onTap: () => Navigator.push<void>(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const SpinWheel(),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      homeDetails.data?.totalIncome?.toStringAsFixed(2) ?? "0.00",
-                      style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    decoration: BoxDecoration(
+                      // color: Colors.pink.shade500,
+                      gradient: LinearGradient(colors: [
+                        Colors.pink.shade900,
+                        Colors.pinkAccent.shade100
+                      ]),
+                      image: DecorationImage(
+                          image: const AssetImage("assets/spin_bg.jpeg"),
+                          fit: BoxFit.fill,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(.3), BlendMode.dstATop)),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              /// Casino
-              GestureDetector(
-                onTap: () => Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const NumberSpinner(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Play And Win",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          "Play Daily and Earn Rewards",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800),
+                        ),
+                        const SizedBox(height: 16),
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child:
+                                Image.asset("assets/spin2.png", height: 100)),
+                        const SizedBox(height: 16),
+                        const Text(
+                          "Spin Wheel",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.pink.shade900, Colors.black]),
-                    image: DecorationImage(
-                        image: const AssetImage("assets/casino.jpeg"),
-                        fit: BoxFit.fill,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(.2), BlendMode.dstATop)),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                const SizedBox(height: 24),
+
+                /// Total Income
+                CommonCard(
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyIncomeView())),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "CASINO",
+                      Text(
+                        "Total Income",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 30,
+                            color: Colors.white.withOpacity(.7)),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        "WELCOME BONUS",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800),
+                      Text(
+                        homeDetails.data?.totalIncome?.toStringAsFixed(2) ??
+                            "0.00",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w800, fontSize: 22),
                       ),
-                      const Text(
-                        "UP TO \$300",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w900),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        height: 45,
-                        width: 155,
-                        child: CommonCard(
-                          onTap: () => Navigator.push<void>(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                              const NumberSpinner(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                /// Casino
+                GestureDetector(
+                  onTap: () => Navigator.push<void>(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const NumberSpinner(),
+                    ),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Colors.pink.shade900, Colors.black]),
+                      image: DecorationImage(
+                          image: const AssetImage("assets/casino.jpeg"),
+                          fit: BoxFit.fill,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(.2), BlendMode.dstATop)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text(
+                          "CASINO",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          "WELCOME BONUS",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800),
+                        ),
+                        const Text(
+                          "UP TO \$300",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.w900),
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          height: 45,
+                          width: 155,
+                          child: CommonCard(
+                            onTap: () => Navigator.push<void>(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const NumberSpinner(),
+                              ),
                             ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "Play Now",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            child: const Center(
+                              child: Text(
+                                "Play Now",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              /// Refer A Friend
-              GestureDetector(
-                onTap: () {
-                  share(
-                      shareUrl: Platform.isAndroid
-                          ? Api.androidAppLinked
-                          : Platform.isIOS
-                          ? Api.iosAppLinked
-                          : Api.iosAppLinked);
-                },
-                child: Container(
-                  height: 200,
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
-                    image: const DecorationImage(
-                      image: AssetImage("assets/rafer.png"),
-                      fit: BoxFit.fill,
+                      ],
                     ),
-                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-              ),
-              const SizedBox(height: 48)
-            ],),
-          ),
+                const SizedBox(height: 24),
 
+                /// Refer A Friend
+                GestureDetector(
+                  onTap: () {
+                    share(
+                        shareUrl: Platform.isAndroid
+                            ? Api.androidAppLinked
+                            : Platform.isIOS
+                                ? Api.iosAppLinked
+                                : Api.iosAppLinked);
+                  },
+                  child: Container(
+                    height: 200,
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.pink.shade900,
+                          Colors.pinkAccent.shade100
+                        ],
+                      ),
+                      image: const DecorationImage(
+                        image: AssetImage("assets/rafer.png"),
+                        fit: BoxFit.fill,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 48)
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -417,8 +452,13 @@ class HomeSideView extends StatelessWidget {
 }
 
 class CommonCard extends StatelessWidget {
-  const CommonCard({Key? key, this.padding, this.child, this.width, this.onTap,})
-      : super(key: key);
+  const CommonCard({
+    Key? key,
+    this.padding,
+    this.child,
+    this.width,
+    this.onTap,
+  }) : super(key: key);
   final EdgeInsets? padding;
   final Widget? child;
   final width;
@@ -456,7 +496,7 @@ class BannerImg extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.pink,
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
             image: AssetImage(imgUrl ?? "assets/user.png"),
@@ -490,7 +530,9 @@ class BannerImg extends StatelessWidget {
 }
 
 class CoinDetails extends StatelessWidget {
-  const CoinDetails({Key? key, required this.totalCoin, required this.coinPrice}) : super(key: key);
+  const CoinDetails(
+      {Key? key, required this.totalCoin, required this.coinPrice})
+      : super(key: key);
   final String totalCoin;
   final String coinPrice;
 
@@ -557,7 +599,6 @@ class CoinDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 /*const Text(
                   "Real Twist",
                   textAlign: TextAlign.center,
