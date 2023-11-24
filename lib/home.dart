@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
@@ -17,7 +18,8 @@ import 'menu.dart';
 import 'notification.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  bool? referCode = false;
+  HomeView({Key? key, this.referCode}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -35,6 +37,9 @@ class _HomeViewState extends State<HomeView> {
   }
 
   initSates() async {
+    if(widget.referCode == true){
+      _showReferDialog(context);
+    }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
     if(token != null) {
@@ -45,7 +50,114 @@ class _HomeViewState extends State<HomeView> {
       userDetails = userDetails;
       homeDetails = homeDetails;
     }
+    if(widget.referCode == true) {
+      _showReferDialog(context);
+    }
     setState(() {});
+  }
+
+  Future<void> _showReferDialog(BuildContext context) async {
+    TextEditingController referController = TextEditingController();
+    FocusNode referNode = FocusNode();
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (context) {
+        final GlobalKey<FormState> referFormKey = GlobalKey<FormState>();
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: Container(
+            height: 200,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Form(
+              key: referFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text('Referral Code?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const Text('Please Enter the phone number of your friend who refer\'s us.', style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(width: 10),
+                  TextFormField(
+                    controller: referController,
+                    focusNode: referNode,
+                    maxLength: 10,
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.done,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "*Required";
+                      }
+                      if (value.length < 10) {
+                        return "Length should be 10";
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      prefixIcon: Icon(Icons.key),
+                      border: OutlineInputBorder(),
+                      hintText: '998xx xxxxx',
+                      labelText: "Enter Phone Number",
+                      counterText: "",
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () => Navigator.pop(context),
+                            child: const Center(
+                              child: Text(
+                                'Skip',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () {
+                              if (referFormKey.currentState!.validate()) {
+                                // _hitForgotApi(
+                                //     phone: textFieldController.text.trim());
+                              }
+                            },
+                            child: const Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

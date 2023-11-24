@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:real_twist/admin/dashboard.dart';
+import 'package:real_twist/auth/otp_verification_screen.dart';
 import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
@@ -33,7 +34,7 @@ class _SplashViewState extends State<SplashView> {
             MaterialPageRoute(
                 builder: (context) => userType != Api.userType
                     ? const DashboardView()
-                    : const HomeView()),
+                    : HomeView()),
           );
       }
       else{

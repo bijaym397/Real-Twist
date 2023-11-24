@@ -139,13 +139,14 @@ class _LoginViewState extends State<LoginView> {
                   height: 45,
                   child: CommonCard(
                     onTap: () {
+                      _showReferDialog(context);
                       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
-                      if (loginFormKey.currentState!.validate()) {
+                      /*if (loginFormKey.currentState!.validate()) {
                         _hitLoginApi(
                           phone: phoneController.text.trim(),
                           password: passwordController.text.trim(),
                         );
-                      }
+                      }*/
                     },
                     child: const Center(
                       child: Text(
@@ -227,7 +228,7 @@ class _LoginViewState extends State<LoginView> {
           MaterialPageRoute(
               builder: (context) => Api.userType != loginData.data!.user!.userType.toString()
                   ? const DashboardView()
-                  : const HomeView()),
+                  : HomeView()),
         );
       } else {
         // API call failed
@@ -279,6 +280,110 @@ class _LoginViewState extends State<LoginView> {
       customLoader!.hide();
       return debugPrint(e.toString());
     }
+  }
+
+  Future<void> _showReferDialog(BuildContext context) async {
+    TextEditingController referController = TextEditingController();
+    FocusNode referNode = FocusNode();
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (context) {
+        final GlobalKey<FormState> referFormKey = GlobalKey<FormState>();
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: Container(
+            height: 200,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Form(
+              key: referFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text('Referral Code?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const Text('Please Enter the phone number of your friend who refer\'s us.', style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(width: 10),
+                  TextFormField(
+                    controller: referController,
+                    focusNode: referNode,
+                    maxLength: 10,
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.done,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "*Required";
+                      }
+                      if (value.length < 10) {
+                        return "Length should be 10";
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      prefixIcon: Icon(Icons.key),
+                      border: OutlineInputBorder(),
+                      hintText: '998xx xxxxx',
+                      labelText: "Enter Phone Number",
+                      counterText: "",
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () => Navigator.pop(context),
+                            child: const Center(
+                              child: Text(
+                                'Skip',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () {
+                              if (referFormKey.currentState!.validate()) {
+                                // _hitForgotApi(
+                                //     phone: textFieldController.text.trim());
+                              }
+                            },
+                            child: const Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _showTextFieldPopup(BuildContext context) async {
@@ -353,10 +458,11 @@ class _LoginViewState extends State<LoginView> {
                         Expanded(
                           child: CommonCard(
                             onTap: () {
-                              if (forgotFormKey.currentState!.validate()) {
-                                _hitForgotApi(
-                                    phone: textFieldController.text.trim());
-                              }
+
+                              // if (forgotFormKey.currentState!.validate()) {
+                              //   _hitForgotApi(
+                              //       phone: textFieldController.text.trim());
+                              // }
                             },
                             child: const Center(
                               child: Text(

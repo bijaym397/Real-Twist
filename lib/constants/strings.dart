@@ -12,7 +12,7 @@ class AppStrings {
   static const String spPhone = "phone";
   static const String spImage = "image";
   static const String spLoggedIn = "isLoggedIn";
-  static const String spEntered = "isEntered";
+  static const String spFirst = "isFirst";
   static const String signWithFacebook = "Sign in Facebook";
   static const String signWithGoogle = "Sign in Google";
   static const String signWithApple = "Sign in Apple";
