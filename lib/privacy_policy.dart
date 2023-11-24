@@ -92,11 +92,13 @@ class PrivacyPolicy extends StatelessWidget {
             topPadding: 24,
           ),
           TextCommon(
-              text:
-              "The security of your personal information is important to us, but please be aware that no method of transmission over the internet or electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security.",
-              isIcon: false,
-              topPadding: 4,
-              size: 20,),
+            text:
+                "The security of your personal information is important to us, but please be aware that no method of transmission over the internet or electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security.",
+            isIcon: false,
+            topPadding: 4,
+            size: 20,
+          ),
+
           ///
           TextCommon(
             text: "Third-Party Services",
@@ -105,11 +107,13 @@ class PrivacyPolicy extends StatelessWidget {
             topPadding: 24,
           ),
           TextCommon(
-              text:
-              "The App may use third-party services, such as analytics and advertising providers. These third parties may have access to your personal information as needed to perform their functions, but they are not permitted to share or use the information for any other purpose.",
-              isIcon: false,
-              topPadding: 4,
-              size: 20,),
+            text:
+                "The App may use third-party services, such as analytics and advertising providers. These third parties may have access to your personal information as needed to perform their functions, but they are not permitted to share or use the information for any other purpose.",
+            isIcon: false,
+            topPadding: 4,
+            size: 20,
+          ),
+
           ///
           TextCommon(
             text: "Children's Privacy",
@@ -118,11 +122,13 @@ class PrivacyPolicy extends StatelessWidget {
             topPadding: 24,
           ),
           TextCommon(
-              text:
-              "The App is not intended for use by children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and become aware that your child has provided us with personal information, please contact us, and we will take steps to remove that information.",
-              isIcon: false,
-              topPadding: 4,
-              size: 20,),
+            text:
+                "The App is not intended for use by children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and become aware that your child has provided us with personal information, please contact us, and we will take steps to remove that information.",
+            isIcon: false,
+            topPadding: 4,
+            size: 20,
+          ),
+
           ///
           TextCommon(
             text: "Changes to This Privacy Policy",
@@ -131,11 +137,13 @@ class PrivacyPolicy extends StatelessWidget {
             topPadding: 24,
           ),
           TextCommon(
-              text:
-              "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.",
-              isIcon: false,
-              topPadding: 4,
-              size: 20,),
+            text:
+                "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.",
+            isIcon: false,
+            topPadding: 4,
+            size: 20,
+          ),
+
           ///
           TextCommon(
             text: "Changes to This Privacy Policy",
@@ -144,11 +152,13 @@ class PrivacyPolicy extends StatelessWidget {
             topPadding: 24,
           ),
           TextCommon(
-              text:
-              "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.",
-              isIcon: false,
-              topPadding: 4,
-              size: 20,),
+            text:
+                "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.",
+            isIcon: false,
+            topPadding: 4,
+            size: 20,
+          ),
+
           ///
           TextCommon(
             text: "Contact Us",
@@ -157,11 +167,12 @@ class PrivacyPolicy extends StatelessWidget {
             topPadding: 24,
           ),
           TextCommon(
-              text:
-              "If you have any questions or concerns about this Privacy Policy, please contact us at bijay.primotech@gmail.com.",
-              isIcon: false,
-              topPadding: 4,
-              size: 20,),
+            text:
+                "If you have any questions or concerns about this Privacy Policy, please contact us at:  realtwist1120@gmail.com.",
+            isIcon: false,
+            topPadding: 4,
+            size: 20,
+          ),
         ],
       ),
     );
