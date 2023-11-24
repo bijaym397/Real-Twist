@@ -45,4 +45,7 @@ abstract class Api {
   static const String spendCoin = "spincoin/spend";
   static const String spinCoinStatus = "spincoin/status/";
 
+
+  static const String userType = "ushghejr";
+
 }
