@@ -6,6 +6,7 @@ import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
+import 'package:real_twist/payments/buy_coins.dart';
 import 'package:real_twist/payments/icome_view.dart';
 import 'package:real_twist/payments/my_invest.dart';
 import 'package:real_twist/utils/url_launcher.dart';
@@ -82,14 +83,15 @@ class DrawerView extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.monetization_on),
-            title: const Text('Deposit'),
+            title: const Text('Buy Coins'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyCoinsScreen()));
             },
           ),
           ListTile(
             leading: const Icon(Icons.monetization_on_outlined),
-            title: const Text('Withdrawal '),
+            title: const Text('Sell Coins'),
             onTap: () {
               Navigator.pop(context);
             },
