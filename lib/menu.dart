@@ -8,6 +8,7 @@ import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/icome_view.dart';
 import 'package:real_twist/payments/my_invest.dart';
+import 'package:real_twist/privacy_policy.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'constants/api.dart';
@@ -116,6 +117,14 @@ class DrawerView extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_rounded),
+            title: const Text('Our Privacy Policy'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
             },
           ),
           ListTile(
