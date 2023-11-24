@@ -45,6 +45,7 @@ class _SpinWheelState extends State<SpinWheel> {
   Future<void> _updateLastPlayDate() async {
     prefs = await SharedPreferences.getInstance();
     prefs.setString('last_play_date', DateTime.now().toIso8601String());
+    _checkIfPlayedToday();
   }
 
   @override
@@ -59,7 +60,7 @@ class _SpinWheelState extends State<SpinWheel> {
     super.dispose();
   }
 
-  Future<int> _spinCoinApi() async {
+  _spinCoinApi() async {
     setState(() {
       isApiCallInProgress = true;
     });
@@ -76,18 +77,24 @@ class _SpinWheelState extends State<SpinWheel> {
         },
         body: '{"coinNumbers":$items}',
       );
-
+      final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
         await _updateLastPlayDate();
-        return jsonResponse['selectedNumber'] ?? 0;
+        setState(() {
+          selected.value = items.indexOf(jsonResponse["data"]['selectedNumber'] ?? 0);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  "You won $rewards Points!"),
+            ),
+          );
+        });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to load data'),
+            content: Text(jsonResponse['message'] ?? 'Failed to load data'),
           ),
         );
-        return 0;
       }
     } finally {
       setState(() {
@@ -103,6 +110,7 @@ class _SpinWheelState extends State<SpinWheel> {
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         title: const Text("Play and win"),
+        centerTitle: true,
       ),
       body: BlinkingBorderContainer(
         backgroundImage: "assets/casio_table.jpg",
@@ -122,7 +130,7 @@ class _SpinWheelState extends State<SpinWheel> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         color:  const Color(0xFF3A2222),
-                        borderRadius: BorderRadius.circular(200.0),
+                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                       ),
                       child: Container(
                         decoration: BoxDecoration(
@@ -132,7 +140,7 @@ class _SpinWheelState extends State<SpinWheel> {
                               opacity: 0.5
                           ),
                           color: Colors.brown,
-                          borderRadius: BorderRadius.circular(200.0),
+                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                         ),
                         padding: const EdgeInsets.all(15.0),
                         child: Container(
@@ -145,7 +153,7 @@ class _SpinWheelState extends State<SpinWheel> {
                                 spreadRadius: 5.0, // Expansion of the shadow
                               ),
                             ],
-                            borderRadius: BorderRadius.circular(200.0),
+                            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                           ),
                           child: FortuneWheel(
                             selected: selected.stream,
@@ -170,12 +178,6 @@ class _SpinWheelState extends State<SpinWheel> {
                               setState(() {
                                 rewards = items[selected.value];
                               });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      "You just won $rewards Points!"),
-                                ),
-                              );
                             },
                           ),
                         ),
@@ -210,12 +212,7 @@ class _SpinWheelState extends State<SpinWheel> {
                 const SizedBox(height: 35,),
                 ElevatedButton(
                   onPressed: !hasPlayedToday && !isApiCallInProgress
-                      ? () async {
-                    final selectedNumber = await _spinCoinApi();
-                    setState(() {
-                      selected.value = items.indexOf(selectedNumber);
-                    });
-                  }
+                      ? () {_spinCoinApi();}
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: !hasPlayedToday && !isApiCallInProgress

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/admin/dashboard.dart';
 import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/payment_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/api.dart';
 import 'login.dart';
 
 class SplashView extends StatefulWidget {
@@ -33,7 +35,7 @@ class _SplashViewState extends State<SplashView> {
       else{
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginView()));
+          MaterialPageRoute(builder: (context) => Api.userType == "user" ? const LoginView() : const DashboardView()));
       }
     });
   }

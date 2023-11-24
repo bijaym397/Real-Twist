@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
@@ -53,14 +54,21 @@ class _NumberSpinnerState extends State<NumberSpinner> {
     prefs.setString('last_play_date', DateTime.now().toIso8601String());
   }
 
+  _spinnerLoading() async{
+    final random = Random();
+    await Future.delayed(const Duration(milliseconds: 500));
+    selected.add(random.nextInt(99));
+  }
+
+
   Future<void> _spinCoinApi() async {
     setState(() {
       numberSelectedByUser = selectedNumber;
       isApiCallInProgress = true;
     });
 
-    showLoaderDialog(context);
-
+    //showLoaderDialog(context);
+    _spinnerLoading();
 
     final pref = await SharedPreferences.getInstance();
     try {
@@ -80,7 +88,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
        final jsonResponse = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        await Future.delayed(const Duration(seconds: 30));
+        await Future.delayed(const Duration(seconds: 10));
         final gameResultApiURL =  "${Api.baseUrl}${Api.spinCoinStatus}${jsonResponse['data']['_id'] ?? ""}";
         final gameResultResponse = await http.get(
           Uri.parse(gameResultApiURL),
@@ -106,14 +114,14 @@ class _NumberSpinnerState extends State<NumberSpinner> {
             ),
           );
           _updateLastPlayDate();
-          Navigator.pop(context);
+         /// Navigator.pop(context);
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(gameResultJsonResponse['message'] ?? "Error while loading data"),
             ),
           );
-          Navigator.pop(context);
+         /// Navigator.pop(context);
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -121,7 +129,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
             content: Text(jsonResponse['message'] ?? "Error while loading data"),
           ),
         );
-        Navigator.pop(context);
+        ///Navigator.pop(context);
       }
     } catch (e) {
       // Handle API call error
@@ -130,7 +138,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
           content: Text(e.toString()),
         ),
       );
-      Navigator.pop(context);
+      ///Navigator.pop(context);
     } finally {
       setState(() {
         isApiCallInProgress = false;
@@ -144,6 +152,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
+        centerTitle: true,
         title: const Text("Casino"),
       ),
       body: BlinkingBorderContainer(
@@ -197,7 +206,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color:  const Color(0xFF3A2222),
-                        borderRadius: BorderRadius.circular(200.0),
+                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                       ),
                       child: Container(
                         decoration: BoxDecoration(
@@ -207,7 +216,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                               opacity: 0.5
                           ),
                           color: Colors.brown,
-                          borderRadius: BorderRadius.circular(200.0),
+                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
                         ),
                         padding: const EdgeInsets.all(15.0),
                         child: Container(
@@ -225,6 +234,21 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                           child: FortuneWheel(
                             selected: selected.stream,
                             animateFirst: false,
+                            alignment: Alignment.bottomCenter,
+                            duration:  isApiCallInProgress ? const Duration(seconds: 12) : Duration.zero,
+                            indicators: [
+                              FortuneIndicator(
+                                  child: SizedBox(
+                                      height: MediaQuery.of(context).size.width * 0.07,
+                                      width: MediaQuery.of(context).size.width * 0.07,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Image.asset("assets/ic_ball.png"),
+                                    )
+                                  ),
+                                alignment: Alignment.topCenter
+                              )
+                            ],
                             items : List.generate(availableNumbers.length, (index) =>
                                 FortuneItem(
                                   child: Container(
@@ -251,26 +275,30 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                         ),
                       ),
                     ),
-
-
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width * 0.80,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      child: Center(
+                        child: Image.asset(
+                          "assets/ic_knob.png",
+                          height: MediaQuery.of(context).size.width * 0.20,
+                          width: MediaQuery.of(context).size.width * 0.20,
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height:  MediaQuery.of(context).size.width * 0.80,
                       width: MediaQuery.of(context).size.width * 0.80,
                       child: Center(
                         child: Container(
-                          height: 25,
-                          width: 25,
+                          height:  MediaQuery.of(context).size.width * 0.50,
+                          width: MediaQuery.of(context).size.width * 0.50,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFFD700),
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow:  [
-                              BoxShadow(
-                                color: Colors.black.withAlpha(100), // Shadow color
-                                offset: const Offset(0.0, 0.0),
-                                blurRadius: 10.0, // Spread of the shadow
-                                spreadRadius: 5.0, // Expansion of the shadow
-                              ),
-                            ],
+                            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.50/2),
+                            border: Border.all(
+                              color: const Color(0xFFFFD700),
+                              width: 2
+                            ),
                           ),
                         ),
                       ),

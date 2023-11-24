@@ -31,7 +31,7 @@ class DrawerView extends StatelessWidget {
             decoration:
                 const BoxDecoration(color: Colors.transparent), //BoxDecoration
             child: Container(
-              // padding: EdgeInsets.only(left: 90),
+              padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: LinearGradient(
@@ -51,16 +51,19 @@ class DrawerView extends StatelessWidget {
                         return "NA";
                       }
                     })(),
-                    style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                    style: const TextStyle(fontSize: 30.0, color: Colors.blue),
                   ), //Text
                 ),
                 const SizedBox(height: 10,),
                 Text(
-                  userDetails.data?.name.toString() ??
-                      "N/A",
+                  userDetails.data?.name.toString() ?? "N/A",
                   style: const TextStyle(fontSize: 18),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis
                 ),
-                Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
+                  const SizedBox(height: 5),
+                Text(userDetails.data?.phoneNumber.toString() ?? "N/A",
+                    maxLines: 2,overflow: TextOverflow.ellipsis),
               ],)
             ), //UserAccountDrawerHeader
           ), //DrawerHeader
