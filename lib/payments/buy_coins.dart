@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:real_twist/payments/webview_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constants/api.dart';
 import '../constants/strings.dart';
 import '../home.dart';
@@ -43,11 +41,11 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     }
   }
 
-  void _buyCoinsApiCall(int coins) async{
+  void _buyCoinsApiCall(int coins) async {
 // Make API call
     final pref = await SharedPreferences.getInstance();
 
-    const apiUrl = Api.baseUrl+Api.payment;
+    const apiUrl = Api.baseUrl + Api.payment;
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
@@ -79,7 +77,6 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     }
   }
 
-
   void _openWebView(String url) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -90,7 +87,7 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
             if (url.contains('/success')) {
               // Set paymentDone to true
               setState(() {
-                paymentDone = true;
+                // paymentDone = true;
               });
 
               // Pop the WebView
@@ -135,12 +132,11 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
             SizedBox(
               height: 45,
               child: CommonCard(
-                onTap:_buyCoins,
+                onTap: _buyCoins,
                 child: const Center(
                   child: Text(
                     'Buy',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
