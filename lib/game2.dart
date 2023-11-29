@@ -21,12 +21,13 @@ class NumberSpinner extends StatefulWidget {
 class _NumberSpinnerState extends State<NumberSpinner> {
   final selected = BehaviorSubject<int>();
   int rewards = 0;
-  int selectedNumber = 0;
   int spendCoin = 5;
   bool canPlay = true;
   late SharedPreferences prefs;
   bool isApiCallInProgress = false;
   int? numberSelectedByUser;
+
+
 
   List<int> availableNumbers = [10, 5, 20, 18, 12, 15, 2, 0, 25, 8];
 
@@ -61,9 +62,8 @@ class _NumberSpinnerState extends State<NumberSpinner> {
   }
 
 
-  Future<void> _spinCoinApi() async {
+  Future<void> _spinCoinApi(String gameType) async {
     setState(() {
-      numberSelectedByUser = selectedNumber;
       isApiCallInProgress = true;
     });
 
@@ -80,8 +80,9 @@ class _NumberSpinnerState extends State<NumberSpinner> {
           'token': pref.getString(AppStrings.spAuthToken) ?? "",
         },
         body: jsonEncode({
-          'selectNumber': selectedNumber,
+          'selectNumber': numberSelectedByUser ?? 0,
           'spendCoin': spendCoin,
+          'gameType': gameType,
         }),
       );
 
@@ -147,6 +148,12 @@ class _NumberSpinnerState extends State<NumberSpinner> {
     }
   }
 
+  _setSelectedNumber(int number){
+    setState(() {
+      numberSelectedByUser = number;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,12 +208,12 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                 Stack(
                   children: [
                     Container(
-                      height:  MediaQuery.of(context).size.width * 0.80,
-                      width: MediaQuery.of(context).size.width * 0.80,
+                      height:  MediaQuery.of(context).size.width * 0.75,
+                      width: MediaQuery.of(context).size.width * 0.75,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color:  const Color(0xFF3A2222),
-                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
+                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.75/2),
                       ),
                       child: Container(
                         decoration: BoxDecoration(
@@ -216,12 +223,12 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                               opacity: 0.5
                           ),
                           color: Colors.brown,
-                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
+                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.75/2),
                         ),
-                        padding: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(200.0),
+                            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.75/2),
                             boxShadow:  [
                               BoxShadow(
                                 color: Colors.black.withAlpha(100), // Shadow color
@@ -276,23 +283,23 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.width * 0.80,
-                      width: MediaQuery.of(context).size.width * 0.80,
+                      height: MediaQuery.of(context).size.width * 0.75,
+                      width: MediaQuery.of(context).size.width * 0.75,
                       child: Center(
                         child: Image.asset(
                           "assets/ic_knob.png",
-                          height: MediaQuery.of(context).size.width * 0.20,
-                          width: MediaQuery.of(context).size.width * 0.20,
+                          height: MediaQuery.of(context).size.width * 0.18,
+                          width: MediaQuery.of(context).size.width * 0.18,
                         ),
                       ),
                     ),
                     SizedBox(
-                      height:  MediaQuery.of(context).size.width * 0.80,
-                      width: MediaQuery.of(context).size.width * 0.80,
+                      height:  MediaQuery.of(context).size.width * 0.75,
+                      width: MediaQuery.of(context).size.width * 0.75,
                       child: Center(
                         child: Container(
-                          height:  MediaQuery.of(context).size.width * 0.50,
-                          width: MediaQuery.of(context).size.width * 0.50,
+                          height:  MediaQuery.of(context).size.width * 0.45,
+                          width: MediaQuery.of(context).size.width * 0.45,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.50/2),
                             border: Border.all(
@@ -300,6 +307,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                               width: 2
                             ),
                           ),
+
                         ),
                       ),
                     )
@@ -307,16 +315,15 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                 ),
 
                 const SizedBox(height: 25),
+
                 Wrap(
                   spacing: 10,
                   alignment: WrapAlignment.center,
                   children: availableNumbers
                       .map((number) => ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: !isApiCallInProgress
-                          ? Colors.white
-                          : numberSelectedByUser == number ? Colors.red.shade400 : Colors.white.withAlpha(150),
-                      foregroundColor:  Colors.black87,
+                      backgroundColor: numberSelectedByUser == number ? Colors.red.shade400 : Colors.white,
+                      foregroundColor: numberSelectedByUser == number ? Colors.white : Colors.black87,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -326,8 +333,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                         : () async {
                       await _checkCanPlay();
                       if (canPlay) {
-                        selectedNumber = number;
-                        await _spinCoinApi();
+                         _setSelectedNumber(number);
                       } else {
                         // User has already played today
                         ScaffoldMessenger.of(context)
@@ -344,6 +350,57 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                   ))
                       .toList(),
                 ),
+
+                const SizedBox(height: 15,),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:[
+                    ElevatedButton(
+                      onPressed: numberSelectedByUser != null && !isApiCallInProgress
+                          ? () { _spinCoinApi("red"); }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: numberSelectedByUser != null && !isApiCallInProgress
+                            ? Colors.red
+                            : Colors.white.withAlpha(150),
+                        foregroundColor: Colors.black87,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        alignment: Alignment.center,
+                        child: const Text("Risky"),
+                      ),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: numberSelectedByUser != null && !isApiCallInProgress
+                          ? () { _spinCoinApi("green"); }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: numberSelectedByUser != null && !isApiCallInProgress
+                            ? Colors.green
+                            : Colors.white.withAlpha(150),
+                        foregroundColor: Colors.black87,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        alignment: Alignment.center,
+                        child: const Text("Normal"),
+                      ),
+                    ),
+                  ]
+                ),
+
+                const SizedBox(height: 15,),
               ],
             ),
           ),
