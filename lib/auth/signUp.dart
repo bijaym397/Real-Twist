@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/auth/widgets.dart';
 import 'package:real_twist/constants/api.dart';
+import 'package:real_twist/home.dart';
 import 'package:real_twist/modals/sign_up_model.dart';
 import 'package:real_twist/utils/Back_handler.dart';
 import 'package:real_twist/utils/form_validator.dart';
@@ -300,4 +301,103 @@ class _SignupViewState extends State<SignupView> {
       return debugPrint(e.toString());
     }
   }
+
+  Future<void> _showReferDialog(BuildContext context) async {
+    TextEditingController referController = TextEditingController();
+    FocusNode referNode = FocusNode();
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (context) {
+        final GlobalKey<FormState> forgotFormKey = GlobalKey<FormState>();
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: Container(
+            height: 160,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Form(
+              key: forgotFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text('Refer Code', style: TextStyle(fontSize: 20)),
+                  TextFormField(
+                    controller: referController,
+                    focusNode: referNode,
+                    maxLength: 10,
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.done,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "*Required";
+                      if (value.length < 10) {
+                        return "Length should be 10";
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      prefixIcon: Icon(Icons.key),
+                      border: OutlineInputBorder(),
+                      hintText: 'xxxxx xxxxx',
+                      labelText: "Enter You Number",
+                      counterText: "",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () => Navigator.pop(context),
+                            child: const Center(
+                              child: Text(
+                                'Skip',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () {
+                              if (forgotFormKey.currentState!.validate()) {
+                                // _hitForgotApi(
+                                //     phone: textFieldController.text.trim());
+                              }
+                            },
+                            child: const Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 }

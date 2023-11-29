@@ -18,14 +18,16 @@ abstract class Api {
   static const String verifyPasswordOtp = "verify-password-otp";
   static const String changePassword = "change-password";
   static const String homeDetails = "user/details";
+  static const String coinsPrice = "admin/coinsprice";
 
   static const String socialData = "users/userSignupBySocial";
   static const String getStaticPages = "/get_page_content/";
+  static const String payment = "/}payment/create-payu-checkout";
 
   static const String getProfile = "users/get-profile/";
   static const String uploadProfileImage = "users/upload-image/";
   static const String editProfile = "users/edit-profile/";
-
+  static const String profileChangePassword = "profile/change-password/";
 
   static const String uploadPrescription = "users/upload-prescription/";
   static const String getPrescription = "users/get-prescription/";
@@ -52,5 +54,6 @@ abstract class Api {
   static const String paymentHistory = "user/payment";
 
   static const String userType = "ushghejr";
+  static const String userType = "user";
 
 }

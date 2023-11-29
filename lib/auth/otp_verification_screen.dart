@@ -16,8 +16,9 @@ class OtpVerificationScreen extends StatefulWidget {
   final String? verificationCode;
   final String? userId;
   final String? token;
+  final bool? referCode;
 
-  const OtpVerificationScreen({Key? key, this.phoneNumber, this.verificationCode, this.userId, this.token})
+  const OtpVerificationScreen({Key? key, this.phoneNumber, this.verificationCode, this.userId, this.token, this.referCode})
       : super(key: key);
 
   @override
@@ -62,6 +63,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         );
         sharedPreferences.setString(
             AppStrings.spAuthToken, verificationData.data!.authToken.toString());
+        sharedPreferences.setString(
+            AppStrings.spUserId, verificationData.data!.userId.toString());
         // Navigate to the home screen (replace with the actual home screen)
         widget.token?.isNotEmpty == true ?  Navigator.pushReplacement(
           context,
@@ -71,7 +74,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         ): Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeView(),
+            builder: (context) => HomeView(referCode: widget.referCode),
           ),
         );
         // } else {

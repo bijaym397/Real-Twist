@@ -5,13 +5,14 @@ class AppStrings {
   static const String spLoginSocial = "social";
   static const String spUserId = "userId";
   static const String spAuthToken = "authToken";
+  static const String spUserType = "userType";
   static const String spFirstName = "firstName";
   static const String spLastName = "lastName";
   static const String spEmail = "email";
   static const String spPhone = "phone";
   static const String spImage = "image";
   static const String spLoggedIn = "isLoggedIn";
-  static const String spEntered = "isEntered";
+  static const String spFirst = "isFirst";
   static const String signWithFacebook = "Sign in Facebook";
   static const String signWithGoogle = "Sign in Google";
   static const String signWithApple = "Sign in Apple";
@@ -20,5 +21,6 @@ class AppStrings {
   static const String loginPopup = "Please login to access this feature!";
   static const String spCode = "code";
   static const String spId = "id";
+
 
 }

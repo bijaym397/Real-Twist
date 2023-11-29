@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:real_twist/admin/dashboard.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
@@ -206,7 +207,7 @@ class _LoginViewState extends State<LoginView> {
           'password': password.toString(),
         }),
       );
-      final loginData = LoginData.fromJson(json.decode(response.body));
+      final loginData = LoginDataResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -218,12 +219,14 @@ class _LoginViewState extends State<LoginView> {
             AppStrings.spUserId, loginData.data!.userId.toString());
         sharedPreferences.setString(
             AppStrings.spAuthToken, loginData.data!.authToken.toString());
+        sharedPreferences.setString(
+            AppStrings.spUserType, loginData.data!.user!.userType.toString());
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => Api.userType == "user"
-                  ? const LoginView()
+              builder: (context) => Api.userType != loginData.data!.user!.userType.toString()
+                  ? const DashboardView()
                   : const HomeView()),
         );
       } else {
