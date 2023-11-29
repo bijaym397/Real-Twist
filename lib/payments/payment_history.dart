@@ -12,7 +12,7 @@ class PaymentHistoryPage extends StatefulWidget {
 }
 
 class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
-  late List<Map<String, dynamic>> payments;
+  late List<Map<String, dynamic>> payments = [];
 
   @override
   void initState() {
@@ -48,7 +48,9 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment History'),
+        backgroundColor: Colors.pink.shade800,
+        centerTitle: true,
+        title: const Text('Payment History'),
       ),
       body: ListView.builder(
         itemCount: payments.length,
@@ -73,34 +75,25 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
             statusColor = Colors.red;
           }
 
-          return ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Left side: Payment details
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Payment ID: $paymentId'),
-                    Text('Amount: $amount'),
-                    Text('Date: ${formattedDate.toString()}'),
-                  ],
-                ),
-                // Right side: Number of coins, status
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text('Coins: $buyCoin'),
-                    Text(
-                      'Status: $status',
-                      style: TextStyle(color: statusColor),
-                    ),
-                  ],
-                ),
-              ],
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10,top: 5),
+            child: ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Payment ID: $paymentId'),
+                  Text('Amount: $amount'),
+                  Text('Date: ${formattedDate.toString()}'),
+                  Text('Coins: $buyCoin'),
+                  Text(
+                    'Status: $status',
+                    style: TextStyle(color: statusColor),
+                  ),
+                ],
+              ),
+              // Divider between list items
+              tileColor: Colors.transparent,
             ),
-            // Divider between list items
-            tileColor: Colors.grey[200],
           );
         },
       ),

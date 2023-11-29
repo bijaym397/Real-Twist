@@ -21,12 +21,18 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
 
   String _sessionId = "";
 
+
+  @override
+  void dispose() {
+    _sessionId = "";
+    super.dispose();
+  }
+
   void _buyCoins() {
     String coinsText = _coinsController.text.trim();
 
     if (coinsText.isNotEmpty) {
       int numberOfCoins = int.tryParse(coinsText) ?? 0;
-
       if (numberOfCoins > 0) {
         _buyCoinsApiCall(numberOfCoins);
       } else {
@@ -46,7 +52,6 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
   }
 
   void _buyCoinsApiCall(int coins) async{
-// Make API call
     final pref = await SharedPreferences.getInstance();
 
     const apiUrl = Api.baseUrl+Api.payment;
@@ -67,10 +72,9 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
       // API call successful, parse the response
       // Assuming response is in JSON format
       Map<String, dynamic> data = json.decode(response.body);
+      String paymentUrl = data['data']['url'];
+      _sessionId = data['data']['id'];
 
-      // Extract paymentUrl from the response
-      String paymentUrl = data['body']['url'];
-      _sessionId = data['body']['id'];
       _openWebView(paymentUrl);
     } else {
       // API call failed, show error message using Snackbar
@@ -86,7 +90,7 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     final pref = await SharedPreferences.getInstance();
 
     const apiUrl = Api.baseUrl+Api.updatePaymentStatus;
-    final response = await http.post(
+    final response = await http.put(
       Uri.parse(apiUrl),
       headers: {
         'Content-Type': 'application/json',
@@ -97,6 +101,7 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
       }),
     );
 
+    _sessionId = "";
     if (response.statusCode == 200) {
       return true;
     } else {

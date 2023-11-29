@@ -22,7 +22,6 @@ abstract class Api {
 
   static const String socialData = "users/userSignupBySocial";
   static const String getStaticPages = "/get_page_content/";
-  static const String payment = "/}payment/create-payu-checkout";
 
   static const String getProfile = "users/get-profile/";
   static const String uploadProfileImage = "users/upload-image/";
@@ -53,7 +52,6 @@ abstract class Api {
   static const String updatePaymentStatus = "payment/status";
   static const String paymentHistory = "user/payment";
 
-  static const String userType = "ushghejr";
   static const String userType = "user";
 
 }

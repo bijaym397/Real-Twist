@@ -10,6 +10,7 @@ import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/buy_coins.dart';
 import 'package:real_twist/payments/icome_view.dart';
 import 'package:real_twist/payments/my_invest.dart';
+import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'constants/api.dart';
@@ -107,7 +108,7 @@ class DrawerView extends StatelessWidget {
             title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistory()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistoryPage()));
             },
           ),
           // ListTile(
