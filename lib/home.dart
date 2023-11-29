@@ -29,6 +29,7 @@ class _HomeViewState extends State<HomeView> {
   UserApiResponse? userDetails = UserApiResponse();
   HomeDetailsResponse? homeDetails = HomeDetailsResponse();
   String? token = "";
+  String? userId = "";
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _HomeViewState extends State<HomeView> {
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
+    userId = sharedPreferences.getString(AppStrings.spUserId);
     if(token != null) {
       userDetails = await _show(token: token);
       homeDetails = await _homeDetails(token: token);
@@ -135,8 +137,7 @@ class _HomeViewState extends State<HomeView> {
                           child: CommonCard(
                             onTap: () {
                               if (referFormKey.currentState!.validate()) {
-                                // _hitForgotApi(
-                                //     phone: textFieldController.text.trim());
+                                _hitReferralApi(phoneNumber: referController.text.trim(), userId: userId.toString());
                               }
                             },
                             child: const Center(
@@ -261,6 +262,41 @@ class _HomeViewState extends State<HomeView> {
       customLoader!.hide();
       debugPrint("error ${e.toString()}");
       return null;
+    }
+  }
+
+  Future<void> _hitReferralApi(
+      {String? phoneNumber, String? userId}) async {
+    try {
+      customLoader!.show(context);
+      const apiUrl = "${Api.baseUrl}${Api.referralCode}";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "userId": userId.toString(),
+          'referralCode': phoneNumber.toString(),
+        }),
+      );
+      final signUpData = SignUpResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${signUpData.message}"),
+        ));
+        Navigator.pop(context);
+      } else {
+        // API call failed
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${signUpData.message}"),
+          ),
+        );
+      }
+    } catch (e) {
+      customLoader!.hide();
+      return debugPrint(e.toString());
     }
   }
 
