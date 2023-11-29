@@ -25,7 +25,7 @@ class _SpinWheelState extends State<SpinWheel> {
   List<int> items = [10, 5, 20, -10, -5, 15, 2, 0, 25, -15];
 
   late SharedPreferences prefs;
-  bool hasPlayedToday = false;
+  bool hasPlayedToday = true;
 
   Future<void> _checkIfPlayedToday() async {
     prefs = await SharedPreferences.getInstance();
@@ -36,9 +36,11 @@ class _SpinWheelState extends State<SpinWheel> {
       final lastDate = DateTime.parse(lastPlayDate);
 
       // Check if the last play date is the same day as today
-      hasPlayedToday = currentDate.year == lastDate.year &&
-          currentDate.month == lastDate.month &&
-          currentDate.day == lastDate.day;
+      setState(() {
+        hasPlayedToday = currentDate.year == lastDate.year &&
+            currentDate.month == lastDate.month &&
+            currentDate.day == lastDate.day;
+      });
     }
   }
 
@@ -80,8 +82,9 @@ class _SpinWheelState extends State<SpinWheel> {
       final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
         await _updateLastPlayDate();
-        setState(() {
+        setState(() async{
           selected.value = items.indexOf(jsonResponse["data"]['selectedNumber'] ?? 0);
+          await Future.delayed(const Duration(seconds: 10));
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -158,6 +161,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           child: FortuneWheel(
                             selected: selected.stream,
                             animateFirst: false,
+                            duration: const Duration(seconds: 10),
                             items : List.generate(items.length, (index) =>
                                 FortuneItem(
                                   child: Container(
