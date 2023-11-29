@@ -102,16 +102,16 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.ac_unit_outlined),
-            title: const Text('My Investment'),
+            leading: const Icon(Icons.incomplete_circle),
+            title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyInvestView()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
             },
           ),
           ListTile(
             leading: const Icon(Icons.incomplete_circle),
-            title: const Text('Total Income'),
+            title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
