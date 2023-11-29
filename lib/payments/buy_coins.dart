@@ -19,6 +19,8 @@ class BuyCoinsScreen extends StatefulWidget {
 class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
   final TextEditingController _coinsController = TextEditingController();
 
+  String _sessionId = "";
+
   void _buyCoins() {
     String coinsText = _coinsController.text.trim();
 
@@ -55,7 +57,9 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
         'token': pref.getString(AppStrings.spAuthToken) ?? "",
       },
       body: jsonEncode({
-        'spendCoin': coins,
+        'buyCoin': coins,
+        'success_url': "https://doc-hosting.flycricket.io/payment-success/b2f985b0-1c1c-41ea-acab-00918d78222f/other",
+        'cancel_url': "https://doc-hosting.flycricket.io/payment-failed/e97a1953-99ce-42d1-bfb7-db7383cafb62/other",
       }),
     );
 
@@ -65,9 +69,8 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
       Map<String, dynamic> data = json.decode(response.body);
 
       // Extract paymentUrl from the response
-      String paymentUrl = data['paymentUrl'];
-
-      // Open paymentUrl in WebView
+      String paymentUrl = data['body']['url'];
+      _sessionId = data['body']['id'];
       _openWebView(paymentUrl);
     } else {
       // API call failed, show error message using Snackbar
@@ -79,6 +82,27 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     }
   }
 
+  Future<bool> _updatePaymentStatus() async{
+    final pref = await SharedPreferences.getInstance();
+
+    const apiUrl = Api.baseUrl+Api.updatePaymentStatus;
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'token': pref.getString(AppStrings.spAuthToken) ?? "",
+      },
+      body: jsonEncode({
+        'sessionId': _sessionId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   void _openWebView(String url) {
     Navigator.of(context).push(
@@ -86,28 +110,41 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
         builder: (context) => WebViewScreen(
           url,
           onPageFinished: (String url) {
-            // Check if the URL contains '/success'
-            if (url.contains('/success')) {
-              // Set paymentDone to true
-              setState(() {
-                paymentDone = true;
-              });
-
-              // Pop the WebView
-              Navigator.of(context).pop();
-
-              // Call the refresh function on the previous screen
-              _refreshScreen();
-            }
+            controlScreenNavigation(url);
           },
         ),
       ),
     );
   }
 
-  void _refreshScreen() {
-    // Implement the logic to refresh the screen here
-    print('Screen refreshed');
+  void controlScreenNavigation(String url) async{
+      if(url.contains("payment-success")){
+        if( await _updatePaymentStatus()){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Payment Done successfully'),
+            ),
+          );
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Some Error while making payment.'),
+            ),
+          );
+        }
+        await Future.delayed(const Duration(seconds: 5));
+        Navigator.of(context).pop();
+      }else if(url.contains("payment-failed")){
+        await _updatePaymentStatus();
+        // API call failed, show error message using Snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Some Error while making payment.'),
+          ),
+        );
+        await Future.delayed(const Duration(seconds: 5));
+        Navigator.of(context).pop();
+      }
   }
 
   @override
@@ -128,7 +165,12 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
               controller: _coinsController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: 'Enter number of coins',
+                  prefixIcon: Icon(Icons.circle),
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter number of coins',
+                  labelText: "Enter number of coins"
               ),
             ),
             const SizedBox(height: 16),

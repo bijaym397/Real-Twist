@@ -47,7 +47,9 @@ abstract class Api {
 
 
   //Payment endpoints
-  static const String payment = "payment/create-payu-checkout";
+  static const String payment = "payment/create-checkout-session";
+  static const String updatePaymentStatus = "payment/status";
+  static const String paymentHistory = "user/payment";
 
   static const String userType = "ushghejr";
 

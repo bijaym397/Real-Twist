@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:real_twist/admin/payment_history.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
@@ -106,20 +107,20 @@ class DrawerView extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.ac_unit_outlined),
-            title: const Text('My Invest'),
+            title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyInvestView()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistory()));
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.incomplete_circle),
-            title: const Text('Total Income'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.incomplete_circle),
+          //   title: const Text('Total Income'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.share_rounded),
             title: const Text("Refer Friends & Earn"),
