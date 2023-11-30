@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 
@@ -75,6 +76,36 @@ class MyProfile extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
               ),
+              const SizedBox(height: 10),
+              userDetails.data?.userCode.toString().isNotEmpty == true?
+              GestureDetector(
+                onTap: (){
+                  Clipboard.setData(ClipboardData(text: userDetails.data?.userCode.toString() ?? "")).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Referral code copied"),
+                      ),
+                    );
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Referral Code : ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    Text(
+                      userDetails.data?.userCode.toString() ?? "",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+                    ),
+                    const SizedBox(width: 5),
+                    const Icon((Icons.copy))
+                  ],
+                ),
+              ):const SizedBox(),
           const SizedBox(height: 50),
               const Spacer(),
                Row(

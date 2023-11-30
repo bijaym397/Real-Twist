@@ -20,6 +20,7 @@ class AppStrings {
   static const String logoutPopup = "Are you sure want to logout?";
   static const String loginPopup = "Please login to access this feature!";
   static const String spCode = "code";
+  static const String spUserCode = "userCode";
   static const String spId = "id";
 
 
