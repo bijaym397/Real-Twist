@@ -13,6 +13,7 @@ import 'package:real_twist/payments/my_invest.dart';
 import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'common_web_view.dart';
 import 'constants/api.dart';
 import 'home.dart';
 import 'auth/login.dart';
@@ -111,14 +112,14 @@ class DrawerView extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistoryPage()));
             },
           ),
-          // ListTile(
-          //   leading: const Icon(Icons.incomplete_circle),
-          //   title: const Text('Total Income'),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
-          //   },
-          // ),
+          ListTile(
+            leading: const Icon(Icons.incomplete_circle),
+            title: const Text('Privacy Policy'),
+            // onTap: () {
+            //   Navigator.pop(context);
+            //   Navigator.push(context, MaterialPageRoute(builder: (context) => const CommonWebView()));
+            // },
+          ),
           ListTile(
             leading: const Icon(Icons.share_rounded),
             title: const Text("Refer Friends & Earn"),
