@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
@@ -8,9 +7,9 @@ import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/buy_coins.dart';
 import 'package:real_twist/payments/payment_history.dart';
+import 'package:real_twist/payments/webview_screen.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'common_web_view.dart';
 import 'constants/api.dart';
 import 'home.dart';
 import 'auth/login.dart';
@@ -112,10 +111,13 @@ class DrawerView extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.incomplete_circle),
             title: const Text('Privacy Policy'),
-            // onTap: () {
-            //   Navigator.pop(context);
-            //   Navigator.push(context, MaterialPageRoute(builder: (context) => const CommonWebView()));
-            // },
+            onTap: () {
+              Navigator.pop(context);
+              WebViewScreen(
+                "https://doc-hosting.flycricket.io/privacy-policy/adc7098b-36a9-477a-8c48-21eaebbc9400/privacy",
+                onPageFinished: (String url) {},
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.share_rounded),
