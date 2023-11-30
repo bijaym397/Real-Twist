@@ -75,7 +75,7 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
       String paymentUrl = data['data']['url'];
       _sessionId = data['data']['id'];
 
-      _openWebView(paymentUrl);
+      _openWebView(paymentUrl, "Privacy Policy");
     } else {
       // API call failed, show error message using Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -109,11 +109,12 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     }
   }
 
-  void _openWebView(String url) {
+  void _openWebView(String url, String title) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => WebViewScreen(
           url,
+          title: title,
           onPageFinished: (String url) {
             controlScreenNavigation(url);
           },

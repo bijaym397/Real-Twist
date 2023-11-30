@@ -3,10 +3,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatelessWidget {
   final String url;
+  final String? title;
   final Function(String) onPageFinished;
   late WebViewController controller;
 
-  WebViewScreen(this.url, {super.key, required this.onPageFinished}){
+  WebViewScreen(this.url, {super.key, required this.onPageFinished, this.title}){
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -30,7 +31,7 @@ class WebViewScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,
-        title: const Text('Payment screen'),
+        title: Text(title ?? 'Real Twist'),
       ),
       backgroundColor: Colors.white,
       body: WebViewWidget(

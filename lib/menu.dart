@@ -113,9 +113,14 @@ class DrawerView extends StatelessWidget {
             title: const Text('Privacy Policy'),
             onTap: () {
               Navigator.pop(context);
-              WebViewScreen(
-                "https://doc-hosting.flycricket.io/privacy-policy/adc7098b-36a9-477a-8c48-21eaebbc9400/privacy",
-                onPageFinished: (String url) {},
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => WebViewScreen(
+                    "https://doc-hosting.flycricket.io/privacy-policy/adc7098b-36a9-477a-8c48-21eaebbc9400/privacy",
+                    title: "Privacy Policy",
+                    onPageFinished: (String url) {},
+                  ),
+                ),
               );
             },
           ),
