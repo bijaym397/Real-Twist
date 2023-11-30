@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
@@ -10,6 +11,7 @@ import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/payments/webview_screen.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'common_web_view.dart';
 import 'constants/api.dart';
 import 'home.dart';
 import 'auth/login.dart';
