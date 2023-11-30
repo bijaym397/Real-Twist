@@ -1,15 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:real_twist/admin/payment_history.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/buy_coins.dart';
-import 'package:real_twist/payments/icome_view.dart';
-import 'package:real_twist/payments/my_invest.dart';
 import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +41,7 @@ class DrawerView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                 CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                  backgroundColor: const Color.fromARGB(255, 165, 255, 137),
                   child: Text(
                     (() {
                       final firstName = userDetails.data?.name.toString();
@@ -152,7 +149,7 @@ Future<void> _showTextFieldPopup(BuildContext context) async {
     barrierColor: Colors.black87,
     builder: (context) {
       return AlertDialog(
-        content: Container(
+        content: SizedBox(
           height: 200,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

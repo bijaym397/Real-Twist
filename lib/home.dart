@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:real_twist/admin/payment_history.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
@@ -18,7 +17,6 @@ import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'game2.dart';
 import 'menu.dart';
-import 'notification.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key, bool? referCode}) : super(key: key);
@@ -461,6 +459,7 @@ class CommonCard extends StatelessWidget {
     this.width,
     this.onTap,
   }) : super(key: key);
+
   final EdgeInsets? padding;
   final Widget? child;
   final width;
