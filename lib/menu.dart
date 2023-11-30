@@ -108,7 +108,7 @@ class DrawerView extends StatelessWidget {
             title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistoryPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistoryPage(appBarTitle: 'Payment History')));
             },
           ),
           // ListTile(

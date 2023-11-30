@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:real_twist/admin/payment_history.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
@@ -9,6 +10,7 @@ import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/icome_view.dart';
 import 'package:real_twist/payments/my_invest.dart';
+import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 import 'package:real_twist/utils/Back_handler.dart';
 import 'package:http/http.dart' as http;
@@ -64,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NotificationView()),
+                      builder: (context) => const PaymentHistoryPage(appBarTitle: "Notifications")),
                 );
               },
               child: Stack(
