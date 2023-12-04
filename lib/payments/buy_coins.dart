@@ -171,7 +171,7 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
               controller: _coinsController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.currency_rupee),
+                  prefixIcon: Icon(Icons.currency_exchange),
                   contentPadding:
                   EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   border: OutlineInputBorder(),
