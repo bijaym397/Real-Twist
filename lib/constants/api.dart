@@ -18,7 +18,6 @@ abstract class Api {
   static const String verifyPasswordOtp = "verify-password-otp";
   static const String changePassword = "change-password";
   static const String homeDetails = "user/details";
-  static const String coinsPrice = "admin/coinsprice";
   static const String referralCode = "by-referral-code";
 
   static const String socialData = "users/userSignupBySocial";
@@ -52,6 +51,12 @@ abstract class Api {
   static const String payment = "payment/create-checkout-session";
   static const String updatePaymentStatus = "payment/status";
   static const String paymentHistory = "user/payment";
+
+
+  //Admin endpoints
+  static const String getUserList = "admin/user-list";
+  static const String getUserDetails = "admin/user/";
+  static const String coinsPrice = "admin/coinsprice";
 
   static const String userType = "user";
 

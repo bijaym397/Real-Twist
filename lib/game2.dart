@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:http/http.dart' as http;
-import 'package:real_twist/utils/blinking_border_container.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
