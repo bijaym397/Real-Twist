@@ -29,39 +29,39 @@ class DrawerView extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration:
-                const BoxDecoration(color: Colors.transparent), //BoxDecoration
+            const BoxDecoration(color: Colors.transparent), //BoxDecoration
             child: Container(
               // padding: EdgeInsets.only(left: 90),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                  child: Text(
-                    (() {
-                      final firstName = userDetails.data?.name.toString();
-                      if ((firstName?.isNotEmpty == true)) {
-                        return (firstName![0].toUpperCase());
-                      } else {
-                        return "NA";
-                      }
-                    })(),
-                    style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                  ), //Text
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                      colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
                 ),
-                const SizedBox(height: 10,),
-                Text(
-                  userDetails.data?.name.toString() ??
-                      "N/A",
-                  style: const TextStyle(fontSize: 18),
-                ),
-                Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
-              ],)
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                      child: Text(
+                        (() {
+                          final firstName = userDetails.data?.name.toString();
+                          if ((firstName?.isNotEmpty == true)) {
+                            return (firstName![0].toUpperCase());
+                          } else {
+                            return "NA";
+                          }
+                        })(),
+                        style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                      ), //Text
+                    ),
+                    const SizedBox(height: 10,),
+                    Text(
+                      userDetails.data?.name.toString() ??
+                          "N/A",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
+                  ],)
             ), //UserAccountDrawerHeader
           ), //DrawerHeader
           ListTile(
@@ -105,7 +105,7 @@ class DrawerView extends StatelessWidget {
             title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistoryPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistoryPage(appBarTitle: 'Payment History')));
             },
           ),
           ListTile(
@@ -125,24 +125,24 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.share_rounded),
-            title: const Text("Refer Friends & Earn"),
-            onTap: () {
-              share(
-                  shareUrl: Platform.isAndroid
-                      ? Api.androidAppLinked
-                      : Platform.isIOS
-                      ? Api.iosAppLinked
-                      : Api.iosAppLinked);
-              Navigator.pop(context);
-            }
+              leading: const Icon(Icons.share_rounded),
+              title: const Text("Refer Friends & Earn"),
+              onTap: () {
+                share(
+                    shareUrl: Platform.isAndroid
+                        ? Api.androidAppLinked
+                        : Platform.isIOS
+                        ? Api.iosAppLinked
+                        : Api.iosAppLinked);
+                Navigator.pop(context);
+              }
           ),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('LogOut'),
             onTap: () {
               Navigator.pop(context);
-              _showTextFieldPopup(context);
+              showTextFieldPopup(context);
             },
           ),
         ],
@@ -151,7 +151,7 @@ class DrawerView extends StatelessWidget {
   }
 }
 
-Future<void> _showTextFieldPopup(BuildContext context) async {
+Future<void> showTextFieldPopup(BuildContext context) async {
   return showDialog(
     context: context,
     barrierColor: Colors.black87,

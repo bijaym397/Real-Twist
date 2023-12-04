@@ -7,6 +7,11 @@ import '../constants/api.dart';
 import '../constants/strings.dart';
 
 class PaymentHistoryPage extends StatefulWidget {
+
+  final String appBarTitle;
+
+  const PaymentHistoryPage({super.key, required this.appBarTitle});
+
   @override
   _PaymentHistoryPageState createState() => _PaymentHistoryPageState();
 }
@@ -50,7 +55,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,
-        title: const Text('Payment History'),
+        title: Text(widget.appBarTitle),
       ),
       body: ListView.builder(
         itemCount: payments.length,

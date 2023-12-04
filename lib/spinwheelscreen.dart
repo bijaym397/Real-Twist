@@ -41,6 +41,10 @@ class _SpinWheelState extends State<SpinWheel> {
             currentDate.month == lastDate.month &&
             currentDate.day == lastDate.day;
       });
+    }else{
+      setState(() {
+        hasPlayedToday = false;
+      });
     }
   }
 
