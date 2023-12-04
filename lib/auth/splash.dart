@@ -31,7 +31,7 @@ class _SplashViewState extends State<SplashView> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => userType != Api.userType
+                builder: (context) => userType == Api.adminType
                     ? const DashboardView()
                     : HomeView()),
           );

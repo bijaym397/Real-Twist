@@ -27,21 +27,27 @@ class HomeData {
   int? totalInvestment;
   int? totalIncome;
   int? totalCoins;
+  int? totalUserCoins;
   int? cra;
+  String? appLink;
 
   HomeData(
       {this.sId,
         this.totalInvestment,
         this.totalIncome,
         this.totalCoins,
-        this.cra});
+        this.totalUserCoins,
+        this.cra,
+        this.appLink});
 
   HomeData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     totalInvestment = json['totalInvestment'];
     totalIncome = json['totalIncome'];
     totalCoins = json['totalCoins'];
+    totalUserCoins = json['totalUserCoins'];
     cra = json['cra'];
+    appLink = json['appLink'];
   }
 
   Map<String, dynamic> toJson() {
@@ -50,7 +56,9 @@ class HomeData {
     data['totalInvestment'] = this.totalInvestment;
     data['totalIncome'] = this.totalIncome;
     data['totalCoins'] = this.totalCoins;
+    data['totalUserCoins'] = this.totalUserCoins;
     data['cra'] = this.cra;
+    data['appLink'] = this.appLink;
     return data;
   }
 }

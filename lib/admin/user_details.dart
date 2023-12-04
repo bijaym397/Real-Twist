@@ -78,6 +78,7 @@ class _UserDetailsState extends State<UserDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  
                   _buildDataRow('Name', user['name']),
                   _buildDataRow('Email', user['email']),
                   _buildDataRow('Phone Number', user['phoneNumber']),
