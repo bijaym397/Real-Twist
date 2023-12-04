@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/api.dart';
 import '../constants/strings.dart';
+import '../home.dart';
 
 class UserListScreen extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   Future<List<Map<String, dynamic>>> fetchUserList() async {
-    const apiUrl = Api.baseUrl+Api.getUserList;
+    const apiUrl = Api.baseUrl + Api.getUserList;
     final pref = await SharedPreferences.getInstance();
 
     final response = await http.get(
@@ -48,6 +49,7 @@ class _UserListScreenState extends State<UserListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const String img = "assets/user.png";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
@@ -67,30 +69,90 @@ class _UserListScreenState extends State<UserListScreen> {
             );
           } else {
             List<Map<String, dynamic>> users = snapshot.data!;
-            return users.isEmpty ? const Center(child: Text("Nothing to show.."),):
-            ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      UserDetails(id: users[index]['_id'])));
-                        },
-                        title: Text(users[index]['name']),
-                  subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(users[index]['email']),
-                        const SizedBox(height: 3,),
-                        Text(users[index]['phoneNumber']),
-                      ]),
-                  // Add more fields as needed
-                );
-              },
-            );
+            return users.isEmpty
+                ? const Center(
+                    child: Text("Nothing to show.."),
+                  )
+                : ListView.builder(
+                    itemCount: users.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.only(top: 12, right: 12, left: 12),
+                        child: CommonCard(
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UserDetails(id: users[index]['_id'])));
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white70,
+                                  ),
+                                  child: Container(
+                                    height: 100,
+                                    width: 60,
+                                    margin: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(img)),
+                                        color: Colors.pink.shade600,
+                                        shape: BoxShape.circle),
+
+                                    /// Who is this
+                                    child: img == ""
+                                        ? Center(
+                                            child: Text(
+                                            users[index]['name'][0]
+                                                .toUpperCase(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 52),
+                                          ))
+                                        : SizedBox(),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex: 4,
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(users[index]['name'],
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold)),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        users[index]['email'],
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        users[index]['phoneNumber'],
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ]),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
           }
         },
       ),
