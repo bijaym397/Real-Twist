@@ -7,6 +7,7 @@ import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
+import 'package:real_twist/modals/referral_response_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/icome_view.dart';
 import 'package:real_twist/payments/my_invest.dart';
@@ -20,7 +21,9 @@ import 'game2.dart';
 import 'menu.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key, bool? referCode}) : super(key: key);
+  String? userId;
+  bool? referCode;
+  HomeView({Key? key, this.referCode, this.userId}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -40,6 +43,11 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
+    debugPrint("userId ${widget.userId.toString()}");
+    debugPrint("referCode ${widget.referCode}");
+    if(widget.referCode == true){
+      _showReferralPopup(context);
+    }
     if (token != null) {
       userDetails = await _show(token: token);
       homeDetails = await _homeDetails(token: token);
@@ -157,6 +165,139 @@ class _HomeViewState extends State<HomeView> {
       return null;
     }
   }
+
+  Future<void> _showReferralPopup(BuildContext context) async {
+    TextEditingController textFieldController = TextEditingController();
+    FocusNode referralFocusNode = FocusNode();
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (context) {
+        final GlobalKey<FormState> referralFormKey = GlobalKey<FormState>();
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: Container(
+            height: 160,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Form(
+              key: referralFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text('Having Referral Code?', style: TextStyle(fontSize: 20)),
+                  TextFormField(
+                    controller: textFieldController,
+                    focusNode: referralFocusNode,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "*Required";
+                      /*if (value.length < 10) {
+                        return "Length should be 10";
+                      }*/
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      prefixIcon: Icon(Icons.redeem_sharp),
+                      border: OutlineInputBorder(),
+                      hintText: 'xxxxx xxxxx',
+                      labelText: "Enter referral code",
+                      counterText: "",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () => Navigator.pop(context),
+                            child: const Center(
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () {
+                              if (referralFormKey.currentState!.validate()) {
+                                _hitReferralApi(
+                                    code: textFieldController.text.trim(),
+                                    userId: widget.userId.toString(),
+                                );
+                              }
+                            },
+                            child: const Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _hitReferralApi({String? code, String? userId}) async {
+    try {
+      customLoader!.show(context);
+      const apiUrl = "${Api.baseUrl}${Api.referralCode}";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'referralCode': code.toString(),
+          'userId': userId,
+        }),
+      );
+      final referralData = ReferralApiResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${referralData.message}"),
+        ));
+        Navigator.pop(context);
+      } else {
+        // API call failed
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${referralData.message}"),
+          ),
+        );
+      }
+    } catch (e) {
+      customLoader!.hide();
+      return debugPrint(e.toString());
+    }
+  }
+
 }
 
 class HomeSideView extends StatelessWidget {

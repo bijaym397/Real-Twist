@@ -227,7 +227,7 @@ class _LoginViewState extends State<LoginView> {
           MaterialPageRoute(
               builder: (context) => Api.userType != loginData.data!.user!.userType.toString()
                   ? const DashboardView()
-                  : const HomeView()),
+                  : HomeView()),
         );
       } else {
         // API call failed

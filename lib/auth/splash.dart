@@ -33,7 +33,7 @@ class _SplashViewState extends State<SplashView> {
             MaterialPageRoute(
                 builder: (context) => userType != Api.userType
                     ? const DashboardView()
-                    : const HomeView()),
+                    : HomeView()),
           );
       }
       else{
