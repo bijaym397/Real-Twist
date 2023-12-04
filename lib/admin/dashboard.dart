@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:real_twist/admin/get_spin_coin_history.dart';
 import 'package:real_twist/admin/payment_history.dart';
 import 'package:real_twist/admin/set_coins_price.dart';
+import 'package:real_twist/admin/spin_coin_history.dart';
 import 'package:real_twist/admin/users_list_screen.dart';
 import 'package:real_twist/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';

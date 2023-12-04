@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:real_twist/constants/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 class PaymentHistory extends StatefulWidget {
 
 const PaymentHistory({Key? key}) : super(key: key);
@@ -25,25 +27,35 @@ void initState() {
 Future<void> fetchAdminPaymentHistory() async {
   final pref = await SharedPreferences.getInstance();
   const apiUrl = Api.baseUrl+Api.adminPaymentHistory;
-  final response = await http.get(
-    Uri.parse(apiUrl),
-    headers: {
-      'Content-Type': 'application/json',
-      'token': pref.getString(AppStrings.spAuthToken) ?? "",
-    },
-  );
+  try{
+    customLoader!.show(context);
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'token': pref.getString(AppStrings.spAuthToken) ?? "",
+      },
+    );
 
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> responseData = json.decode(response.body);
-    final List<dynamic> paymentsData = responseData['data']['payments'];
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> paymentsData = responseData['data'];
 
-    setState(() {
-      payments = paymentsData.cast<Map<String, dynamic>>();
-    });
-  } else {
-    // Handle API error
-    print('Failed to fetch payment history}');
+      setState(() {
+        payments = paymentsData.cast<Map<String, dynamic>>();
+      });
+      customLoader!.hide();
+    } else {
+      // Handle API error
+      print('Failed to fetch payment history}');
+      customLoader!.hide();
+    }
   }
+  catch(e){
+    debugPrint("$e");
+    customLoader!.hide();
+  }
+
 }
 
 @override
@@ -54,7 +66,9 @@ Widget build(BuildContext context) {
       centerTitle: true,
       title: const Text("Payment History"),
     ),
-    body: ListView.builder(
+    body: payments.isEmpty ?
+    const Center(child: Text("No History available",
+        style: TextStyle(color: Colors.white, fontSize: 22))) : ListView.builder(
       itemCount: payments.length,
       itemBuilder: (context, index) {
         final payment = payments[index];
@@ -73,7 +87,7 @@ Widget build(BuildContext context) {
         Color statusColor = Colors.grey;
         if (status == 'succeeded') {
           statusColor = Colors.green;
-        } else if (status == 'failed') {
+        } else if (status == 'unpaid') {
           statusColor = Colors.red;
         }
 
