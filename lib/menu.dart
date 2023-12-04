@@ -142,7 +142,7 @@ class DrawerView extends StatelessWidget {
             title: const Text('LogOut'),
             onTap: () {
               Navigator.pop(context);
-              _showTextFieldPopup(context);
+              showTextFieldPopup(context);
             },
           ),
         ],
@@ -151,7 +151,7 @@ class DrawerView extends StatelessWidget {
   }
 }
 
-Future<void> _showTextFieldPopup(BuildContext context) async {
+Future<void> showTextFieldPopup(BuildContext context) async {
   return showDialog(
     context: context,
     barrierColor: Colors.black87,

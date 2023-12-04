@@ -3,6 +3,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:real_twist/admin/set_coins_price.dart';
 import 'package:real_twist/home.dart';
 
+import '../menu.dart';
 import '../payments/payment_history.dart';
 import 'get_coin_price.dart';
 
@@ -51,14 +52,18 @@ class DashboardView extends StatelessWidget {
                             Text(
                               "Total Coin available",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w900, fontSize: 24, color: Colors.white.withOpacity(.8)),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 24,
+                                  color: Colors.white.withOpacity(.8)),
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 6),
                             Text(
                               "450000",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w900, fontSize: 28, color: Colors.black54),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 28,
+                                  color: Colors.black54),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -71,8 +76,8 @@ class DashboardView extends StatelessWidget {
               Container(
                 height: 120,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                child:  CommonCard(
-                  onTap: ()=> Navigator.pushReplacement(
+                child: CommonCard(
+                  onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const SetCoinPrice(),
@@ -80,10 +85,13 @@ class DashboardView extends StatelessWidget {
                   ),
                   child: Center(
                       child: Text(
-                        "Set Coin Price",
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30, color: Colors.white.withOpacity(.7)),
-                        textAlign: TextAlign.center,
-                      )),
+                    "Set Coin Price",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 30,
+                        color: Colors.white.withOpacity(.7)),
+                    textAlign: TextAlign.center,
+                  )),
                 ),
               ),
               Container(
@@ -92,13 +100,19 @@ class DashboardView extends StatelessWidget {
                 child: CommonCard(
                   child: Center(
                       child: Text(
-                        "Get Spin Coin History",
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30, color: Colors.white.withOpacity(.7)),
-                        textAlign: TextAlign.center,
-                      )),
+                    "Get Spin Coin History",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 30,
+                        color: Colors.white.withOpacity(.7)),
+                    textAlign: TextAlign.center,
+                  )),
                   onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistoryPage(appBarTitle: 'Payment History')));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PaymentHistoryPage(
+                                appBarTitle: 'Payment History')));
                   },
                 ),
               ),
@@ -107,15 +121,37 @@ class DashboardView extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: CommonCard(
                   onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistoryPage(appBarTitle: 'Payment History')));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PaymentHistoryPage(
+                                appBarTitle: 'Payment History')));
                   },
                   child: Center(
                       child: Text(
-                        "Get Payment History",
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30, color: Colors.white.withOpacity(.7)),
-                        textAlign: TextAlign.center,
-                      )),
+                    "Get Payment History",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 30,
+                        color: Colors.white.withOpacity(.7)),
+                    textAlign: TextAlign.center,
+                  )),
+                ),
+              ),
+              Container(
+                height: 120,
+                padding: const EdgeInsets.only(bottom: 16),
+                child: CommonCard(
+                  onTap: () {showTextFieldPopup(context);},
+                  child: Center(
+                      child: Text(
+                    "Logout",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 30,
+                        color: Colors.white.withOpacity(.7)),
+                    textAlign: TextAlign.center,
+                  )),
                 ),
               ),
             ],
