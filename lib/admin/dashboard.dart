@@ -144,12 +144,18 @@ class _DashboardViewState extends State<DashboardView> {
                 height: 120,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: CommonCard(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SetCoinPrice(),
-                    ),
-                  ),
+                  onTap: () async{
+                    final response =  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SetCoinPrice(),
+                      ),
+                    );
+
+                    if (response["refresh"] == true) {
+                      _fetchDetails();
+                    }
+                  },
                   child: Center(
                       child: Text(
                     "Set Coin Price",

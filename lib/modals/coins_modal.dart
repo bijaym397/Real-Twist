@@ -9,19 +9,20 @@ class CoinsPriceResponse {
   CoinsPriceResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new CoinsData.fromJson(json['data']) : null;
+    data = json['data'] != null ? CoinsData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message'] = message;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
+
 
 class CoinsData {
   String? sId;
@@ -37,19 +38,19 @@ class CoinsData {
     type = json['type'];
     createdAt = json['createdAt'];
     setting =
-    json['setting'] != null ? new Setting.fromJson(json['setting']) : null;
+    json['setting'] != null ? Setting.fromJson(json['setting']) : null;
     updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['type'] = this.type;
-    data['createdAt'] = this.createdAt;
-    if (this.setting != null) {
-      data['setting'] = this.setting!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['type'] = type;
+    data['createdAt'] = createdAt;
+    if (setting != null) {
+      data['setting'] = setting!.toJson();
     }
-    data['updatedAt'] = this.updatedAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }
@@ -64,8 +65,8 @@ class Setting {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['price'] = this.price;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['price'] = price;
     return data;
   }
 }
