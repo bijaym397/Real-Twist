@@ -66,7 +66,8 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
       ),
       body: spinCoins.isEmpty ?
       const Center(child: Text("No History available",
-          style: TextStyle(color: Colors.white, fontSize: 22))) : ListView.builder(
+          style: TextStyle(color: Colors.white, fontSize: 22))) :
+      ListView.builder(
         itemCount: spinCoins.length,
         itemBuilder: (context, index) {
           final coins = spinCoins[index];

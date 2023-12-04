@@ -79,6 +79,7 @@ Widget build(BuildContext context) {
         final status = payment['status'];
         final createdAt = payment['createdAt'];
         final buyCoin = payment['buyCoin'];
+        final userName = payment['users']['name'];
 
         // Formatting date
         final formattedDate = DateTime.parse(createdAt).toLocal();
@@ -101,6 +102,7 @@ Widget build(BuildContext context) {
                 Text('Amount: $amount'),
                 Text('Date: ${formattedDate.toString()}'),
                 Text('Coins: $buyCoin'),
+                Text('User: $userName'),
                 Text(
                   'Status: $status',
                   style: TextStyle(color: statusColor),
