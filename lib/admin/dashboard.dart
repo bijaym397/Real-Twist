@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:real_twist/admin/set_coins_price.dart';
+import 'package:real_twist/admin/users_list_screen.dart';
 import 'package:real_twist/home.dart';
 
 import '../menu.dart';
@@ -73,6 +74,8 @@ class DashboardView extends StatelessWidget {
                   ),
                 ),
               ),
+
+              /// Set Coin Price
               Container(
                 height: 120,
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -94,6 +97,31 @@ class DashboardView extends StatelessWidget {
                   )),
                 ),
               ),
+
+              /// User Details
+              Container(
+                height: 120,
+                padding: const EdgeInsets.only(bottom: 16),
+                child: CommonCard(
+                  child: Center(
+                      child: Text(
+                    "Users",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 30,
+                        color: Colors.white.withOpacity(.7)),
+                    textAlign: TextAlign.center,
+                  )),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserListScreen()));
+                  },
+                ),
+              ),
+
+              /// Get Spin Coin History
               Container(
                 height: 120,
                 padding: const EdgeInsets.only(bottom: 16),
@@ -116,6 +144,8 @@ class DashboardView extends StatelessWidget {
                   },
                 ),
               ),
+
+              /// Get Payment History
               Container(
                 height: 120,
                 padding: const EdgeInsets.only(bottom: 16),
@@ -138,11 +168,15 @@ class DashboardView extends StatelessWidget {
                   )),
                 ),
               ),
+
+              /// Logout
               Container(
                 height: 120,
                 padding: const EdgeInsets.only(bottom: 16),
                 child: CommonCard(
-                  onTap: () {showTextFieldPopup(context);},
+                  onTap: () {
+                    showTextFieldPopup(context);
+                  },
                   child: Center(
                       child: Text(
                     "Logout",
