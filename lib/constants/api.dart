@@ -5,8 +5,8 @@ abstract class BaseUrl {
 }
 
 abstract class Api {
-
   static const String baseUrl = BaseUrl.stageBaseUrl;
+
   // ///
   // static const String getBearer = "users/edit_profile";
 
@@ -41,11 +41,9 @@ abstract class Api {
   static const String iosAppLinked = "https://flutter.dev/";
   static const String androidAppLinked = "https://flutter.dev/";
 
-
   //Game endpoints
   static const String spendCoin = "spincoin/spend";
   static const String spinCoinStatus = "spincoin/status/";
-
 
   //Payment endpoints
   static const String payment = "payment/create-checkout-session";
@@ -54,7 +52,6 @@ abstract class Api {
   static const String adminPaymentHistory = "admin/payment-history";
   static const String spinCoinHistory = "admin/spincoin";
 
-
   //Admin endpoints
   static const String getUserList = "admin/user-list";
   static const String getUserDetails = "admin/user/";
@@ -62,5 +59,4 @@ abstract class Api {
 
   static const String userType = "user";
   static const String adminType = "admin";
-
 }

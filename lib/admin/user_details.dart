@@ -78,11 +78,14 @@ class _UserDetailsState extends State<UserDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  
                   _buildDataRow('Name', user['name']),
                   _buildDataRow('Email', user['email']),
                   _buildDataRow('Phone Number', user['phoneNumber']),
                   _buildDataRow('Total Coins', user['totalCoins'].toString()),
-                  _buildDataRow('User Type', user['userType']),
+                  _buildDataRow('Total Investment', user['totalInvestment'].toString()),
+                  _buildDataRow('Total Income', user['totalIncome'].toString()),
+                  _buildDataRow('Total Coins', user['totalCoins'].toString()),
                   _buildDataRow('Join Date', _formatDate(user['createdAt'])),
                 ],
               ),
