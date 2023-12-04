@@ -114,7 +114,6 @@ class _DashboardViewState extends State<DashboardView> {
                                   color: Colors.white.withOpacity(.8)),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 6),
                             Text(
                               "$totalCoins",
                               style: const TextStyle(
@@ -123,12 +122,13 @@ class _DashboardViewState extends State<DashboardView> {
                                   color: Colors.black54),
                               textAlign: TextAlign.center,
                             ),
+                            const SizedBox(height: 16),
                             Text(
-                              "₹$coinPrice per coin",
+                              "₹$coinPrice Per Coin Price",
                               style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 16,
-                                  color: Colors.black54),
+                                  color: Colors.white54),
                               textAlign: TextAlign.center,
                             ),
                           ],
