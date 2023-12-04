@@ -47,6 +47,7 @@ dependencies:
   url_launcher:
   percent_indicator: ^4.0.1
   webview_flutter: ^4.4.2
+  intl: ^0.18.1
 
 
 dev_dependencies:

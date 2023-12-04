@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -82,8 +83,7 @@ class _UserDetailsState extends State<UserDetails> {
                   _buildDataRow('Phone Number', user['phoneNumber']),
                   _buildDataRow('Total Coins', user['totalCoins'].toString()),
                   _buildDataRow('User Type', user['userType']),
-                  _buildDataRow('Created At', user['createdAt']),
-                  _buildDataRow('Updated At', user['updatedAt']),
+                  _buildDataRow('Join Date', _formatDate(user['createdAt'])),
                 ],
               ),
             );
@@ -102,5 +102,10 @@ class _UserDetailsState extends State<UserDetails> {
         const Divider(),
       ],
     );
+  }
+
+  String _formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return DateFormat('dd/MM/yyyy').format(dateTime);
   }
 }
