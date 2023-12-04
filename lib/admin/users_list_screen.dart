@@ -76,7 +76,7 @@ class _UserListScreenState extends State<UserListScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UserDetails(id:users[index]['name'])));
+                            builder: (context) => UserDetails(id:users[index]['_id'])));
                   },
                   title: Text(users[index]['name']),
                   subtitle: Column(
