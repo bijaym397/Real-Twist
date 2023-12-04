@@ -54,6 +54,7 @@ class _UserDetailsState extends State<UserDetails> {
 
   @override
   Widget build(BuildContext context) {
+    const String img = "assets/user.png";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
@@ -73,15 +74,45 @@ class _UserDetailsState extends State<UserDetails> {
             );
           } else {
             Map<String, dynamic> user = snapshot.data!;
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  
+                  Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white70,
+                    ),
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      margin: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          image: user['name'][0] == "" ? DecorationImage(
+                              image: AssetImage(img)) : null,
+                          color: Colors.pink.shade600,
+                          shape: BoxShape.circle),
+
+                      /// Who is this
+                      child: user['name'][0] != ""
+                          ? Center(
+                          child: Text(
+                            user['name'][0]
+                                .toUpperCase(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 52),
+                          ))
+                          : SizedBox(),
+                    ),
+                  ),
+                  const SizedBox(height: 28),
                   _buildDataRow('Name', user['name']),
                   _buildDataRow('Email', user['email']),
                   _buildDataRow('Phone Number', user['phoneNumber']),
+                  _buildDataRow('User Code', user['userCode']),
+                  _buildDataRow('User Status', user['status']== true ? "Active" : "Deactivate"),
                   _buildDataRow('Total Coins', user['totalCoins'].toString()),
                   _buildDataRow('Total Investment', user['totalInvestment'].toString()),
                   _buildDataRow('Total Income', user['totalIncome'].toString()),
@@ -97,13 +128,21 @@ class _UserDetailsState extends State<UserDetails> {
   }
 
   Widget _buildDataRow(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-        Text(value),
-        const Divider(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("$label:  ", style: const TextStyle(fontSize: 22)),
+              Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Divider(),
+        ],
+      ),
     );
   }
 

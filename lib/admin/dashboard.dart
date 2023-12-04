@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:real_twist/admin/payment_history.dart';
@@ -5,13 +7,63 @@ import 'package:real_twist/admin/set_coins_price.dart';
 import 'package:real_twist/admin/spin_coin_history.dart';
 import 'package:real_twist/admin/users_list_screen.dart';
 import 'package:real_twist/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/api.dart';
+import '../constants/strings.dart';
 import '../menu.dart';
 import '../payments/payment_history.dart';
-import 'get_coin_price.dart';
+import 'package:http/http.dart' as http;
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends StatefulWidget {
   const DashboardView({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+
+  int totalCoins = 0;
+  double percentage = 0.0;
+  int coinPrice = 0;
+
+  @override
+  initState(){
+   super.initState();
+   _fetchDetails();
+  }
+
+  _fetchDetails() async{
+    const apiUrl = Api.baseUrl+Api.dashboardDetails;
+    final pref = await SharedPreferences.getInstance();
+
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'token': pref.getString(AppStrings.spAuthToken) ?? "",
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      if (data['status'] == 200) {
+
+        setState(() {
+          totalCoins = data['data']['totalCoins'] ?? 0;
+          coinPrice = data['data']['setting']['price'] ?? 0;
+        });
+
+        setState(() {
+          percentage = totalCoins / 50000000 * 100;
+        });
+      } else {
+        throw Exception('Failed to load user details');
+      }
+    } else {
+      throw Exception('Failed to load user details');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +82,7 @@ class DashboardView extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Container(
+              SizedBox(
                 height: 200,
                 child: CommonCard(
                   padding: const EdgeInsets.all(16),
@@ -40,12 +92,12 @@ class DashboardView extends StatelessWidget {
                         radius: 68,
                         lineWidth: 15,
                         animation: true,
-                        percent: 60 / 100,
+                        percent: percentage / 100,
                         backgroundColor: Colors.white38,
                         circularStrokeCap: CircularStrokeCap.round,
                         progressColor: Colors.white,
-                        center: const Text("60.0%",
-                            style: TextStyle(
+                        center: Text("${percentage.toStringAsFixed(2)}%",
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20.0)),
                       ),
                       const SizedBox(width: 8),
@@ -61,12 +113,20 @@ class DashboardView extends StatelessWidget {
                                   color: Colors.white.withOpacity(.8)),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             Text(
-                              "450000",
-                              style: TextStyle(
+                              "$totalCoins",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 28,
+                                  color: Colors.black54),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "₹$coinPrice per coin",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
                                   color: Colors.black54),
                               textAlign: TextAlign.center,
                             ),

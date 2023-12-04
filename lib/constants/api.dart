@@ -56,6 +56,7 @@ abstract class Api {
   static const String getUserList = "admin/user-list";
   static const String getUserDetails = "admin/user/";
   static const String coinsPrice = "admin/coinsprice";
+  static const String dashboardDetails = "admin/coinsprice?type=coinprice";
 
   static const String userType = "user";
   static const String adminType = "admin";
