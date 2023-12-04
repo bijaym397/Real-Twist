@@ -101,20 +101,20 @@ class _UserListScreenState extends State<UserListScreen> {
                                     width: 60,
                                     margin: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(img)),
+                                        image: users[index]['name'][0] == "" ? DecorationImage(
+                                            image: AssetImage(img)) : null,
                                         color: Colors.pink.shade600,
                                         shape: BoxShape.circle),
 
                                     /// Who is this
-                                    child: img == ""
+                                    child: users[index]['name'][0] != ""
                                         ? Center(
                                             child: Text(
                                             users[index]['name'][0]
                                                 .toUpperCase(),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 52),
+                                                fontSize: 32),
                                           ))
                                         : SizedBox(),
                                   ),
