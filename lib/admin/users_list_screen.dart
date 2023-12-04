@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:real_twist/admin/user_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/api.dart';
@@ -26,7 +27,7 @@ class _UserListScreenState extends State<UserListScreen> {
     final pref = await SharedPreferences.getInstance();
 
     final response = await http.get(
-      Uri.parse('apiUrl'),
+      Uri.parse(apiUrl),
       headers: {
         'Content-Type': 'application/json',
         'token': pref.getString(AppStrings.spAuthToken) ?? "",
@@ -66,12 +67,25 @@ class _UserListScreenState extends State<UserListScreen> {
             );
           } else {
             List<Map<String, dynamic>> users = snapshot.data!;
-            return ListView.builder(
+            return users.isEmpty ? const Center(child: Text("Nothing to show.."),):
+            ListView.builder(
               itemCount: users.length,
               itemBuilder: (context, index) {
                 return ListTile(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserDetails(id:users[index]['name'])));
+                  },
                   title: Text(users[index]['name']),
-                  subtitle: Text(users[index]['email']),
+                  subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(users[index]['email']),
+                        const SizedBox(height: 3,),
+                        Text(users[index]['phoneNumber']),
+                      ]),
                   // Add more fields as needed
                 );
               },
