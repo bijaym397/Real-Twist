@@ -72,13 +72,14 @@ class _UserListScreenState extends State<UserListScreen> {
               itemCount: users.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  onTap: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserDetails(id:users[index]['_id'])));
-                  },
-                  title: Text(users[index]['name']),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      UserDetails(id: users[index]['_id'])));
+                        },
+                        title: Text(users[index]['name']),
                   subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
