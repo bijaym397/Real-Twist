@@ -96,9 +96,10 @@ class _DashboardViewState extends State<DashboardView> {
                         backgroundColor: Colors.white38,
                         circularStrokeCap: CircularStrokeCap.round,
                         progressColor: Colors.white,
-                        center: Text("${percentage.toStringAsFixed(2)}%",
+                        center: Text("${formatPercentage(percentage)}%\nRemain",
+                            textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20.0)),
+                                fontWeight: FontWeight.bold, fontSize: 16.0)),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -252,5 +253,20 @@ class _DashboardViewState extends State<DashboardView> {
             ],
           ),
         ));
+  }
+
+  String formatPercentage(double percentage) {
+    String normalizedPercentage = percentage.toString();
+
+    if (normalizedPercentage.contains('.')) {
+      int indexOfDecimal = normalizedPercentage.indexOf('.');
+      String decimalPart = normalizedPercentage.substring(indexOfDecimal + 1);
+
+      if (decimalPart.length > 2) {
+        normalizedPercentage = normalizedPercentage.substring(0, indexOfDecimal + 3);
+      }
+    }
+
+    return normalizedPercentage;
   }
 }
