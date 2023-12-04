@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/constants/strings.dart';
+import 'package:real_twist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SpinCoinHistory extends StatefulWidget {
@@ -25,25 +25,35 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
   Future<void> fetchSpinCoinHistory() async {
     final pref = await SharedPreferences.getInstance();
     const apiUrl = Api.baseUrl+Api.spinCoinHistory;
-    final response = await http.get(
-      Uri.parse(apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'token': pref.getString(AppStrings.spAuthToken) ?? "",
-      },
-    );
+    try{
+      customLoader!.show(context);
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': pref.getString(AppStrings.spAuthToken) ?? "",
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> spinCoinData = responseData['data']['payments'];
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final List<dynamic> spinCoinData = responseData['data'];
 
-      setState(() {
-        spinCoins = spinCoinData.cast<Map<String, dynamic>>();
-      });
-    } else {
-      // Handle API error
-      print('Failed to fetch payment history}');
+        setState(() {
+          spinCoins = spinCoinData.cast<Map<String, dynamic>>();
+        });
+        customLoader!.hide();
+      } else {
+        // Handle API error
+        print('Failed to fetch payment history}');
+        customLoader!.hide();
+      }
     }
+    catch(e){
+      debugPrint("$e");
+      customLoader!.hide();
+    }
+
   }
 
   @override
@@ -54,11 +64,12 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
         centerTitle: true,
         title: const Text("Spin Coin History"),
       ),
-      body: ListView.builder(
+      body: spinCoins.isEmpty ?
+      const Center(child: Text("No History available",
+          style: TextStyle(color: Colors.white, fontSize: 22))) : ListView.builder(
         itemCount: spinCoins.length,
         itemBuilder: (context, index) {
           final coins = spinCoins[index];
-
           // Extracting data from the payment object
           final paymentId = coins['_id'];
           final winCoin = coins['winCoin'];
@@ -79,7 +90,8 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 10,top: 5),
-            child: ListTile(
+            child:
+            ListTile(
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -87,10 +99,7 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
                   Text('Win Coin: $winCoin'),
                   Text('Date: ${formattedDate.toString()}'),
                   Text('Win Number: $winNumber'),
-                  Text(
-                    'Type: $type',
-                    style: TextStyle(color: statusColor),
-                  ),
+                  Text('Type: $type'),
                 ],
               ),
               // Divider between list items

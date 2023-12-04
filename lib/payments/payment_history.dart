@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:real_twist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/api.dart';
@@ -28,25 +29,34 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   Future<void> fetchPaymentHistory() async {
     final pref = await SharedPreferences.getInstance();
     const apiUrl = Api.baseUrl+Api.paymentHistory;
-    final response = await http.get(
-      Uri.parse(apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'token': pref.getString(AppStrings.spAuthToken) ?? "",
-      },
-    );
+    try{
+      customLoader!.show(context);
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': pref.getString(AppStrings.spAuthToken) ?? "",
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> paymentsData = responseData['data']['payments'];
-
-      setState(() {
-        payments = paymentsData.cast<Map<String, dynamic>>();
-      });
-    } else {
-      // Handle API error
-      print('Failed to fetch payment history}');
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final List<dynamic> paymentsData = responseData['data']['payments'];
+        customLoader!.hide();
+        setState(() {
+          payments = paymentsData.cast<Map<String, dynamic>>();
+        });
+      } else {
+        // Handle API error
+        print('Failed to fetch payment history}');
+        customLoader!.hide();
+      }
     }
+    catch(e){
+      customLoader!.hide();
+      debugPrint("$e");
+    }
+
   }
 
   @override
@@ -57,7 +67,9 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
         centerTitle: true,
         title: Text(widget.appBarTitle),
       ),
-      body: ListView.builder(
+      body: payments.isEmpty ?
+      const Center(child: Text("No History available",
+          style: TextStyle(color: Colors.white, fontSize: 22))) : ListView.builder(
         itemCount: payments.length,
         itemBuilder: (context, index) {
           final payment = payments[index];
