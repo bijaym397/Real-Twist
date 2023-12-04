@@ -381,7 +381,7 @@ class HomeSideView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        homeDetails.data?.totalInvestment?.toStringAsFixed(2) ??
+                        // homeDetails.data?.totalInvestment?.toStringAsFixed(2) ??
                             "0.00",
                         style: const TextStyle(
                             fontWeight: FontWeight.w800, fontSize: 22),
@@ -559,11 +559,7 @@ class HomeSideView extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     share(
-                        shareUrl: Platform.isAndroid
-                            ? Api.androidAppLinked
-                            : Platform.isIOS
-                                ? Api.iosAppLinked
-                                : Api.iosAppLinked);
+                        shareUrl: homeDetails.data!.appLink.toString());
                   },
                   child: Container(
                     height: 200,

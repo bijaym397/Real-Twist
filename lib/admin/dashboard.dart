@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:real_twist/admin/get_spin_coin_history.dart';
+import 'package:real_twist/admin/payment_history.dart';
 import 'package:real_twist/admin/set_coins_price.dart';
 import 'package:real_twist/home.dart';
 
@@ -14,6 +16,7 @@ class DashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: const SizedBox(),
           title: const Text(
             "Real Twist Admin",
           ),
@@ -111,8 +114,7 @@ class DashboardView extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PaymentHistoryPage(
-                                appBarTitle: 'Payment History')));
+                            builder: (context) => const SpinCoinHistory()));
                   },
                 ),
               ),
@@ -124,8 +126,7 @@ class DashboardView extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PaymentHistoryPage(
-                                appBarTitle: 'Payment History')));
+                            builder: (context) => const PaymentHistory()));
                   },
                   child: Center(
                       child: Text(

@@ -30,38 +30,49 @@ class DrawerView extends StatelessWidget {
           DrawerHeader(
             decoration:
             const BoxDecoration(color: Colors.transparent), //BoxDecoration
-            child: Container(
-              // padding: EdgeInsets.only(left: 90),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                      colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                      child: Text(
-                        (() {
-                          final firstName = userDetails.data?.name.toString();
-                          if ((firstName?.isNotEmpty == true)) {
-                            return (firstName![0].toUpperCase());
-                          } else {
-                            return "NA";
-                          }
-                        })(),
-                        style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                      ), //Text
-                    ),
-                    const SizedBox(height: 10,),
-                    Text(
-                      userDetails.data?.name.toString() ??
-                          "N/A",
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
-                  ],)
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>  MyProfile(userDetails : userDetails, homeDetails: homeDetails),
+                  ),
+                );
+              },
+              child: Container(
+                // padding: EdgeInsets.only(left: 90),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                        colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                        child: Text(
+                          (() {
+                            final firstName = userDetails.data?.name.toString();
+                            if ((firstName?.isNotEmpty == true)) {
+                              return (firstName![0].toUpperCase());
+                            } else {
+                              return "N";
+                            }
+                          })(),
+                          style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                        ), //Text
+                      ),
+                      const SizedBox(height: 10,),
+                      Text(
+                        userDetails.data?.name.toString() ??
+                            "N/A",
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
+                    ],)
+              ),
             ), //UserAccountDrawerHeader
           ), //DrawerHeader
           ListTile(
@@ -78,7 +89,7 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.monetization_on),
+            leading: const Icon(Icons.store_outlined),
             title: const Text('Buy Coins'),
             onTap: () {
               Navigator.pop(context);
@@ -86,7 +97,7 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.monetization_on_outlined),
+            leading: const Icon(Icons.sell),
             title: const Text('Sell Coins'),
             onTap: () {
               Navigator.pop(context);
@@ -101,7 +112,7 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.incomplete_circle),
+            leading: const Icon(Icons.account_balance),
             title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
@@ -109,7 +120,7 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.incomplete_circle),
+            leading: const Icon(Icons.privacy_tip_outlined),
             title: const Text('Privacy Policy'),
             onTap: () {
               Navigator.pop(context);
@@ -125,15 +136,27 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.gavel),
+            title: const Text('Terms & Conditions'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => WebViewScreen(
+                    "https://doc-hosting.flycricket.io/terms-conditions/cf4654cb-0ddf-44e0-88c9-0ec3ef4e0217/terms",
+                    title: "Terms & Conditions",
+                    onPageFinished: (String url) {},
+                  ),
+                ),
+              );
+            },
+          ),
+          ListTile(
               leading: const Icon(Icons.share_rounded),
               title: const Text("Refer Friends & Earn"),
               onTap: () {
                 share(
-                    shareUrl: Platform.isAndroid
-                        ? Api.androidAppLinked
-                        : Platform.isIOS
-                        ? Api.iosAppLinked
-                        : Api.iosAppLinked);
+                    shareUrl: homeDetails.data!.appLink.toString());
                 Navigator.pop(context);
               }
           ),

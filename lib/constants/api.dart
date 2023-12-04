@@ -52,7 +52,10 @@ abstract class Api {
   static const String payment = "payment/create-checkout-session";
   static const String updatePaymentStatus = "payment/status";
   static const String paymentHistory = "user/payment";
+  static const String adminPaymentHistory = "admin/payment-history";
+  static const String spinCoinHistory = "admin/spincoin";
 
   static const String userType = "user";
+  static const String adminType = "admin";
 
 }
