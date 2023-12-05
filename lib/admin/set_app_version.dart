@@ -19,9 +19,9 @@ class SetAppVersion extends StatefulWidget {
 }
 
 class _SetAppVersionState extends State<SetAppVersion> {
-  final GlobalKey<FormState> setCoinFormKey = GlobalKey<FormState>();
-  TextEditingController setCoinController = TextEditingController();
-  FocusNode setCoinNode = FocusNode();
+  final GlobalKey<FormState> versionFormKey = GlobalKey<FormState>();
+  TextEditingController versionController = TextEditingController();
+  FocusNode versionNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _SetAppVersionState extends State<SetAppVersion> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Form(
-          key: setCoinFormKey,
+          key: versionFormKey,
           child: ListView(
             children: [
               const SizedBox(height: 150),
@@ -48,9 +48,9 @@ class _SetAppVersionState extends State<SetAppVersion> {
                   )),
               const SizedBox(height: 100),
               TextFormField(
-                focusNode: setCoinNode,
+                focusNode: versionNode,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: setCoinController,
+                controller: versionController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) {
@@ -62,10 +62,10 @@ class _SetAppVersionState extends State<SetAppVersion> {
                 decoration: const InputDecoration(
                   contentPadding:
                   EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  prefixIcon: Icon(Icons.change_circle_outlined),
+                  prefixIcon: Icon(Icons.cached),
                   border: OutlineInputBorder(),
-                  hintText: 'Enter Coins',
-                  labelText: "Enter Coins",
+                  hintText: 'Enter Version',
+                  labelText: "Enter Version",
                 ),
               ),
               const SizedBox(height: 60),
@@ -73,9 +73,9 @@ class _SetAppVersionState extends State<SetAppVersion> {
                 height: 45,
                 child: CommonCard(
                   onTap: () {
-                    if (setCoinFormKey.currentState!.validate()) {
-                      _hitSetCoinsApi(
-                        setCoins: setCoinController.text.trim(),
+                    if (versionFormKey.currentState!.validate()) {
+                      _hitVersionApi(
+                        setVersion: versionController.text.trim(),
                       );
                     }
                   },
@@ -95,16 +95,16 @@ class _SetAppVersionState extends State<SetAppVersion> {
     );
   }
 
-  Future<void> _hitSetCoinsApi({String? setCoins}) async {
+  Future<void> _hitVersionApi({String? setVersion}) async {
     try {
       customLoader!.show(context);
-      const apiUrl = "${Api.baseUrl}${Api.coinsPrice}";
+      const apiUrl = "${Api.baseUrl}${Api.setVersion}";
       final pref = await SharedPreferences.getInstance();
 
       final Map<String, dynamic> requestMap = {
-        "type": "coinprice",
+        "type": "appversion",
         "setting": {
-          "price": int.tryParse(setCoins.toString()) ?? 1
+          "version": setVersion.toString() ?? "1.0.0"
         },
       };
 
@@ -122,7 +122,7 @@ class _SetAppVersionState extends State<SetAppVersion> {
       if (response.statusCode == 200) {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Coins set ${data['data']['setting']['price'] ?? 0}"),
+          content: Text("Version set ${data['data']['setting']['version'] ?? "1.0.0"}"),
         ));
         Navigator.pop(context,{"refresh": true});
         // Navigator.of(context).pushAndRemoveUntil(
