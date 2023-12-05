@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/constants/strings.dart';
+import 'package:real_twist/utils/dateFormater.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
@@ -83,9 +84,6 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                 final buyCoin = payment['buyCoin'];
                 final userName = payment['users']['name'];
 
-                // Formatting date
-                final formattedDate = DateTime.parse(createdAt).toLocal();
-
                 // Determine the color based on the status
                 Color statusColor = Colors.grey;
                 if (status == 'succeeded') {
@@ -158,7 +156,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                'Date: ${formattedDate.toString()}',
+                                'Date: ${formatDate(createdAt).toString()}',
                                 style: const TextStyle(fontSize: 15),
                               ),
                               const SizedBox(height: 6),

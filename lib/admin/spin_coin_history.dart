@@ -4,6 +4,7 @@ import 'package:real_twist/constants/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
+import 'package:real_twist/utils/dateFormater.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
@@ -80,9 +81,6 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
                 final createdAt = coins['createdAt'];
                 final type = coins['type'];
 
-                // Formatting date
-                final formattedDate = DateTime.parse(createdAt).toLocal();
-
                 // Determine the color based on the status
                 Color statusColor = Colors.grey;
                 // if (status == 'succeeded') {
@@ -112,7 +110,7 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            "Date:   ${formattedDate.toString()}",
+                            "Date:   ${formatDate(createdAt).toString()}",
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
