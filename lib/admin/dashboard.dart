@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/api.dart';
 import '../constants/strings.dart';
 import '../menu.dart';
-import '../payments/payment_history.dart';
 import 'package:http/http.dart' as http;
 
 class DashboardView extends StatefulWidget {
@@ -24,19 +23,18 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
-
   int totalCoins = 0;
   double percentage = 0.0;
   int coinPrice = 0;
 
   @override
-  initState(){
-   super.initState();
-   _fetchDetails();
+  initState() {
+    super.initState();
+    _fetchDetails();
   }
 
-  _fetchDetails() async{
-    const apiUrl = Api.baseUrl+Api.dashboardDetails;
+  _fetchDetails() async {
+    const apiUrl = Api.baseUrl + Api.dashboardDetails;
     final pref = await SharedPreferences.getInstance();
 
     final response = await http.get(
@@ -49,7 +47,6 @@ class _DashboardViewState extends State<DashboardView> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       if (data['status'] == 200) {
-
         setState(() {
           totalCoins = data['data']['totalCoins'] ?? 0;
           coinPrice = data['data']['setting']['price'] ?? 0;
@@ -145,8 +142,8 @@ class _DashboardViewState extends State<DashboardView> {
                 height: 120,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: CommonCard(
-                  onTap: () async{
-                    final response =  await Navigator.push(
+                  onTap: () async {
+                    final response = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const SetCoinPrice(),
@@ -191,6 +188,7 @@ class _DashboardViewState extends State<DashboardView> {
                   },
                 ),
               ),
+
               /// Withdrawal Request
               Container(
                 height: 120,
@@ -204,15 +202,16 @@ class _DashboardViewState extends State<DashboardView> {
                   },
                   child: Center(
                       child: Text(
-                        "Withdrawal Request",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 26,
-                            color: Colors.white.withOpacity(.7)),
-                        textAlign: TextAlign.center,
-                      )),
+                    "Withdrawal Request",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 26,
+                        color: Colors.white.withOpacity(.7)),
+                    textAlign: TextAlign.center,
+                  )),
                 ),
               ),
+
               /// Get Payment History
               Container(
                 height: 120,
@@ -235,6 +234,7 @@ class _DashboardViewState extends State<DashboardView> {
                   )),
                 ),
               ),
+
               /// Get Spin Coin History
               Container(
                 height: 120,
@@ -242,13 +242,13 @@ class _DashboardViewState extends State<DashboardView> {
                 child: CommonCard(
                   child: Center(
                       child: Text(
-                        "Get Spin Coin History",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 26,
-                            color: Colors.white.withOpacity(.7)),
-                        textAlign: TextAlign.center,
-                      )),
+                    "Get Spin Coin History",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 26,
+                        color: Colors.white.withOpacity(.7)),
+                    textAlign: TextAlign.center,
+                  )),
                   onTap: () {
                     Navigator.push(
                         context,
@@ -290,78 +290,11 @@ class _DashboardViewState extends State<DashboardView> {
       String decimalPart = normalizedPercentage.substring(indexOfDecimal + 1);
 
       if (decimalPart.length > 2) {
-        normalizedPercentage = normalizedPercentage.substring(0, indexOfDecimal + 3);
+        normalizedPercentage =
+            normalizedPercentage.substring(0, indexOfDecimal + 3);
       }
     }
 
     return normalizedPercentage;
-  }
-}
-
-Future<bool?> checkVersion({required version}) async {
-  VersionResponse data = VersionResponse();
-  bool isAllowed = false;
-  try {
-    Map payload = {
-      "version" : "2.0.0",
-    };
-    print("request ${payload}");
-    var response = await http.post(
-      Uri.parse(
-          "https://wiserxcard.com/wp-json/wp/v2/users/version"),
-      body: payload,
-    );
-
-    print("This is the version code : $response");
-
-    if (response.statusCode == 200) {
-      data = VersionResponse.fromJson(json.decode(response.body));
-      print("respojseo${data}");
-      print("status Code ${response.statusCode}");
-    } else {
-      print("status not ${response.statusCode}");
-      // return false;
-    }
-
-    if (data == null) {
-      print("[Common.CheckVersion] - Received Null");
-      print("3");
-      return false;
-    }
-    data.success == true ? isAllowed = true : false;
-    if (!isAllowed) {
-      print("API[${data.version}] == APP[$version]");
-    }
-    return isAllowed;
-  } catch (e, st) {
-    print("[Common.CheckVersion] - Error $e\n$st");
-    return false;
-  }
-}
-
-class VersionResponse {
-  bool? success;
-  String? message;
-  String? version;
-
-  VersionResponse({this.success, this.message, this.version});
-
-  @override
-  String toString() {
-    return 'VersionResponse{success: $success, message: $message, version: $version}';
-  }
-
-  VersionResponse.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    message = json['message'];
-    version = json['version'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
-    data['version'] = this.version;
-    return data;
   }
 }
