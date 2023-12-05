@@ -125,7 +125,7 @@ class _SplashViewState extends State<SplashView> {
           ),
           const Spacer(),
           const Text(
-            "Version 1.0.0",
+            "Version ${Api.appVersion}",
             style: TextStyle(fontSize: 16, color: Colors.white38),
             textAlign: TextAlign.center,
           ),
@@ -141,7 +141,7 @@ class _SplashViewState extends State<SplashView> {
       barrierColor: Colors.black87,
       builder: (context) {
         return AlertDialog(
-          content: Container(
+          content: SizedBox(
             height: 270,
             child: Column(
               children: [
