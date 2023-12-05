@@ -177,12 +177,12 @@ class _HomeViewState extends State<HomeView> {
       builder: (context) {
         final GlobalKey<FormState> referralFormKey = GlobalKey<FormState>();
         return AlertDialog(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           content: Container(
             height: 160,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             child: Form(
@@ -381,8 +381,7 @@ class HomeSideView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        // homeDetails.data?.totalInvestment?.toStringAsFixed(2) ??
-                            "0.00",
+                        homeDetails.data?.totalInvestment.toString() ?? "0.00",
                         style: const TextStyle(
                             fontWeight: FontWeight.w800, fontSize: 22),
                       ),

@@ -7,6 +7,8 @@ import 'package:real_twist/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/modals/coins_modal.dart';
 import 'package:real_twist/modals/coins_request_modal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../constants/strings.dart';
 import '../home.dart';
 
 class SetCoinPrice extends StatefulWidget {
@@ -57,11 +59,11 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
                   return null;
                 },
                 textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  prefixIcon: const Icon(Icons.change_circle_outlined),
-                  border: const OutlineInputBorder(),
+                  EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  prefixIcon: Icon(Icons.change_circle_outlined),
+                  border: OutlineInputBorder(),
                   hintText: 'Enter Coins',
                   labelText: "Enter Coins",
                 ),
@@ -93,31 +95,36 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
     );
   }
 
-  Future<void> _hitSetCoinsApi(
-      {String? setCoins}) async {
+  Future<void> _hitSetCoinsApi({String? setCoins}) async {
     try {
-      // debugPrint("toeknt ${widget.token.toString()}");
       customLoader!.show(context);
       const apiUrl = "${Api.baseUrl}${Api.coinsPrice}";
-      CoinsPriceRequest coinsPrice = CoinsPriceRequest();
+      final pref = await SharedPreferences.getInstance();
+
+      final Map<String, dynamic> requestMap = {
+        "type": "coinprice",
+        "setting": {
+          "price": int.tryParse(setCoins.toString()) ?? 1
+        },
+      };
+
       final response = await http.post(
         Uri.parse(apiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          coinsPrice.type : "coinprice",
-          coinsPrice.setting?.price : int.tryParse(setCoins.toString()) ?? 0,
-        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': pref.getString(AppStrings.spAuthToken) ?? "",
+        },
+        body: json.encode(requestMap),
       );
-      debugPrint("requested data ${jsonEncode({
-        coinsPrice.type : "coinprice",
-        coinsPrice.setting?.price: int.tryParse(setCoins.toString()) ?? 0,
-      }).toString()}");
-      final coinsData = CoinsPriceResponse.fromJson(json.decode(response.body));
+
+      final Map<String, dynamic> data = json.decode(response.body);
+
       if (response.statusCode == 200) {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Coins set ${coinsData.message}"),
+          content: Text("Coins set ${data['data']['setting']['price'] ?? 0}"),
         ));
+        Navigator.pop(context,{"refresh": true});
         // Navigator.of(context).pushAndRemoveUntil(
         //     MaterialPageRoute(builder: (context) => const LoginView()),(Route<dynamic> route) => false);
       } else {
@@ -125,7 +132,7 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("${coinsData.message}"),
+            content: Text("${data['message']}"),
           ),
         );
       }
