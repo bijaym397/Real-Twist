@@ -104,7 +104,7 @@ class _SplashViewState extends State<SplashView> {
             style: TextStyle(fontSize: 16, color: Colors.white38),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8)
+          const SizedBox(height: 36)
         ],
       ),
     );

@@ -6,7 +6,6 @@ import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
 import 'package:real_twist/utils/dateFormater.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../home.dart';
 
 class SpinCoinHistory extends StatefulWidget {
@@ -83,11 +82,6 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
 
                 // Determine the color based on the status
                 Color statusColor = Colors.grey;
-                // if (status == 'succeeded') {
-                //   statusColor = Colors.green;
-                // } else if (status == 'failed') {
-                //   statusColor = Colors.red;
-                // }
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),

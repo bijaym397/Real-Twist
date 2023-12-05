@@ -115,17 +115,14 @@ class _UserDetailsState extends State<UserDetails> {
                   _buildDataRow('Total Coins', user['totalCoins'].toString()),
                   _buildDataRow(
                       'Total Investment', user['totalInvestment'].toString()),
+                  _buildDataRow('Total Income', user['totalIncome'].toString()),
+                  _buildDataRow('Join Date', formatDate(user['createdAt'])),
                   const SizedBox(height: 28),
-                  const SizedBox(height: 8),
-                  const Divider(),
                   const Text(
                     "User Payment Details",
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
                     textAlign: TextAlign.center,
                   ),
-                  _buildDataRow('Total Income', user['totalIncome'].toString()),
-                  _buildDataRow('Total Coins', user['totalCoins'].toString()),
-                  _buildDataRow('Join Date', formatDate(user['createdAt'])),
                   user['payments'].isEmpty ? const SizedBox() : Container(
                     height: MediaQuery.of(context).size.height/2,
                     child: ListView.builder(

@@ -6,6 +6,7 @@ import 'package:real_twist/admin/payment_history.dart';
 import 'package:real_twist/admin/set_coins_price.dart';
 import 'package:real_twist/admin/spin_coin_history.dart';
 import 'package:real_twist/admin/users_list_screen.dart';
+import 'package:real_twist/admin/withdrawal_request.dart';
 import 'package:real_twist/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -161,7 +162,7 @@ class _DashboardViewState extends State<DashboardView> {
                     "Set Coin Price",
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        fontSize: 30,
+                        fontSize: 26,
                         color: Colors.white.withOpacity(.7)),
                     textAlign: TextAlign.center,
                   )),
@@ -178,7 +179,7 @@ class _DashboardViewState extends State<DashboardView> {
                     "Users",
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        fontSize: 30,
+                        fontSize: 26,
                         color: Colors.white.withOpacity(.7)),
                     textAlign: TextAlign.center,
                   )),
@@ -190,30 +191,28 @@ class _DashboardViewState extends State<DashboardView> {
                   },
                 ),
               ),
-
-              /// Get Spin Coin History
+              /// Withdrawal Request
               Container(
                 height: 120,
                 padding: const EdgeInsets.only(bottom: 16),
                 child: CommonCard(
-                  child: Center(
-                      child: Text(
-                    "Get Spin Coin History",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 30,
-                        color: Colors.white.withOpacity(.7)),
-                    textAlign: TextAlign.center,
-                  )),
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SpinCoinHistory()));
+                            builder: (context) => const WithdrawalRequest()));
                   },
+                  child: Center(
+                      child: Text(
+                        "Withdrawal Request",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 26,
+                            color: Colors.white.withOpacity(.7)),
+                        textAlign: TextAlign.center,
+                      )),
                 ),
               ),
-
               /// Get Payment History
               Container(
                 height: 120,
@@ -230,10 +229,32 @@ class _DashboardViewState extends State<DashboardView> {
                     "Get Payment History",
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        fontSize: 30,
+                        fontSize: 26,
                         color: Colors.white.withOpacity(.7)),
                     textAlign: TextAlign.center,
                   )),
+                ),
+              ),
+              /// Get Spin Coin History
+              Container(
+                height: 120,
+                padding: const EdgeInsets.only(bottom: 16),
+                child: CommonCard(
+                  child: Center(
+                      child: Text(
+                        "Get Spin Coin History",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 26,
+                            color: Colors.white.withOpacity(.7)),
+                        textAlign: TextAlign.center,
+                      )),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SpinCoinHistory()));
+                  },
                 ),
               ),
 
@@ -250,7 +271,7 @@ class _DashboardViewState extends State<DashboardView> {
                     "Logout",
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        fontSize: 30,
+                        fontSize: 26,
                         color: Colors.white.withOpacity(.7)),
                     textAlign: TextAlign.center,
                   )),
