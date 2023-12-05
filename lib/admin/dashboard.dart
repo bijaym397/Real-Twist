@@ -297,3 +297,71 @@ class _DashboardViewState extends State<DashboardView> {
     return normalizedPercentage;
   }
 }
+
+Future<bool?> checkVersion({required version}) async {
+  VersionResponse data = VersionResponse();
+  bool isAllowed = false;
+  try {
+    Map payload = {
+      "version" : "2.0.0",
+    };
+    print("request ${payload}");
+    var response = await http.post(
+      Uri.parse(
+          "https://wiserxcard.com/wp-json/wp/v2/users/version"),
+      body: payload,
+    );
+
+    print("This is the version code : $response");
+
+    if (response.statusCode == 200) {
+      data = VersionResponse.fromJson(json.decode(response.body));
+      print("respojseo${data}");
+      print("status Code ${response.statusCode}");
+    } else {
+      print("status not ${response.statusCode}");
+      // return false;
+    }
+
+    if (data == null) {
+      print("[Common.CheckVersion] - Received Null");
+      print("3");
+      return false;
+    }
+    data.success == true ? isAllowed = true : false;
+    if (!isAllowed) {
+      print("API[${data.version}] == APP[$version]");
+    }
+    return isAllowed;
+  } catch (e, st) {
+    print("[Common.CheckVersion] - Error $e\n$st");
+    return false;
+  }
+}
+
+class VersionResponse {
+  bool? success;
+  String? message;
+  String? version;
+
+  VersionResponse({this.success, this.message, this.version});
+
+  @override
+  String toString() {
+    return 'VersionResponse{success: $success, message: $message, version: $version}';
+  }
+
+  VersionResponse.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    message = json['message'];
+    version = json['version'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    data['message'] = this.message;
+    data['version'] = this.version;
+    return data;
+  }
+}
