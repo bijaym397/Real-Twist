@@ -11,7 +11,7 @@ class WithdrawalRequest extends StatelessWidget {
         centerTitle: true,
         title: const Text("Withdrawal Request"),
       ),
-      body: Center(
+      body: const Center(
           child: Text("No History available",
               style: TextStyle(color: Colors.white, fontSize: 22))),
     );
