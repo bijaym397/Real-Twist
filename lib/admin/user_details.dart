@@ -18,7 +18,6 @@ class UserDetails extends StatefulWidget {
 }
 
 class _UserDetailsState extends State<UserDetails> {
-
   late Future<Map<String, dynamic>> userData;
 
   @override
@@ -28,8 +27,7 @@ class _UserDetailsState extends State<UserDetails> {
   }
 
   Future<Map<String, dynamic>> fetchUserData(String userId) async {
-
-    final apiUrl = Api.baseUrl+Api.getUserDetails+userId;
+    final apiUrl = Api.baseUrl + Api.getUserDetails + userId;
     final pref = await SharedPreferences.getInstance();
 
     final response = await http.get(
@@ -50,7 +48,6 @@ class _UserDetailsState extends State<UserDetails> {
       throw Exception('Failed to load user details');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -89,21 +86,20 @@ class _UserDetailsState extends State<UserDetails> {
                       width: 120,
                       margin: EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                          image: user['name'][0] == "" ? DecorationImage(
-                              image: AssetImage(img)) : null,
+                          image: user['name'][0] == ""
+                              ? DecorationImage(image: AssetImage(img))
+                              : null,
                           color: Colors.pink.shade600,
                           shape: BoxShape.circle),
 
                       /// Who is this
                       child: user['name'][0] != ""
                           ? Center(
-                          child: Text(
-                            user['name'][0]
-                                .toUpperCase(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 52),
-                          ))
+                              child: Text(
+                              user['name'][0].toUpperCase(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 52),
+                            ))
                           : SizedBox(),
                     ),
                   ),
@@ -112,9 +108,19 @@ class _UserDetailsState extends State<UserDetails> {
                   _buildDataRow('Email', user['email']),
                   _buildDataRow('Phone Number', user['phoneNumber']),
                   _buildDataRow('User Code', user['userCode']),
-                  _buildDataRow('User Status', user['status']== true ? "Active" : "Deactivate"),
+                  _buildDataRow('User Status',
+                      user['status'] == true ? "Active" : "Deactivate"),
                   _buildDataRow('Total Coins', user['totalCoins'].toString()),
-                  _buildDataRow('Total Investment', user['totalInvestment'].toString()),
+                  _buildDataRow(
+                      'Total Investment', user['totalInvestment'].toString()),
+                  const SizedBox(height: 28),
+                  const SizedBox(height: 8),
+                  const Divider(),
+                  const Text(
+                    "User Payment Details",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+                    textAlign: TextAlign.center,
+                  ),
                   _buildDataRow('Total Income', user['totalIncome'].toString()),
                   _buildDataRow('Total Coins', user['totalCoins'].toString()),
                   _buildDataRow('Join Date', _formatDate(user['createdAt'])),
@@ -135,8 +141,10 @@ class _UserDetailsState extends State<UserDetails> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("$label:  ", style: const TextStyle(fontSize: 22)),
-              Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+              Text("$label:  ", style: const TextStyle(fontSize: 18)),
+              Text(value,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18)),
             ],
           ),
           const SizedBox(height: 8),

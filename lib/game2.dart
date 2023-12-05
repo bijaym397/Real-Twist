@@ -160,7 +160,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
         centerTitle: true,
         title: const Text("Casino"),
       ),
-      body: Center(child: Text("coming soon", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 22)))
+      body: Center(child: Text("Coming Soon", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 22)))
       // BlinkingBorderContainer(
       //   backgroundImage: "assets/casio_table.jpg",
       //   child: SizedBox(

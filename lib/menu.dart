@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
@@ -11,7 +10,6 @@ import 'package:real_twist/payments/sell_coins.dart';
 import 'package:real_twist/payments/webview_screen.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'constants/api.dart';
 import 'home.dart';
 import 'auth/login.dart';
 
@@ -67,7 +65,7 @@ class DrawerView extends StatelessWidget {
                       ),
                       const SizedBox(height: 10,),
                       Text(
-                        userDetails.data?.name.toString() ??
+                        userDetails.data?.name.toString().toUpperCase() ??
                             "N/A",
                         style: const TextStyle(fontSize: 18),
                       ),
