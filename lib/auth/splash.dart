@@ -26,6 +26,7 @@ class _SplashViewState extends State<SplashView> {
     var userType = await getUser();
     Future.delayed(const Duration(seconds: 3), () {
       if (authToken?.isNotEmpty == true) {
+        /// TODO Add version code api
         showTextFieldPopup(context);
         // Navigator.pushReplacement(
         //   context,
@@ -112,12 +113,12 @@ class _SplashViewState extends State<SplashView> {
       builder: (context) {
         return AlertDialog(
           content: Container(
-            height: 250,
+            height: 270,
             child: Column(
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.asset("assets/spin2.png", height: 50)),
+                    child: Image.asset("assets/spin2.png", height: 65)),
                 const Spacer(),
                 const Text(
                   "Exciting changes are on the way.",
