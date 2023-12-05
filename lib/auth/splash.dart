@@ -26,7 +26,7 @@ class _SplashViewState extends State<SplashView> {
     var userType = await getUser();
     Future.delayed(const Duration(seconds: 3), () {
       if (authToken?.isNotEmpty == true) {
-        /// TODO Add version code api
+        ///TODO Add version code api
         showTextFieldPopup(context);
         // Navigator.pushReplacement(
         //   context,
