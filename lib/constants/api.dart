@@ -63,5 +63,8 @@ abstract class Api {
   static const String userType = "user";
   static const String adminType = "admin";
 
-  static const String appVersion = "1.0.1";
+
+  static const String checkAppVersion = "admin/get-config?type=appversion";
+
+  static const String appVersion = "1.0.0";
 }

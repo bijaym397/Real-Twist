@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:real_twist/admin/dashboard.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'login.dart';
+import 'package:http/http.dart' as http;
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -21,25 +25,50 @@ class _SplashViewState extends State<SplashView> {
     initStates();
   }
 
+  Future<bool> _checkVersionApi() async{
+    const apiUrl = Api.baseUrl+Api.checkAppVersion;
+
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      if (data['status'] == 200) {
+        return data["data"]["setting"]["version"] == Api.appVersion;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
   initStates() async {
     var authToken = await getToken();
     var userType = await getUser();
-    Future.delayed(const Duration(seconds: 3), () {
-      if (authToken?.isNotEmpty == true) {
-        ///TODO Add version code api
-        showTextFieldPopup(context);
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => userType == Api.adminType
-        //           ? const DashboardView()
-        //           : HomeView()),
-        // );
-      } else {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginView()));
-      }
-    });
+
+    if (await _checkVersionApi()) {
+      Future.delayed(const Duration(seconds: 3), () async {
+        if (authToken?.isNotEmpty == true) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => userType == Api.adminType
+                    ? const DashboardView()
+                    : HomeView()),
+          );
+        } else {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginView()));
+        }
+      });
+    } else {
+      showTextFieldPopup(context);
+    }
   }
 
   Future<String?> getToken() async {
@@ -137,19 +166,10 @@ class _SplashViewState extends State<SplashView> {
                 SizedBox(
                   height: 40,
                   child: CommonCard(
-                    onTap: () async {
-                      SharedPreferences preference = await SharedPreferences.getInstance();
-                      preference.setString(AppStrings.spAuthToken, "");
-                      // ignore: use_build_context_synchronously
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginView()),
-                      );
-                    },
+                    onTap: _launchUrl,
                     child: const Center(
                       child: Text(
-                        'Logout',
+                        'Download Now',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w600),
                       ),
@@ -162,5 +182,11 @@ class _SplashViewState extends State<SplashView> {
         );
       },
     );
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(Uri.parse("http://178.16.138.186:5000/download-apk"))) {
+      throw Exception('Could not launch');
+    }
   }
 }
