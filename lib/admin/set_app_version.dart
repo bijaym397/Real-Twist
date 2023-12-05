@@ -11,14 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/strings.dart';
 import '../home.dart';
 
-class SetCoinPrice extends StatefulWidget {
-  const SetCoinPrice({Key? key}) : super(key: key);
+class SetAppVersion extends StatefulWidget {
+  const SetAppVersion({Key? key}) : super(key: key);
 
   @override
-  State<SetCoinPrice> createState() => _SetCoinPriceState();
+  State<SetAppVersion> createState() => _SetAppVersionState();
 }
 
-class _SetCoinPriceState extends State<SetCoinPrice> {
+class _SetAppVersionState extends State<SetAppVersion> {
   final GlobalKey<FormState> setCoinFormKey = GlobalKey<FormState>();
   TextEditingController setCoinController = TextEditingController();
   FocusNode setCoinNode = FocusNode();
@@ -30,7 +30,7 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
         elevation: 8,
         centerTitle: true,
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Set Coins Price"),
+        title: const Text("Set App Version"),
         automaticallyImplyLeading: true,
       ),
       backgroundColor: Colors.black87,
@@ -43,7 +43,7 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
               const SizedBox(height: 150),
               const Center(
                   child: Text(
-                    "Set Coins",
+                    "Set App Version",
                     style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
                   )),
               const SizedBox(height: 100),
@@ -55,7 +55,7 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) {
                   if (value == null || value.trim().isEmpty)
-                    {return "*Required";}
+                  {return "*Required";}
                   return null;
                 },
                 textInputAction: TextInputAction.done,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:real_twist/admin/payment_history.dart';
+import 'package:real_twist/admin/set_app_version.dart';
 import 'package:real_twist/admin/set_coins_price.dart';
 import 'package:real_twist/admin/spin_coin_history.dart';
 import 'package:real_twist/admin/users_list_screen.dart';
@@ -255,6 +256,35 @@ class _DashboardViewState extends State<DashboardView> {
                         MaterialPageRoute(
                             builder: (context) => const SpinCoinHistory()));
                   },
+                ),
+              ),
+
+              /// Set app version
+              Container(
+                height: 120,
+                padding: const EdgeInsets.only(bottom: 16),
+                child: CommonCard(
+                  onTap: () async {
+                    final response = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SetAppVersion(),
+                      ),
+                    );
+
+                    if (response["refresh"] == true) {
+                      _fetchDetails();
+                    }
+                  },
+                  child: Center(
+                      child: Text(
+                        "Set App Version",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 26,
+                            color: Colors.white.withOpacity(.7)),
+                        textAlign: TextAlign.center,
+                      )),
                 ),
               ),
 
