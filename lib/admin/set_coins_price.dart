@@ -98,7 +98,7 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
   Future<void> _hitSetCoinsApi({String? setCoins}) async {
     try {
       customLoader!.show(context);
-      const apiUrl = "${Api.baseUrl}${Api.coinsPrice}";
+      const apiUrl = "${Api.baseUrl}${Api.setCoinsPrice}";
       final pref = await SharedPreferences.getInstance();
 
       final Map<String, dynamic> requestMap = {

@@ -56,10 +56,12 @@ abstract class Api {
   //Admin endpoints
   static const String getUserList = "admin/user-list?search=";
   static const String getUserDetails = "admin/user/";
-  static const String coinsPrice = "admin/coinsprice";
+  static const String setCoinsPrice = "admin/set-config";
   static const String setVersion = "admin/set-config";
-  static const String dashboardDetails = "admin/coinsprice?type=coinprice";
+  static const String dashboardDetails = "admin/get-config?type=coinprice";
 
   static const String userType = "user";
   static const String adminType = "admin";
+
+  static const String appVersion = "1.0.1";
 }

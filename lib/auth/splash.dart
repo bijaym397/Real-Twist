@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:real_twist/admin/dashboard.dart';
-import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
-import 'package:real_twist/payment_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
@@ -27,33 +25,30 @@ class _SplashViewState extends State<SplashView> {
     var authToken = await getToken();
     var userType = await getUser();
     Future.delayed(const Duration(seconds: 3), () {
-      if(authToken?.isNotEmpty == true){
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => userType == Api.adminType
-                    ? const DashboardView()
-                    : HomeView()),
-          );
-      }
-      else{
-        Navigator.pushReplacement(
-            context,
+      if (authToken?.isNotEmpty == true) {
+        showTextFieldPopup(context);
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => userType == Api.adminType
+        //           ? const DashboardView()
+        //           : HomeView()),
+        // );
+      } else {
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginView()));
       }
     });
   }
 
   Future<String?> getToken() async {
-    SharedPreferences sharedPreferences =
-    await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var token = sharedPreferences.getString(AppStrings.spAuthToken);
     return token;
   }
 
   Future<String?> getUser() async {
-    SharedPreferences sharedPreferences =
-    await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var user = sharedPreferences.getString(AppStrings.spUserType);
     return user;
   }
@@ -107,6 +102,64 @@ class _SplashViewState extends State<SplashView> {
           const SizedBox(height: 36)
         ],
       ),
+    );
+  }
+
+  Future<void> showTextFieldPopup(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (context) {
+        return AlertDialog(
+          content: Container(
+            height: 250,
+            child: Column(
+              children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.asset("assets/spin2.png", height: 50)),
+                const Spacer(),
+                const Text(
+                  "Exciting changes are on the way.",
+                  maxLines: 20,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "Thanks for your patience, we'll be back shortly.",
+                  maxLines: 20,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                const Spacer(),
+                SizedBox(
+                  height: 40,
+                  child: CommonCard(
+                    onTap: () async {
+                      SharedPreferences preference = await SharedPreferences.getInstance();
+                      preference.setString(AppStrings.spAuthToken, "");
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginView()),
+                      );
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
