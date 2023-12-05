@@ -21,7 +21,6 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
 
   String _sessionId = "";
 
-
   @override
   void dispose() {
     _sessionId = "";
@@ -33,12 +32,12 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
 
     if (coinsText.isNotEmpty) {
       int numberOfCoins = int.tryParse(coinsText) ?? 0;
-      if (numberOfCoins > 0) {
+      if (numberOfCoins >= 100) {
         _buyCoinsApiCall(numberOfCoins);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please enter coins greater than 0'),
+            content: Text('Please enter coins greater than 100'),
           ),
         );
       }
@@ -51,10 +50,10 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     }
   }
 
-  void _buyCoinsApiCall(int coins) async{
+  void _buyCoinsApiCall(int coins) async {
     final pref = await SharedPreferences.getInstance();
 
-    const apiUrl = Api.baseUrl+Api.payment;
+    const apiUrl = Api.baseUrl + Api.payment;
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
@@ -63,8 +62,10 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
       },
       body: jsonEncode({
         'buyCoin': coins,
-        'success_url': "https://doc-hosting.flycricket.io/payment-success/b2f985b0-1c1c-41ea-acab-00918d78222f/other",
-        'cancel_url': "https://doc-hosting.flycricket.io/payment-failed/e97a1953-99ce-42d1-bfb7-db7383cafb62/other",
+        'success_url':
+            "https://doc-hosting.flycricket.io/payment-success/b2f985b0-1c1c-41ea-acab-00918d78222f/other",
+        'cancel_url':
+            "https://doc-hosting.flycricket.io/payment-failed/e97a1953-99ce-42d1-bfb7-db7383cafb62/other",
       }),
     );
 
@@ -75,7 +76,7 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
       String paymentUrl = data['data']['url'];
       _sessionId = data['data']['id'];
 
-      _openWebView(paymentUrl, "Privacy Policy");
+      _openWebView(paymentUrl, "Buy Coins");
     } else {
       // API call failed, show error message using Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -86,10 +87,10 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     }
   }
 
-  Future<bool> _updatePaymentStatus() async{
+  Future<bool> _updatePaymentStatus() async {
     final pref = await SharedPreferences.getInstance();
 
-    const apiUrl = Api.baseUrl+Api.updatePaymentStatus;
+    const apiUrl = Api.baseUrl + Api.updatePaymentStatus;
     final response = await http.put(
       Uri.parse(apiUrl),
       headers: {
@@ -123,34 +124,34 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
     );
   }
 
-  void controlScreenNavigation(String url) async{
-      if(url.contains("payment-success")){
-        if( await _updatePaymentStatus()){
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Payment Done successfully'),
-            ),
-          );
-        }else{
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Some Error while making payment.'),
-            ),
-          );
-        }
-        await Future.delayed(const Duration(seconds: 5));
-        Navigator.of(context).pop();
-      }else if(url.contains("payment-failed")){
-        await _updatePaymentStatus();
-        // API call failed, show error message using Snackbar
+  void controlScreenNavigation(String url) async {
+    if (url.contains("payment-success")) {
+      if (await _updatePaymentStatus()) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Payment Done successfully'),
+          ),
+        );
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Some Error while making payment.'),
           ),
         );
-        await Future.delayed(const Duration(seconds: 5));
-        Navigator.of(context).pop();
       }
+      await Future.delayed(const Duration(seconds: 5));
+      Navigator.of(context).pop();
+    } else if (url.contains("payment-failed")) {
+      await _updatePaymentStatus();
+      // API call failed, show error message using Snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Some Error while making payment.'),
+        ),
+      );
+      await Future.delayed(const Duration(seconds: 5));
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -173,22 +174,20 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
               decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.currency_exchange),
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   border: OutlineInputBorder(),
                   hintText: 'Enter number of coins',
-                  labelText: "Enter number of coins"
-              ),
+                  labelText: "Enter number of coins"),
             ),
             const SizedBox(height: 16),
             SizedBox(
               height: 45,
               child: CommonCard(
-                onTap:_buyCoins,
+                onTap: _buyCoins,
                 child: const Center(
                   child: Text(
                     'Buy',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

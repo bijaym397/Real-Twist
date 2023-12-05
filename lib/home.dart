@@ -368,7 +368,8 @@ class HomeSideView extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyInvestView())),
+                          builder: (context) => const PaymentHistoryPage(
+                              appBarTitle: 'My Investment History'))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -457,7 +458,8 @@ class HomeSideView extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyIncomeView())),
+                          builder: (context) => const PaymentHistoryPage(
+                              appBarTitle: 'My Income History'))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

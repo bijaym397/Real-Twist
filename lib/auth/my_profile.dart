@@ -59,7 +59,7 @@ class MyProfile extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                name.isNotEmpty ? name.toString() : "N/A",
+                name.isNotEmpty ? name.toString().toUpperCase() : "N/A",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
               ),

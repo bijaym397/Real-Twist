@@ -110,8 +110,7 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: _coinsController,
-              keyboardType: TextInputType.number,
+              controller: _upiController,
               decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.payment),
                   contentPadding:

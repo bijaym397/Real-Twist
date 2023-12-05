@@ -22,7 +22,7 @@ class _SpinWheelState extends State<SpinWheel> {
 
   bool isApiCallInProgress = false;
 
-  List<int> items = [10, 5, 20, -10, -5, 15, 2, 0, 25, -15];
+  List<int> items = [100, 50, 10, 200, 0, 20, 500, 0, 1000, 0];
 
   late SharedPreferences prefs;
   bool hasPlayedToday = true;
@@ -41,7 +41,7 @@ class _SpinWheelState extends State<SpinWheel> {
             currentDate.month == lastDate.month &&
             currentDate.day == lastDate.day;
       });
-    }else{
+    } else {
       setState(() {
         hasPlayedToday = false;
       });
@@ -86,13 +86,13 @@ class _SpinWheelState extends State<SpinWheel> {
       final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
         await _updateLastPlayDate();
-        setState(() async{
-          selected.value = items.indexOf(jsonResponse["data"]['selectedNumber'] ?? 0);
+        setState(() async {
+          selected.value =
+              items.indexOf(jsonResponse["data"]['selectedNumber'] ?? 0);
           await Future.delayed(const Duration(seconds: 10));
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                  "You won $rewards Points!"),
+              content: Text("You won $rewards Points!"),
             ),
           );
         });
@@ -109,7 +109,6 @@ class _SpinWheelState extends State<SpinWheel> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -132,57 +131,69 @@ class _SpinWheelState extends State<SpinWheel> {
                 Stack(
                   children: [
                     Container(
-                      height:  MediaQuery.of(context).size.width * 0.80,
+                      height: MediaQuery.of(context).size.width * 0.80,
                       width: MediaQuery.of(context).size.width * 0.80,
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        color:  const Color(0xFF3A2222),
-                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
+                        color: const Color(0xFF3A2222),
+                        borderRadius: BorderRadius.circular(
+                            MediaQuery.of(context).size.width * 0.80 / 2),
                       ),
                       child: Container(
                         decoration: BoxDecoration(
                           image: const DecorationImage(
                               image: AssetImage('assets/mica_board.jpg'),
                               fit: BoxFit.cover,
-                              opacity: 0.5
-                          ),
+                              opacity: 0.5),
                           color: Colors.brown,
-                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
+                          borderRadius: BorderRadius.circular(
+                              MediaQuery.of(context).size.width * 0.80 / 2),
                         ),
                         padding: const EdgeInsets.all(15.0),
                         child: Container(
                           decoration: BoxDecoration(
-                            boxShadow:  [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withAlpha(100), // Shadow color
+                                color: Colors.black.withAlpha(100),
+                                // Shadow color
                                 offset: const Offset(0.0, 0.0),
-                                blurRadius: 10.0, // Spread of the shadow
+                                blurRadius: 10.0,
+                                // Spread of the shadow
                                 spreadRadius: 5.0, // Expansion of the shadow
                               ),
                             ],
-                            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.80/2),
+                            borderRadius: BorderRadius.circular(
+                                MediaQuery.of(context).size.width * 0.80 / 2),
                           ),
                           child: FortuneWheel(
                             selected: selected.stream,
                             animateFirst: false,
                             duration: const Duration(seconds: 10),
-                            items : List.generate(items.length, (index) =>
-                                FortuneItem(
-                                  child: Container(
-                                    color: items[index] == 0 ? Colors.green.shade800 : index.isEven ? Colors.red.shade400 : Colors.black87,                        child: Center(
-                                      child: Text(
-                                        items[index].toString(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                        ),
+                            items: List.generate(
+                              items.length,
+                              (index) => FortuneItem(
+                                child: Container(
+                                  color: items[index] == 0
+                                      ? Colors.green.shade800
+                                      : index.isEven
+                                          ? Colors.red.shade400
+                                          : Colors.black87,
+                                  child: Center(
+                                    child: Text(
+                                      index != 9
+                                          ? items[index].toString()
+                                          : "?",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ),
                                 ),
+                              ),
                             ),
-                            onAnimationEnd: () async{
+                            onAnimationEnd: () async {
                               setState(() {
                                 rewards = items[selected.value];
                               });
@@ -217,10 +228,14 @@ class _SpinWheelState extends State<SpinWheel> {
                     )
                   ],
                 ),
-                const SizedBox(height: 35,),
+                const SizedBox(
+                  height: 35,
+                ),
                 ElevatedButton(
                   onPressed: !hasPlayedToday && !isApiCallInProgress
-                      ? () {_spinCoinApi();}
+                      ? () {
+                          _spinCoinApi();
+                        }
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: !hasPlayedToday && !isApiCallInProgress
@@ -235,7 +250,10 @@ class _SpinWheelState extends State<SpinWheel> {
                     height: 50,
                     width: 130,
                     alignment: Alignment.center,
-                    child: const Text("SPIN", style: TextStyle(color: Colors.black87),),
+                    child: const Text(
+                      "SPIN",
+                      style: TextStyle(color: Colors.black87),
+                    ),
                   ),
                 ),
               ],

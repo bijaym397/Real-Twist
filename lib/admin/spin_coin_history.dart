@@ -6,8 +6,9 @@ import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SpinCoinHistory extends StatefulWidget {
+import '../home.dart';
 
+class SpinCoinHistory extends StatefulWidget {
   const SpinCoinHistory({Key? key}) : super(key: key);
 
   @override
@@ -16,6 +17,7 @@ class SpinCoinHistory extends StatefulWidget {
 
 class _SpinCoinHistoryState extends State<SpinCoinHistory> {
   late List<Map<String, dynamic>> spinCoins = [];
+
   @override
   void initState() {
     super.initState();
@@ -24,8 +26,8 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
 
   Future<void> fetchSpinCoinHistory() async {
     final pref = await SharedPreferences.getInstance();
-    const apiUrl = Api.baseUrl+Api.spinCoinHistory;
-    try{
+    const apiUrl = Api.baseUrl + Api.spinCoinHistory;
+    try {
       customLoader!.show(context);
       final response = await http.get(
         Uri.parse(apiUrl),
@@ -48,12 +50,10 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
         print('Failed to fetch payment history}');
         customLoader!.hide();
       }
-    }
-    catch(e){
+    } catch (e) {
       debugPrint("$e");
       customLoader!.hide();
     }
-
   }
 
   @override
@@ -64,51 +64,78 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
         centerTitle: true,
         title: const Text("Spin Coin History"),
       ),
-      body: spinCoins.isEmpty ?
-      const Center(child: Text("No History available",
-          style: TextStyle(color: Colors.white, fontSize: 22))) :
-      ListView.builder(
-        itemCount: spinCoins.length,
-        itemBuilder: (context, index) {
-          final coins = spinCoins[index];
-          // Extracting data from the payment object
-          final paymentId = coins['_id'];
-          final winCoin = coins['winCoin'];
-          final winNumber = coins['winNumber'];
-          final createdAt = coins['createdAt'];
-          final type = coins['type'];
+      body: spinCoins.isEmpty
+          ? const Center(
+              child: Text("No History available",
+                  style: TextStyle(color: Colors.white, fontSize: 22)))
+          : ListView.builder(
+        padding: EdgeInsets.all(16),
+              itemCount: spinCoins.length,
+              itemBuilder: (context, index) {
+                final coins = spinCoins[index];
+                // Extracting data from the payment object
+                final paymentId = coins['_id'];
+                final winCoin = coins['winCoin'];
+                final winNumber = coins['winNumber'];
+                final createdAt = coins['createdAt'];
+                final type = coins['type'];
 
-          // Formatting date
-          final formattedDate = DateTime.parse(createdAt).toLocal();
+                // Formatting date
+                final formattedDate = DateTime.parse(createdAt).toLocal();
 
-          // Determine the color based on the status
-          Color statusColor = Colors.grey;
-          // if (status == 'succeeded') {
-          //   statusColor = Colors.green;
-          // } else if (status == 'failed') {
-          //   statusColor = Colors.red;
-          // }
+                // Determine the color based on the status
+                Color statusColor = Colors.grey;
+                // if (status == 'succeeded') {
+                //   statusColor = Colors.green;
+                // } else if (status == 'failed') {
+                //   statusColor = Colors.red;
+                // }
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10,top: 5),
-            child:
-            ListTile(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Payment ID: $paymentId'),
-                  Text('Win Coin: $winCoin'),
-                  Text('Date: ${formattedDate.toString()}'),
-                  Text('Win Number: $winNumber'),
-                  Text('Type: $type'),
-                ],
-              ),
-              // Divider between list items
-              tileColor: Colors.transparent,
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Payment ID:   $paymentId",
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 6),
+                          Text(
+                            "Win Coin:   $winCoin",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            "Date:   ${formattedDate.toString()}",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            "Win Number:   $winNumber",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            "Type:   $type",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }

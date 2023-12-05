@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/api.dart';
 import '../constants/strings.dart';
+import '../home.dart';
 
 class PaymentHistoryPage extends StatefulWidget {
 
@@ -93,25 +94,74 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(bottom: 10,top: 5),
-            child: ListTile(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Payment ID: $paymentId'),
-                  Text('Amount: $amount'),
-                  Text('Date: ${formattedDate.toString()}'),
-                  Text('Coins: $buyCoin'),
-                  Text(
-                    'Status: $status',
-                    style: TextStyle(color: statusColor),
-                  ),
-                ],
+            padding: const EdgeInsets.only(top: 16, right: 12, left: 12),
+            child: CommonCard(
+              padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 12),
+              child: Expanded(
+                flex: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Payment ID: $paymentId",
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Amount: $amount',
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Coins: $buyCoin',
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Date: ${formattedDate.toString()}',
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 6),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Card(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text(
+                            'Status: $status',
+                            style: TextStyle(
+                                color: statusColor,
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // Divider between list items
-              tileColor: Colors.transparent,
             ),
           );
+          //   Padding(
+          //   padding: const EdgeInsets.only(bottom: 10,top: 5),
+          //   child: ListTile(
+          //     title: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         Text('Payment ID: $paymentId'),
+          //         Text('Amount: $amount'),
+          //         Text('Date: ${formattedDate.toString()}'),
+          //         Text('Coins: $buyCoin'),
+          //         Text(
+          //           'Status: $status',
+          //           style: TextStyle(color: statusColor),
+          //         ),
+          //       ],
+          //     ),
+          //     // Divider between list items
+          //     tileColor: Colors.transparent,
+          //   ),
+          // );
         },
       ),
     );
