@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:real_twist/admin/dashboard.dart';
 import 'package:real_twist/constants/api.dart';
@@ -7,7 +6,6 @@ import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'login.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,8 +23,8 @@ class _SplashViewState extends State<SplashView> {
     initStates();
   }
 
-  Future<bool> _checkVersionApi() async{
-    const apiUrl = Api.baseUrl+Api.checkAppVersion;
+  Future<bool> _checkVersionApi() async {
+    const apiUrl = Api.baseUrl + Api.checkAppVersion;
 
     final response = await http.get(
       Uri.parse(apiUrl),
@@ -185,7 +183,8 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> _launchUrl() async {
-    if (!await launchUrl(Uri.parse("http://178.16.138.186:5000/download-apk"))) {
+    if (!await launchUrl(
+        Uri.parse("http://178.16.138.186:5000/download-apk"))) {
       throw Exception('Could not launch');
     }
   }
