@@ -175,7 +175,7 @@ class _LoginViewState extends State<LoginView> {
                               fontWeight: FontWeight.w500,
                               color: Colors.pink.shade400),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: "Sign Up",
                           style: TextStyle(
                               fontSize: 17,
@@ -207,6 +207,7 @@ class _LoginViewState extends State<LoginView> {
           'password': password.toString(),
         }),
       );
+
       final loginData = LoginDataResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
         customLoader!.hide();
@@ -225,7 +226,7 @@ class _LoginViewState extends State<LoginView> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => Api.userType != loginData.data!.user!.userType.toString()
+              builder: (context) => Api.userType != loginData.data?.user?.userType.toString()
                   ? const DashboardView()
                   : HomeView()),
         );
@@ -240,6 +241,12 @@ class _LoginViewState extends State<LoginView> {
       }
     } catch (e) {
       customLoader!.hide();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Some error occurred while login.."),
+        ),
+      );
+      debugPrint("fhdsfsfsfds ${e}");
       return debugPrint(e.toString());
     }
   }

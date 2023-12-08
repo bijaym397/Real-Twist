@@ -1,3 +1,5 @@
+import 'login_data_modal.dart';
+
 class HomeDetailsResponse {
   String? message;
   int? status;
@@ -8,11 +10,11 @@ class HomeDetailsResponse {
   HomeDetailsResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new HomeData.fromJson(json['data']) : null;
+    data = json['data'] != null ? HomeData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['message'] = this.message;
     data['status'] = this.status;
     if (this.data != null) {
@@ -23,42 +25,45 @@ class HomeDetailsResponse {
 }
 
 class HomeData {
-  String? sId;
+  String? id;
   int? totalInvestment;
   int? totalIncome;
-  int? totalCoins;
-  int? totalUserCoins;
+  TotalCoins? totalCoins;
+  TotalCoins? totalUserCoins;
   int? cra;
   String? appLink;
 
-  HomeData(
-      {this.sId,
-        this.totalInvestment,
-        this.totalIncome,
-        this.totalCoins,
-        this.totalUserCoins,
-        this.cra,
-        this.appLink});
+  HomeData({
+    required this.id,
+    required this.totalInvestment,
+    required this.totalIncome,
+    required this.totalCoins,
+    required this.totalUserCoins,
+    required this.cra,
+    required this.appLink,
+  });
 
-  HomeData.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    totalInvestment = json['totalInvestment'];
-    totalIncome = json['totalIncome'];
-    totalCoins = json['totalCoins'];
-    totalUserCoins = json['totalUserCoins'];
-    cra = json['cra'];
-    appLink = json['appLink'];
+  factory HomeData.fromJson(Map<String, dynamic> json) {
+    return HomeData(
+      id: json['_id'],
+      totalInvestment: json['totalInvestment'],
+      totalIncome: json['totalIncome'],
+      totalCoins: TotalCoins.fromJson(json['totalCoins']),
+      totalUserCoins: TotalCoins.fromJson(json['totalUserCoins']),
+      cra: json['cra'],
+      appLink: json['appLink'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['totalInvestment'] = this.totalInvestment;
-    data['totalIncome'] = this.totalIncome;
-    data['totalCoins'] = this.totalCoins;
-    data['totalUserCoins'] = this.totalUserCoins;
-    data['cra'] = this.cra;
-    data['appLink'] = this.appLink;
-    return data;
+    return {
+      '_id': id,
+      'totalInvestment': totalInvestment,
+      'totalIncome': totalIncome,
+      'totalCoins': totalCoins?.toJson(),
+      'totalUserCoins': totalUserCoins?.toJson(),
+      'cra': cra,
+      'appLink': appLink,
+    };
   }
 }

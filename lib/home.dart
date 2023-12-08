@@ -312,10 +312,33 @@ class HomeSideView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
           CoinDetails(
-            totalCoin:
-                homeDetails.data?.totalIncome?.toStringAsFixed(2) ?? "0.00",
+            totalCoin: formatPercentage(double.parse(homeDetails.data?.totalUserCoins?.numberDecimal ?? "0.00")),
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
+
+          /// Total Coins Available
+          CommonCard(
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Total Coins Available",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 26,
+                      color: Colors.white.withOpacity(.7)),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  formatPercentage(double.parse(homeDetails.data?.totalCoins?.numberDecimal?.toString() ?? "0.00")),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w800, fontSize: 22, color: Colors.black54),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -782,4 +805,21 @@ class CoinDetails extends StatelessWidget {
       ],
     );
   }
+}
+
+
+String formatPercentage(double percentage) {
+  String normalizedPercentage = percentage.toString();
+
+  if (normalizedPercentage.contains('.')) {
+    int indexOfDecimal = normalizedPercentage.indexOf('.');
+    String decimalPart = normalizedPercentage.substring(indexOfDecimal + 1);
+
+    if (decimalPart.length > 2) {
+      normalizedPercentage =
+          normalizedPercentage.substring(0, indexOfDecimal + 3);
+    }
+  }
+
+  return normalizedPercentage;
 }

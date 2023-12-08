@@ -8,13 +8,13 @@ class LoginDataResponse {
   LoginDataResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new LoginRecord.fromJson(json['data']) : null;
+    data = json['data'] != null ? LoginRecord.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message'] = message;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -27,101 +27,135 @@ class LoginRecord {
   String? userId;
   int? iV;
   String? authToken;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   User? user;
 
-  LoginRecord(
-      {this.sId,
-        this.userId,
-        this.iV,
-        this.authToken,
-        this.createdAt,
-        this.updatedAt,
-        this.user});
+  LoginRecord({
+    required this.sId,
+    required this.userId,
+    required this.iV,
+    required this.authToken,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.user,
+  });
 
-  LoginRecord.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    userId = json['userId'];
-    iV = json['__v'];
-    authToken = json['authToken'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+  factory LoginRecord.fromJson(Map<String, dynamic> json) {
+    return LoginRecord(
+      sId: json['_id'],
+      userId: json['userId'],
+      iV: json['__v'],
+      authToken: json['authToken'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      user: User.fromJson(json['user']),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['userId'] = this.userId;
-    data['__v'] = this.iV;
-    data['authToken'] = this.authToken;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
-    return data;
+    return {
+      '_id': sId,
+      'userId': userId,
+      '__v': iV,
+      'authToken': authToken,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+      'user': user?.toJson(),
+    };
   }
 }
 
 class User {
   String? sId;
   String? name;
+  String? email;
   String? phoneNumber;
   String? password;
   String? countryCode;
   String? userCode;
   int? verificationCode;
-  int? totalCoins;
+  TotalCoins? totalCoins;
   bool? status;
-  String? createdAt;
-  String? updatedAt;
   String? userType;
+  DateTime? userCreatedAt;
+  DateTime? userUpdatedAt;
+  String? customerId;
+  String? userReferralId;
 
-  User(
-      {this.sId,
-        this.name,
-        this.phoneNumber,
-        this.password,
-        this.countryCode,
-        this.userCode,
-        this.verificationCode,
-        this.totalCoins,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.userType});
+  User({
+    required this.sId,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
+    required this.password,
+    required this.countryCode,
+    required this.userCode,
+    required this.verificationCode,
+    required this.totalCoins,
+    required this.status,
+    required this.userType,
+    required this.userCreatedAt,
+    required this.userUpdatedAt,
+    required this.customerId,
+    required this.userReferralId,
+  });
 
-  User.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    phoneNumber = json['phoneNumber'];
-    password = json['password'];
-    countryCode = json['countryCode'];
-    userCode = json['userCode'];
-    verificationCode = json['verificationCode'];
-    totalCoins = json['totalCoins'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    userType = json['userType'];
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      sId: json['_id'],
+      name: json['name'],
+      email: json['email'],
+      phoneNumber: json['phoneNumber'],
+      password: json['password'],
+      countryCode: json['countryCode'],
+      userCode: json['userCode'],
+      verificationCode: json['verificationCode'],
+      totalCoins: TotalCoins.fromJson(json['totalCoins']),
+      status: json['status'],
+      userType: json['userType'],
+      userCreatedAt: DateTime.parse(json['createdAt']),
+      userUpdatedAt: DateTime.parse(json['updatedAt']),
+      customerId: json['customerId'],
+      userReferralId: json['userReferralId'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['phoneNumber'] = this.phoneNumber;
-    data['password'] = this.password;
-    data['countryCode'] = this.countryCode;
-    data['userCode'] = this.userCode;
-    data['verificationCode'] = this.verificationCode;
-    data['totalCoins'] = this.totalCoins;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['userType'] = this.userType;
-    return data;
+    return {
+    '_id': sId,
+    'name': name,
+    'email': email,
+    'phoneNumber': phoneNumber,
+    'password': password,
+    'countryCode': countryCode,
+    'userCode': userCode,
+    'verificationCode': verificationCode,
+    'totalCoins': totalCoins?.toJson(),
+    'status': status,
+    'userType': userType,
+    'createdAt': userCreatedAt?.toIso8601String(),
+    'updatedAt': userUpdatedAt?.toIso8601String(),
+    'customerId': customerId,
+    'userReferralId': userReferralId,
+    };
+  }
+}
+
+class TotalCoins {
+  String? numberDecimal;
+
+  TotalCoins({required this.numberDecimal});
+
+  factory TotalCoins.fromJson(Map<String, dynamic> json) {
+    return TotalCoins(
+      numberDecimal: json["\$numberDecimal"],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "\$numberDecimal": numberDecimal,
+    };
   }
 }

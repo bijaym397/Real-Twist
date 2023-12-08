@@ -97,48 +97,45 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
             padding: const EdgeInsets.only(top: 16, right: 12, left: 12),
             child: CommonCard(
               padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 12),
-              child: Expanded(
-                flex: 5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Payment ID: $paymentId",
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Amount: $amount',
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Coins: $buyCoin',
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Date: ${formattedDate.toString()}',
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                    const SizedBox(height: 6),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Card(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text(
-                            'Status: $status',
-                            style: TextStyle(
-                                color: statusColor,
-                                fontWeight: FontWeight.w900),
-                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Payment ID: $paymentId",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Amount: $amount',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Coins: $buyCoin',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Date: ${formattedDate.toString()}',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  const SizedBox(height: 6),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Card(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(
+                          'Status: $status',
+                          style: TextStyle(
+                              color: statusColor,
+                              fontWeight: FontWeight.w900),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
