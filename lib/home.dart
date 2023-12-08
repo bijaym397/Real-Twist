@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:real_twist/admin/payment_history.dart';
+import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
@@ -23,6 +24,7 @@ import 'menu.dart';
 class HomeView extends StatefulWidget {
   String? userId;
   bool? referCode;
+
   HomeView({Key? key, this.referCode, this.userId}) : super(key: key);
 
   @override
@@ -45,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
     token = sharedPreferences.getString(AppStrings.spAuthToken);
     debugPrint("userId ${widget.userId.toString()}");
     debugPrint("referCode ${widget.referCode}");
-    if(widget.referCode == true){
+    if (widget.referCode == true) {
       _showReferralPopup(context);
     }
     if (token != null) {
@@ -73,7 +75,8 @@ class _HomeViewState extends State<HomeView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const PaymentHistoryPage(appBarTitle: "Notifications")),
+                      builder: (context) => const PaymentHistoryPage(
+                          appBarTitle: "Notifications")),
                 );
               },
               child: Stack(
@@ -191,7 +194,8 @@ class _HomeViewState extends State<HomeView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Text('Having Referral Code?', style: TextStyle(fontSize: 20)),
+                  const Text('Having Referral Code?',
+                      style: TextStyle(fontSize: 20)),
                   TextFormField(
                     controller: textFieldController,
                     focusNode: referralFocusNode,
@@ -208,7 +212,7 @@ class _HomeViewState extends State<HomeView> {
                     },
                     decoration: const InputDecoration(
                       contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                       prefixIcon: Icon(Icons.redeem_sharp),
                       border: OutlineInputBorder(),
                       hintText: 'xxxxx xxxxx',
@@ -238,8 +242,8 @@ class _HomeViewState extends State<HomeView> {
                             onTap: () {
                               if (referralFormKey.currentState!.validate()) {
                                 _hitReferralApi(
-                                    code: textFieldController.text.trim(),
-                                    userId: widget.userId.toString(),
+                                  code: textFieldController.text.trim(),
+                                  userId: widget.userId.toString(),
                                 );
                               }
                             },
@@ -276,7 +280,8 @@ class _HomeViewState extends State<HomeView> {
           'userId': userId,
         }),
       );
-      final referralData = ReferralApiResponse.fromJson(json.decode(response.body));
+      final referralData =
+          ReferralApiResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -297,7 +302,6 @@ class _HomeViewState extends State<HomeView> {
       return debugPrint(e.toString());
     }
   }
-
 }
 
 class HomeSideView extends StatelessWidget {
@@ -312,32 +316,71 @@ class HomeSideView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
           CoinDetails(
-            totalCoin: formatPercentage(double.parse(homeDetails.data?.totalUserCoins?.numberDecimal ?? "0.00")),
+            totalCoin: formatPercentage(double.parse(
+                homeDetails.data?.totalUserCoins?.numberDecimal ?? "0.00")),
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
 
           /// Total Coins Available
-          CommonCard(
-            padding: const EdgeInsets.symmetric(vertical: 18),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Total Coins Available",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 26,
-                      color: Colors.white.withOpacity(.7)),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  formatPercentage(double.parse(homeDetails.data?.totalCoins?.numberDecimal?.toString() ?? "0.00")),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w800, fontSize: 22, color: Colors.black54),
-                ),
-              ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: CommonCard(
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Total Coins Available",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 26,
+                        color: Colors.white.withOpacity(.7)),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    formatPercentage(double.parse(homeDetails
+                            .data?.totalCoins?.numberDecimal
+                            ?.toString() ??
+                        "0.00")),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                        color: Colors.black54),
+                  ),
+                ],
+              ),
             ),
           ),
+
+          /// My Network
+          const SizedBox(height: 26),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: CommonCard(
+              onTap: () => Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const MyNetworkView(),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "My Network",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 26,
+                        color: Colors.white.withOpacity(.7)),
+                  ),
+                  const SizedBox(width: 2),
+                  const Icon(Icons.double_arrow_rounded)
+                ],
+              ),
+            ),
+          ),
+
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -582,8 +625,7 @@ class HomeSideView extends StatelessWidget {
                 /// Refer A Friend
                 GestureDetector(
                   onTap: () {
-                    share(
-                        shareUrl: homeDetails.data!.appLink.toString());
+                    share(shareUrl: homeDetails.data!.appLink.toString());
                   },
                   child: Container(
                     height: 200,
@@ -706,7 +748,7 @@ class CoinDetails extends StatelessWidget {
       children: [
         Container(
           height: 70,
-          width: 150,
+          width: 170,
           margin: const EdgeInsets.only(bottom: 26),
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -720,11 +762,11 @@ class CoinDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Real Twist",
+                "Real Twist Coin",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
               ),
@@ -732,7 +774,7 @@ class CoinDetails extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
                 child: Text(
-                  "My CRS ${coinPrice.toString()}",
+                  "Price ${coinPrice.toString()}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.white,
@@ -806,7 +848,6 @@ class CoinDetails extends StatelessWidget {
     );
   }
 }
-
 
 String formatPercentage(double percentage) {
   String normalizedPercentage = percentage.toString();
