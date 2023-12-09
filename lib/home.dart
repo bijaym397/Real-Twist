@@ -68,6 +68,7 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.pink.shade800,
+          centerTitle: true,
           title: const Text("Real Twist"),
           actions: [
             GestureDetector(
@@ -108,7 +109,6 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ],
-          centerTitle: true,
         ),
         drawer: DrawerView(
             userDetails: userDetails!,

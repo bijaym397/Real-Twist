@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/home.dart';
 import 'level_chart.dart';
 import 'net_income.dart';
 
@@ -13,41 +14,48 @@ class _MyNetworkViewState extends State<MyNetworkView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("My Network")),
+      appBar: AppBar(title: const Text("My Network"),
+        backgroundColor: Colors.pink.shade800,
+        centerTitle: true,),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
+        padding:  const EdgeInsets.all(8),
         child: Column(
           children: [
-            GestureDetector(
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const LevelChartView(id: "user id",)),
-                );
-              },
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Total Investment",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                  Text("21654845564",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                  Icon(Icons.arrow_circle_right_outlined),
-                ],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 12),
+              child: CommonCard(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const LevelChartView(id: "user id",)),
+                  );
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Total Investment",
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    Text("21654845564",
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    Icon(Icons.arrow_circle_right_outlined),
+                  ],
+                ),
               ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
+              padding: EdgeInsets.symmetric(vertical: 26),
               child: Text("Net Income : 0",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
             ),
-            Container(
-              color: Colors.pink.shade200,
-              width: double.infinity,
+            CommonCard(
+              // color: Colors.pink.shade200,
+              // width: double.infinity,
               child: DataTable(
                 border: TableBorder.all(),
                 columns: const [
