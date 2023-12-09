@@ -75,7 +75,7 @@ class User {
   String? countryCode;
   String? userCode;
   int? verificationCode;
-  TotalCoins? totalCoins;
+  double? totalCoins;
   bool? status;
   String? userType;
   DateTime? userCreatedAt;
@@ -111,7 +111,7 @@ class User {
       countryCode: json['countryCode'],
       userCode: json['userCode'],
       verificationCode: json['verificationCode'],
-      totalCoins: TotalCoins.fromJson(json['totalCoins']),
+      totalCoins: json['totalCoins'],
       status: json['status'],
       userType: json['userType'],
       userCreatedAt: DateTime.parse(json['createdAt']),
@@ -131,7 +131,7 @@ class User {
     'countryCode': countryCode,
     'userCode': userCode,
     'verificationCode': verificationCode,
-    'totalCoins': totalCoins?.toJson(),
+    'totalCoins': totalCoins,
     'status': status,
     'userType': userType,
     'createdAt': userCreatedAt?.toIso8601String(),

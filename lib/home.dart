@@ -317,7 +317,7 @@ class HomeSideView extends StatelessWidget {
         children: [
           CoinDetails(
             totalCoin: formatPercentage(double.parse(
-                homeDetails.data?.totalUserCoins?.numberDecimal ?? "0.00")),
+                homeDetails.data?.totalUserCoins.toString() ?? "0.00")),
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
 
@@ -339,9 +339,7 @@ class HomeSideView extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     formatPercentage(double.parse(homeDetails
-                            .data?.totalCoins?.numberDecimal
-                            ?.toString() ??
-                        "0.00")),
+                            .data?.totalCoins.toString() ?? "0.00")),
                     style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 22,

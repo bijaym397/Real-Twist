@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:real_twist/home.dart';
+import '../constants/api.dart';
 import 'level_chart.dart';
 import 'net_income.dart';
+import 'package:http/http.dart' as http;
 
 class MyNetworkView extends StatefulWidget {
   const MyNetworkView({super.key});
@@ -11,6 +15,30 @@ class MyNetworkView extends StatefulWidget {
 }
 
 class _MyNetworkViewState extends State<MyNetworkView> {
+
+  List<dynamic> tableData = [];
+
+  _fetchData() async {
+    const apiUrl = Api.baseUrl+Api.userNetwork;
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      setState(() {
+        tableData =jsonData['data'];
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+
+  @override
+  void initState() {
+    _fetchData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,14 +119,14 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                   ))),
                 ],
                 rows:
-                    listOfColumns // Loops through dataColumnText, each iteration assigning the value to element
-                        .map(
+                     // Loops through dataColumnText, each iteration assigning the value to element
+                tableData.map(
                           ((data) => DataRow(
                                 cells: <DataCell>[
                                   DataCell(SizedBox(
                                     width: double.infinity,
                                     child: Text(
-                                      data["Name"]!,
+                                      "Level ${data["level"]}",
                                       style: const TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.w600,
@@ -109,7 +137,7 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                                   DataCell(SizedBox(
                                       width: double.infinity,
                                       child: Text(
-                                        data["Number"]!,
+                                        "${data["numberOfJoin"] ?? 0}",
                                         style: const TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w600,
@@ -122,12 +150,12 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                                         child: Icon(
                                             Icons.arrow_circle_right_outlined),
                                       ), onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                               NetIncomeView(id: data["Name"]!,)),
-                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //            NetIncomeView(id: data["Name"]!,)),
+                                    // );
                                   }),
                                 ],
                               )),
