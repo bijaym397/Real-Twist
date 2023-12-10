@@ -29,7 +29,7 @@ class SignUpData {
   String? countryCode;
   String? userCode;
   int? verificationCode;
-  int? totalCoins;
+  double? totalCoins;
   bool? status;
   String? userType;
   String? sId;
