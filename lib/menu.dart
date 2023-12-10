@@ -1,17 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
-import 'package:real_twist/payments/icome_view.dart';
-import 'package:real_twist/payments/my_invest.dart';
-import 'package:real_twist/privacy_policy.dart';
+import 'package:real_twist/payments/buy_coins.dart';
+import 'package:real_twist/payments/payment_history.dart';
+import 'package:real_twist/payments/sell_coins.dart';
+import 'package:real_twist/payments/webview_screen.dart';
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'constants/api.dart';
 import 'home.dart';
 import 'auth/login.dart';
 
@@ -30,42 +28,50 @@ class DrawerView extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration:
-                const BoxDecoration(color: Colors.transparent), //BoxDecoration
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                    colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+            const BoxDecoration(color: Colors.transparent), //BoxDecoration
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>  MyProfile(userDetails : userDetails, homeDetails: homeDetails),
+                  ),
+                );
+              },
+              child: Container(
+                // padding: EdgeInsets.only(left: 90),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                        colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                        child: Text(
+                          (() {
+                            final firstName = userDetails.data?.name.toString();
+                            if ((firstName?.isNotEmpty == true)) {
+                              return (firstName![0].toUpperCase());
+                            } else {
+                              return "N";
+                            }
+                          })(),
+                          style: TextStyle(fontSize: 30.0, color: Colors.blue),
+                        ), //Text
+                      ),
+                      const SizedBox(height: 10,),
+                      Text(
+                        userDetails.data?.name.toString().toUpperCase() ??
+                            "N/A",
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
+                    ],)
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                  child: Text(
-                    (() {
-                      final firstName = userDetails.data?.name.toString();
-                      if ((firstName?.isNotEmpty == true)) {
-                        return (firstName![0].toUpperCase());
-                      } else {
-                        return "NA";
-                      }
-                    })(),
-                    style: const TextStyle(fontSize: 30.0, color: Colors.blue),
-                  ), //Text
-                ),
-                const SizedBox(height: 10,),
-                Text(
-                  userDetails.data?.name.toString() ?? "N/A",
-                  style: const TextStyle(fontSize: 18),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis
-                ),
-                  const SizedBox(height: 5),
-                Text(userDetails.data?.phoneNumber.toString() ?? "N/A",
-                    maxLines: 2,overflow: TextOverflow.ellipsis),
-              ],)
             ), //UserAccountDrawerHeader
           ), //DrawerHeader
           ListTile(
@@ -82,17 +88,19 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.monetization_on),
-            title: const Text('Deposit'),
+            leading: const Icon(Icons.store_outlined),
+            title: const Text('Buy Coins'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyCoinsScreen()));
             },
           ),
           ListTile(
-            leading: const Icon(Icons.monetization_on_outlined),
-            title: const Text('Withdrawal '),
+            leading: const Icon(Icons.sell),
+            title: const Text('Sell Coins'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SellCoinsScreen()));
             },
           ),
           ListTile(
@@ -104,48 +112,60 @@ class DrawerView extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.ac_unit_outlined),
-            title: const Text('My Investment'),
+            leading: const Icon(Icons.account_balance),
+            title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyInvestView()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistoryPage(appBarTitle: 'Payment History')));
             },
           ),
           ListTile(
-            leading: const Icon(Icons.incomplete_circle),
-            title: const Text('Total Income'),
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: const Text('Privacy Policy'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyIncomeView()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => WebViewScreen(
+                    "https://doc-hosting.flycricket.io/privacy-policy/adc7098b-36a9-477a-8c48-21eaebbc9400/privacy",
+                    title: "Privacy Policy",
+                    onPageFinished: (String url) {},
+                  ),
+                ),
+              );
             },
           ),
           ListTile(
-            leading: const Icon(Icons.privacy_tip_rounded),
-            title: const Text('Our Privacy Policy'),
+            leading: const Icon(Icons.gavel),
+            title: const Text('Terms & Conditions'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => WebViewScreen(
+                    "https://doc-hosting.flycricket.io/terms-conditions/cf4654cb-0ddf-44e0-88c9-0ec3ef4e0217/terms",
+                    title: "Terms & Conditions",
+                    onPageFinished: (String url) {},
+                  ),
+                ),
+              );
             },
           ),
           ListTile(
-            leading: const Icon(Icons.share_rounded),
-            title: const Text("Refer Friends & Earn"),
-            onTap: () {
-              share(
-                  shareUrl: Platform.isAndroid
-                      ? Api.androidAppLinked
-                      : Platform.isIOS
-                      ? Api.iosAppLinked
-                      : Api.iosAppLinked);
-              Navigator.pop(context);
-            }
+              leading: const Icon(Icons.share_rounded),
+              title: const Text("Refer Friends & Earn"),
+              onTap: () {
+                share(
+                    shareUrl: homeDetails.data!.appLink.toString());
+                Navigator.pop(context);
+              }
           ),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('LogOut'),
             onTap: () {
               Navigator.pop(context);
-              _showTextFieldPopup(context);
+              showTextFieldPopup(context);
             },
           ),
         ],
@@ -154,7 +174,7 @@ class DrawerView extends StatelessWidget {
   }
 }
 
-Future<void> _showTextFieldPopup(BuildContext context) async {
+Future<void> showTextFieldPopup(BuildContext context) async {
   return showDialog(
     context: context,
     barrierColor: Colors.black87,

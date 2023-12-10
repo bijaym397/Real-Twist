@@ -2,14 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:real_twist/admin/payment_history.dart';
+import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
+import 'package:real_twist/modals/referral_response_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/icome_view.dart';
 import 'package:real_twist/payments/my_invest.dart';
+import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 import 'package:real_twist/utils/Back_handler.dart';
 import 'package:http/http.dart' as http;
@@ -17,11 +20,12 @@ import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'game2.dart';
 import 'menu.dart';
-import 'notification.dart';
 
 class HomeView extends StatefulWidget {
-  bool? referCode = false;
-  HomeView({Key? key, this.referCode}) : super(key: key);
+  String? userId;
+  bool? referCode;
+
+  HomeView({Key? key, this.referCode, this.userId}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -39,11 +43,13 @@ class _HomeViewState extends State<HomeView> {
   }
 
   initSates() async {
-    if(widget.referCode == true){
-      _showReferDialog(context);
-    }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
+    debugPrint("userId ${widget.userId.toString()}");
+    debugPrint("referCode ${widget.referCode}");
+    if (widget.referCode == true) {
+      _showReferralPopup(context);
+    }
     if (token != null) {
       userDetails = await _show(token: token);
       homeDetails = await _homeDetails(token: token);
@@ -52,114 +58,7 @@ class _HomeViewState extends State<HomeView> {
       userDetails = userDetails;
       homeDetails = homeDetails;
     }
-    if(widget.referCode == true) {
-      _showReferDialog(context);
-    }
     setState(() {});
-  }
-
-  Future<void> _showReferDialog(BuildContext context) async {
-    TextEditingController referController = TextEditingController();
-    FocusNode referNode = FocusNode();
-
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      barrierColor: Colors.black87,
-      builder: (context) {
-        final GlobalKey<FormState> referFormKey = GlobalKey<FormState>();
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          content: Container(
-            height: 200,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Form(
-              key: referFormKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const Text('Referral Code?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const Text('Please Enter the phone number of your friend who refer\'s us.', style: TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(width: 10),
-                  TextFormField(
-                    controller: referController,
-                    focusNode: referNode,
-                    maxLength: 10,
-                    keyboardType: TextInputType.phone,
-                    textInputAction: TextInputAction.done,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return "*Required";
-                      }
-                      if (value.length < 10) {
-                        return "Length should be 10";
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                      prefixIcon: Icon(Icons.key),
-                      border: OutlineInputBorder(),
-                      hintText: '998xx xxxxx',
-                      labelText: "Enter Phone Number",
-                      counterText: "",
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  SizedBox(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: CommonCard(
-                            onTap: () => Navigator.pop(context),
-                            child: const Center(
-                              child: Text(
-                                'Skip',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: CommonCard(
-                            onTap: () {
-                              if (referFormKey.currentState!.validate()) {
-                                // _hitForgotApi(
-                                //     phone: textFieldController.text.trim());
-                              }
-                            },
-                            child: const Center(
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -169,6 +68,7 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.pink.shade800,
+          centerTitle: true,
           title: const Text("Real Twist"),
           actions: [
             GestureDetector(
@@ -176,7 +76,8 @@ class _HomeViewState extends State<HomeView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NotificationView()),
+                      builder: (context) => const PaymentHistoryPage(
+                          appBarTitle: "Notifications")),
                 );
               },
               child: Stack(
@@ -208,7 +109,6 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ],
-          centerTitle: true,
         ),
         drawer: DrawerView(
             userDetails: userDetails!,
@@ -268,6 +168,140 @@ class _HomeViewState extends State<HomeView> {
       return null;
     }
   }
+
+  Future<void> _showReferralPopup(BuildContext context) async {
+    TextEditingController textFieldController = TextEditingController();
+    FocusNode referralFocusNode = FocusNode();
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (context) {
+        final GlobalKey<FormState> referralFormKey = GlobalKey<FormState>();
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: Container(
+            height: 160,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Form(
+              key: referralFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text('Having Referral Code?',
+                      style: TextStyle(fontSize: 20)),
+                  TextFormField(
+                    controller: textFieldController,
+                    focusNode: referralFocusNode,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "*Required";
+                      /*if (value.length < 10) {
+                        return "Length should be 10";
+                      }*/
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      prefixIcon: Icon(Icons.redeem_sharp),
+                      border: OutlineInputBorder(),
+                      hintText: 'xxxxx xxxxx',
+                      labelText: "Enter referral code",
+                      counterText: "",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () => Navigator.pop(context),
+                            child: const Center(
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CommonCard(
+                            onTap: () {
+                              if (referralFormKey.currentState!.validate()) {
+                                _hitReferralApi(
+                                  code: textFieldController.text.trim(),
+                                  userId: widget.userId.toString(),
+                                );
+                              }
+                            },
+                            child: const Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _hitReferralApi({String? code, String? userId}) async {
+    try {
+      customLoader!.show(context);
+      const apiUrl = "${Api.baseUrl}${Api.referralCode}";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'referralCode': code.toString(),
+          'userId': userId,
+        }),
+      );
+      final referralData =
+          ReferralApiResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("${referralData.message}"),
+        ));
+        Navigator.pop(context);
+      } else {
+        // API call failed
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${referralData.message}"),
+          ),
+        );
+      }
+    } catch (e) {
+      customLoader!.hide();
+      return debugPrint(e.toString());
+    }
+  }
 }
 
 class HomeSideView extends StatelessWidget {
@@ -282,10 +316,72 @@ class HomeSideView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
           CoinDetails(
-            totalCoin:
-                homeDetails.data?.totalIncome?.toStringAsFixed(2) ?? "0.00",
+            totalCoin: formatPercentage(double.parse(
+                homeDetails.data?.totalUserCoins?.numberDecimal ?? "0.00")),
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
+
+          /// Total Coins Available
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: CommonCard(
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Total Coins Available",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 26,
+                        color: Colors.white.withOpacity(.7)),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    formatPercentage(double.parse(homeDetails
+                            .data?.totalCoins?.numberDecimal
+                            ?.toString() ??
+                        "0.00")),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                        color: Colors.black54),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          /// My Network
+          const SizedBox(height: 26),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: CommonCard(
+              onTap: () => Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const MyNetworkView(),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "My Network",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 26,
+                        color: Colors.white.withOpacity(.7)),
+                  ),
+                  const SizedBox(width: 2),
+                  const Icon(Icons.double_arrow_rounded)
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -338,7 +434,8 @@ class HomeSideView extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyInvestView())),
+                          builder: (context) => const PaymentHistoryPage(
+                              appBarTitle: 'My Investment History'))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -351,8 +448,7 @@ class HomeSideView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        homeDetails.data?.totalInvestment?.toStringAsFixed(2) ??
-                            "0.00",
+                        homeDetails.data?.totalInvestment.toString() ?? "0.00",
                         style: const TextStyle(
                             fontWeight: FontWeight.w800, fontSize: 22),
                       ),
@@ -428,7 +524,8 @@ class HomeSideView extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyIncomeView())),
+                          builder: (context) => const PaymentHistoryPage(
+                              appBarTitle: 'My Income History'))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -528,12 +625,7 @@ class HomeSideView extends StatelessWidget {
                 /// Refer A Friend
                 GestureDetector(
                   onTap: () {
-                    share(
-                        shareUrl: Platform.isAndroid
-                            ? Api.androidAppLinked
-                            : Platform.isIOS
-                                ? Api.iosAppLinked
-                                : Api.iosAppLinked);
+                    share(shareUrl: homeDetails.data!.appLink.toString());
                   },
                   child: Container(
                     height: 200,
@@ -571,6 +663,7 @@ class CommonCard extends StatelessWidget {
     this.width,
     this.onTap,
   }) : super(key: key);
+
   final EdgeInsets? padding;
   final Widget? child;
   final width;
@@ -655,7 +748,7 @@ class CoinDetails extends StatelessWidget {
       children: [
         Container(
           height: 70,
-          width: 150,
+          width: 170,
           margin: const EdgeInsets.only(bottom: 26),
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -669,11 +762,11 @@ class CoinDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Real Twist",
+                "Real Twist Coin",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
               ),
@@ -681,7 +774,7 @@ class CoinDetails extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
                 child: Text(
-                  "My CRS ${coinPrice.toString()}",
+                  "Price ${coinPrice.toString()}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.white,
@@ -754,4 +847,20 @@ class CoinDetails extends StatelessWidget {
       ],
     );
   }
+}
+
+String formatPercentage(double percentage) {
+  String normalizedPercentage = percentage.toString();
+
+  if (normalizedPercentage.contains('.')) {
+    int indexOfDecimal = normalizedPercentage.indexOf('.');
+    String decimalPart = normalizedPercentage.substring(indexOfDecimal + 1);
+
+    if (decimalPart.length > 2) {
+      normalizedPercentage =
+          normalizedPercentage.substring(0, indexOfDecimal + 3);
+    }
+  }
+
+  return normalizedPercentage;
 }

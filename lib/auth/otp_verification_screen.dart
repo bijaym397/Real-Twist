@@ -63,6 +63,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         );
         sharedPreferences.setString(
             AppStrings.spAuthToken, verificationData.data!.authToken.toString());
+        sharedPreferences.setString(
+            AppStrings.spUserId, verificationData.data!.userId.toString());
         // Navigate to the home screen (replace with the actual home screen)
         widget.token?.isNotEmpty == true ?  Navigator.pushReplacement(
           context,
@@ -72,7 +74,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         ): Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeView(referCode: widget.referCode),
+            builder: (context) => HomeView(referCode: widget.referCode, userId: widget.userId.toString()),
           ),
         );
         // } else {

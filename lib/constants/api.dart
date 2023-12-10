@@ -5,8 +5,8 @@ abstract class BaseUrl {
 }
 
 abstract class Api {
-
   static const String baseUrl = BaseUrl.stageBaseUrl;
+
   // ///
   // static const String getBearer = "users/edit_profile";
 
@@ -18,7 +18,7 @@ abstract class Api {
   static const String verifyPasswordOtp = "verify-password-otp";
   static const String changePassword = "change-password";
   static const String homeDetails = "user/details";
-  static const String coinsPrice = "admin/coinsprice";
+  static const String referralCode = "by-referral-code";
 
   static const String socialData = "users/userSignupBySocial";
   static const String getStaticPages = "/get_page_content/";
@@ -26,7 +26,7 @@ abstract class Api {
   static const String getProfile = "users/get-profile/";
   static const String uploadProfileImage = "users/upload-image/";
   static const String editProfile = "users/edit-profile/";
-
+  static const String profileChangePassword = "profile/change-password/";
 
   static const String uploadPrescription = "users/upload-prescription/";
   static const String getPrescription = "users/get-prescription/";
@@ -41,12 +41,30 @@ abstract class Api {
   static const String iosAppLinked = "https://flutter.dev/";
   static const String androidAppLinked = "https://flutter.dev/";
 
-
   //Game endpoints
   static const String spendCoin = "spincoin/spend";
   static const String spinCoinStatus = "spincoin/status/";
 
+  //Payment endpoints
+  static const String payment = "payment/create-checkout-session";
+  static const String sellCoins = "payment/withdraw";
+  static const String updatePaymentStatus = "payment/status";
+  static const String paymentHistory = "user/payment";
+  static const String adminPaymentHistory = "admin/payment-history";
+  static const String spinCoinHistory = "admin/spincoin";
+
+  //Admin endpoints
+  static const String getUserList = "admin/user-list?search=";
+  static const String getUserDetails = "admin/user/";
+  static const String setCoinsPrice = "admin/set-config";
+  static const String setVersion = "admin/set-config";
+  static const String dashboardDetails = "admin/get-config?type=coinprice";
 
   static const String userType = "user";
+  static const String adminType = "admin";
 
+
+  static const String checkAppVersion = "admin/get-config?type=appversion";
+
+  static const String appVersion = "1.0.0";
 }

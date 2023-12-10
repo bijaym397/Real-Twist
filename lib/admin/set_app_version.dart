@@ -11,17 +11,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/strings.dart';
 import '../home.dart';
 
-class SetCoinPrice extends StatefulWidget {
-  const SetCoinPrice({Key? key}) : super(key: key);
+class SetAppVersion extends StatefulWidget {
+  const SetAppVersion({Key? key}) : super(key: key);
 
   @override
-  State<SetCoinPrice> createState() => _SetCoinPriceState();
+  State<SetAppVersion> createState() => _SetAppVersionState();
 }
 
-class _SetCoinPriceState extends State<SetCoinPrice> {
-  final GlobalKey<FormState> setCoinFormKey = GlobalKey<FormState>();
-  TextEditingController setCoinController = TextEditingController();
-  FocusNode setCoinNode = FocusNode();
+class _SetAppVersionState extends State<SetAppVersion> {
+  final GlobalKey<FormState> versionFormKey = GlobalKey<FormState>();
+  TextEditingController versionController = TextEditingController();
+  FocusNode versionNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -30,42 +30,42 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
         elevation: 8,
         centerTitle: true,
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Set Coins Price"),
+        title: const Text("Set App Version"),
         automaticallyImplyLeading: true,
       ),
       backgroundColor: Colors.black87,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Form(
-          key: setCoinFormKey,
+          key: versionFormKey,
           child: ListView(
             children: [
               const SizedBox(height: 150),
               const Center(
                   child: Text(
-                    "Set Coins",
+                    "Set App Version",
                     style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
                   )),
               const SizedBox(height: 100),
               TextFormField(
-                focusNode: setCoinNode,
+                focusNode: versionNode,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: setCoinController,
+                controller: versionController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) {
                   if (value == null || value.trim().isEmpty)
-                    {return "*Required";}
+                  {return "*Required";}
                   return null;
                 },
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                   contentPadding:
                   EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  prefixIcon: Icon(Icons.change_circle_outlined),
+                  prefixIcon: Icon(Icons.cached),
                   border: OutlineInputBorder(),
-                  hintText: 'Enter Coins',
-                  labelText: "Enter Coins",
+                  hintText: 'Enter Version',
+                  labelText: "Enter Version",
                 ),
               ),
               const SizedBox(height: 60),
@@ -73,9 +73,9 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
                 height: 45,
                 child: CommonCard(
                   onTap: () {
-                    if (setCoinFormKey.currentState!.validate()) {
-                      _hitSetCoinsApi(
-                        setCoins: setCoinController.text.trim(),
+                    if (versionFormKey.currentState!.validate()) {
+                      _hitVersionApi(
+                        setVersion: versionController.text.trim(),
                       );
                     }
                   },
@@ -95,16 +95,16 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
     );
   }
 
-  Future<void> _hitSetCoinsApi({String? setCoins}) async {
+  Future<void> _hitVersionApi({String? setVersion}) async {
     try {
       customLoader!.show(context);
-      const apiUrl = "${Api.baseUrl}${Api.setCoinsPrice}";
+      const apiUrl = "${Api.baseUrl}${Api.setVersion}";
       final pref = await SharedPreferences.getInstance();
 
       final Map<String, dynamic> requestMap = {
-        "type": "coinprice",
+        "type": "appversion",
         "setting": {
-          "price": int.tryParse(setCoins.toString()) ?? 1
+          "version": setVersion.toString() ?? "1.0.0"
         },
       };
 
@@ -122,7 +122,7 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
       if (response.statusCode == 200) {
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Coins set ${data['data']['setting']['price'] ?? 0}"),
+          content: Text("Version set ${data['data']['setting']['version'] ?? "1.0.0"}"),
         ));
         Navigator.pop(context,{"refresh": true});
         // Navigator.of(context).pushAndRemoveUntil(
