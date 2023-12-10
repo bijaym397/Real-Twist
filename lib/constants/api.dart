@@ -54,7 +54,8 @@ abstract class Api {
   static const String spinCoinHistory = "admin/spincoin";
 
   //Network APi Endpoints
-  static const String userNetwork = "network/656dc2bc2d871788d558031f";
+  static const String userNetwork = "network/";
+  static const String userNetworkIncome = "network/income/";
 
   //Admin endpoints
   static const String getUserList = "admin/user-list?search=";
