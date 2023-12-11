@@ -112,10 +112,10 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-        // drawer: DrawerView(
-        //     userDetails: userDetails!,
-        //     homeDetails: homeDetails!,
-        //     token: token.toString()),
+        drawer: DrawerView(
+            userDetails: userDetails!,
+            homeDetails: homeDetails!,
+            token: token.toString()),
         body: HomeSideView(homeDetails: homeDetails!),
       ),
     );
@@ -352,7 +352,7 @@ class HomeSideView extends StatelessWidget {
             ),
           ),
 
-          /// My Network
+         /* /// My Network
           const SizedBox(height: 26),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -379,7 +379,7 @@ class HomeSideView extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+          ),*/
 
           const SizedBox(height: 24),
           Padding(

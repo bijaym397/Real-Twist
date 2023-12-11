@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/my_profile.dart';
 import 'package:real_twist/change_password.dart';
+import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
@@ -131,6 +132,19 @@ class DrawerView extends StatelessWidget {
                     title: "Privacy Policy",
                     onPageFinished: (String url) {},
                   ),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.cell_tower),
+            title: const Text('My Network'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const MyNetworkView(),
                 ),
               );
             },
