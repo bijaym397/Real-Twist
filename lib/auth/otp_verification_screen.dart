@@ -69,7 +69,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         widget.token?.isNotEmpty == true ?  Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ChangePassword(token: verificationData.data!.token.toString()),
+            builder: (context) => ChangePassword(token: verificationData.data!.authToken.toString()),
           ),
         ): Navigator.pushReplacement(
           context,

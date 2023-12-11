@@ -266,6 +266,9 @@ class _SignupViewState extends State<SignupView> {
       );
       final signUpData = SignUpResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
+        print("object");
+        print(response.body);
+        print("object");
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("${signUpData.message}"),
