@@ -1,29 +1,29 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:real_twist/admin/admin_level_chart.dart';
 import 'package:real_twist/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/api.dart';
 import '../constants/strings.dart';
-import 'level_chart.dart';
-import 'net_income.dart';
+// import 'level_chart.dart';
+// import 'net_income.dart';
 import 'package:http/http.dart' as http;
 
-class MyNetworkView extends StatefulWidget {
-  const MyNetworkView({super.key});
+class MyNetworkAdmin extends StatefulWidget {
+  final userId;
+  const MyNetworkAdmin({super.key, required this.userId});
 
   @override
-  State<MyNetworkView> createState() => _MyNetworkViewState();
+  State<MyNetworkAdmin> createState() => _MyNetworkViewState();
 }
 
-class _MyNetworkViewState extends State<MyNetworkView> {
+class _MyNetworkViewState extends State<MyNetworkAdmin> {
 
   List<dynamic> tableData = [];
 
   _fetchData() async {
-    final pref = await SharedPreferences.getInstance();
-    final userId = pref.getString(AppStrings.spUserId) ?? "";
-    final apiUrl = Api.baseUrl + Api.userNetwork+userId;
+    final apiUrl = Api.baseUrl + Api.userNetwork+widget.userId;
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -64,7 +64,7 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                        const LevelChartView(id: "user id",)),
+                        const LevelChartAdmin()),
                   );
                 },
                 child: const Row(
@@ -89,8 +89,7 @@ class _MyNetworkViewState extends State<MyNetworkView> {
             tableData.length == 0 ? Padding(
               padding: const EdgeInsets.only(top: 70),
               child: const Center(child: Text("No Data Available",style: TextStyle(fontSize: 26))),
-            ) :
-            CommonCard(
+            ) : CommonCard(
               // color: Colors.pink.shade200,
               // width: double.infinity,
               child: DataTable(
@@ -160,11 +159,11 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                                 child: Icon(
                                     Icons.arrow_circle_right_outlined),
                               ), onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NetIncomeView(level:"${data["level"]}",id: data["userIds"],)),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => NetIncomeView(level:"${data["level"]}",id: data["userIds"],)),
+                            // );
                           }),
                         ],
                       )),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:real_twist/admin/network_admin.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/utils/dateFormater.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -117,6 +118,32 @@ class _UserDetailsState extends State<UserDetails> {
                       'Total Investment', user['totalInvestment'].toString()),
                   _buildDataRow('Total Income', user['totalIncome'].toString()),
                   _buildDataRow('Join Date', formatDate(user['createdAt'])),
+                  const SizedBox(height: 28),
+                   /// My Network
+          CommonCard(
+            onTap: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => MyNetworkAdmin(userId : widget.id),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 10
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "My Network",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 22,
+                      color: Colors.white.withOpacity(.7)),
+                ),
+                const SizedBox(width: 2),
+                const Icon(Icons.double_arrow_rounded)
+              ],
+            ),
+          ),
                   const SizedBox(height: 28),
                   const Text(
                     "User Payment Details",
