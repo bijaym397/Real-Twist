@@ -7,9 +7,10 @@ import '../constants/api.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants/strings.dart';
+import '../home.dart';
 
 class NetIncomeView extends StatefulWidget {
-  const NetIncomeView({super.key,required this.level, required this.id});
+  const NetIncomeView({super.key, required this.level, required this.id});
 
   final String level;
   final dynamic id;
@@ -19,21 +20,18 @@ class NetIncomeView extends StatefulWidget {
 }
 
 class _NetIncomeViewState extends State<NetIncomeView> {
-
   List<dynamic> tableData = [];
 
   _fetchData() async {
     final pref = await SharedPreferences.getInstance();
     final userId = pref.getString(AppStrings.spUserId) ?? "";
-    final apiUrl = Api.baseUrl+Api.userNetworkIncome+userId;
+    final apiUrl = Api.baseUrl + Api.userNetworkIncome + userId;
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({
-        "userIds": widget.id
-      }),
+      body: jsonEncode({"userIds": widget.id}),
     );
 
     if (response.statusCode == 200) {
@@ -55,20 +53,21 @@ class _NetIncomeViewState extends State<NetIncomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Level ${widget.level}"),  backgroundColor: Colors.pink.shade800,
-        centerTitle: true,),
+      appBar: AppBar(
+        title: Text("Level ${widget.level}"),
+        backgroundColor: Colors.pink.shade800,
+        centerTitle: true,
+      ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
           children: [
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
-              child: Text("Net Income : 0",
+              child: Text("Real Twist Level Chart!",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             ),
-            Container(
-              color: Colors.pink.shade200,
-              width: double.infinity,
+            CommonCard(
               child: DataTable(
                 border: TableBorder.all(),
                 columns: const [
@@ -104,7 +103,7 @@ class _NetIncomeViewState extends State<NetIncomeView> {
                   ))),
                 ],
                 rows:
-                tableData // Loops through dataColumnText, each iteration assigning the value to element
+                    tableData // Loops through dataColumnText, each iteration assigning the value to element
                         .map(
                           ((data) => DataRow(
                                 cells: <DataCell>[

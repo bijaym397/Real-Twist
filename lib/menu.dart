@@ -18,7 +18,13 @@ class DrawerView extends StatelessWidget {
   final UserApiResponse userDetails;
   final HomeDetailsResponse homeDetails;
   final String? token;
-  const DrawerView({Key? key, required this.userDetails, required this.homeDetails, this.token}) : super(key: key);
+
+  const DrawerView(
+      {Key? key,
+      required this.userDetails,
+      required this.homeDetails,
+      this.token})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,23 +35,26 @@ class DrawerView extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration:
-            const BoxDecoration(color: Colors.transparent), //BoxDecoration
+                const BoxDecoration(color: Colors.transparent), //BoxDecoration
             child: InkWell(
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  MyProfile(userDetails : userDetails, homeDetails: homeDetails),
+                    builder: (context) => MyProfile(
+                        userDetails: userDetails, homeDetails: homeDetails),
                   ),
                 );
               },
               child: Container(
-                // padding: EdgeInsets.only(left: 90),
+                  // padding: EdgeInsets.only(left: 90),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    gradient: LinearGradient(
-                        colors: [Colors.pink.shade900, Colors.pinkAccent.shade100]),
+                    gradient: LinearGradient(colors: [
+                      Colors.pink.shade900,
+                      Colors.pinkAccent.shade100
+                    ]),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -64,15 +73,19 @@ class DrawerView extends StatelessWidget {
                           style: TextStyle(fontSize: 30.0, color: Colors.blue),
                         ), //Text
                       ),
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Text(
                         userDetails.data?.name.toString().toUpperCase() ??
                             "N/A",
                         style: const TextStyle(fontSize: 18),
                       ),
-                      Text(userDetails.data?.phoneNumber.toString() ?? "N/A",),
-                    ],)
-              ),
+                      Text(
+                        userDetails.data?.phoneNumber.toString() ?? "N/A",
+                      ),
+                    ],
+                  )),
             ), //UserAccountDrawerHeader
           ), //DrawerHeader
           ListTile(
@@ -83,7 +96,8 @@ class DrawerView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>  MyProfile(userDetails : userDetails, homeDetails: homeDetails),
+                  builder: (context) => MyProfile(
+                      userDetails: userDetails, homeDetails: homeDetails),
                 ),
               );
             },
@@ -93,7 +107,10 @@ class DrawerView extends StatelessWidget {
             title: const Text('Buy Coins'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyCoinsScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BuyCoinsScreen()));
             },
           ),
           ListTile(
@@ -101,7 +118,10 @@ class DrawerView extends StatelessWidget {
             title: const Text('Sell Coins'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const SellCoinsScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SellCoinsScreen()));
             },
           ),
           ListTile(
@@ -109,7 +129,11 @@ class DrawerView extends StatelessWidget {
             title: const Text('Change Password'),
             onTap: () async {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword(token: token.toString())));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ChangePassword(token: token.toString())));
             },
           ),
           ListTile(
@@ -117,7 +141,24 @@ class DrawerView extends StatelessWidget {
             title: const Text('Payment History'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentHistoryPage(appBarTitle: 'Payment History')));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PaymentHistoryPage(
+                          appBarTitle: 'Payment History')));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.network_ping_sharp),
+            title: const Text('My Network'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const MyNetworkView(),
+                ),
+              );
             },
           ),
           ListTile(
@@ -132,19 +173,6 @@ class DrawerView extends StatelessWidget {
                     title: "Privacy Policy",
                     onPageFinished: (String url) {},
                   ),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.cell_tower),
-            title: const Text('My Network'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push<void>(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const MyNetworkView(),
                 ),
               );
             },
@@ -169,11 +197,9 @@ class DrawerView extends StatelessWidget {
               leading: const Icon(Icons.share_rounded),
               title: const Text("Refer Friends & Earn"),
               onTap: () {
-                share(
-                    shareUrl: homeDetails.data!.appLink.toString());
+                share(shareUrl: homeDetails.data!.appLink.toString());
                 Navigator.pop(context);
-              }
-          ),
+              }),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('LogOut'),
@@ -207,10 +233,14 @@ Future<void> showTextFieldPopup(BuildContext context) async {
                     color: Colors.white,
                     fontSize: 22),
               ),
-              const Text("Are you sure you want to Logout your account!", textAlign: TextAlign.center,style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontSize: 18),),
+              const Text(
+                "Are you sure you want to Logout your account!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: 18),
+              ),
               SizedBox(
                 height: 40,
                 child: Row(
@@ -231,7 +261,8 @@ Future<void> showTextFieldPopup(BuildContext context) async {
                     Expanded(
                       child: CommonCard(
                         onTap: () async {
-                          SharedPreferences preference = await SharedPreferences.getInstance();
+                          SharedPreferences preference =
+                              await SharedPreferences.getInstance();
                           preference.setString(AppStrings.spAuthToken, "");
                           Navigator.push(
                             context,

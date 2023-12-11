@@ -14,7 +14,7 @@ class _LevelChartViewState extends State<LevelChartView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(/*widget.id.toString() ??*/ "Details"),
+      appBar: AppBar(title: const Text("Real Twist"),
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,),
       backgroundColor: Colors.black87,
@@ -23,7 +23,7 @@ class _LevelChartViewState extends State<LevelChartView> {
           children: [
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
-              child: Text("Net Income : 0",
+              child: Text("Reward You Can Earn!",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             ),
             CommonCard(

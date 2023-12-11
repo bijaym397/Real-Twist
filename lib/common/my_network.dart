@@ -70,10 +70,7 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Reward you can earn",
-                        style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                    Text("21654845564",
+                    Text("Reward You Can Earn!",
                         style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                     Icon(Icons.arrow_circle_right_outlined),
