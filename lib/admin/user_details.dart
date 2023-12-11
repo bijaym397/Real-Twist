@@ -47,6 +47,8 @@ class _UserDetailsState extends State<UserDetails> {
         throw Exception('Failed to load user details');
       }
     } else {
+      debugPrint("fhdsjfhs ${userId}");
+      debugPrint("fhdsjfhs ${response.body}");
       throw Exception('Failed to load user details');
     }
   }
