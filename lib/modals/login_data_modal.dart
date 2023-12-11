@@ -75,7 +75,7 @@ class User {
   String? countryCode;
   String? userCode;
   int? verificationCode;
-  double? totalCoins;
+  dynamic? totalCoins;
   bool? status;
   String? userType;
   DateTime? userCreatedAt;

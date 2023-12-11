@@ -26,10 +26,10 @@ class HomeDetailsResponse {
 
 class HomeData {
   String? id;
-  int? totalInvestment;
-  int? totalIncome;
-  double? totalCoins;
-  double? totalUserCoins;
+  dynamic? totalInvestment;
+  dynamic? totalIncome;
+  dynamic? totalCoins;
+  dynamic? totalUserCoins;
   int? cra;
   String? appLink;
 
