@@ -6,6 +6,7 @@ class PrivacyPolicy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         title: const Text("Real Twist Privacy Policy"),

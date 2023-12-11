@@ -6,6 +6,7 @@ class NotificationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle:  true,
         backgroundColor: Colors.pink.shade800,

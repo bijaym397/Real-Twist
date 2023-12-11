@@ -74,6 +74,7 @@ class _UserListScreenState extends State<UserListScreen> {
   Widget build(BuildContext context) {
     const String img = "assets/user.png";
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,

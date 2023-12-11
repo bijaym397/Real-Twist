@@ -33,7 +33,7 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
         title: const Text("Set Coins Price"),
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.black,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Form(

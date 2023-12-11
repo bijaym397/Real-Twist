@@ -15,7 +15,7 @@ class _LevelChartViewState extends State<LevelChartView> {
       appBar: AppBar(title: const Text("Real Twist"),
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,),
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -84,6 +84,7 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,

@@ -33,7 +33,7 @@ class _SetAppVersionState extends State<SetAppVersion> {
         title: const Text("Set App Version"),
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.black,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Form(
