@@ -70,7 +70,7 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Total Investment",
+                    Text("Reward you can earn",
                         style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                     Text("21654845564",
