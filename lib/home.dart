@@ -22,10 +22,9 @@ import 'game2.dart';
 import 'menu.dart';
 
 class HomeView extends StatefulWidget {
-  String? userId;
   bool? referCode;
 
-  HomeView({Key? key, this.referCode, this.userId}) : super(key: key);
+  HomeView({Key? key, this.referCode}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -35,6 +34,7 @@ class _HomeViewState extends State<HomeView> {
   UserApiResponse? userDetails = UserApiResponse();
   HomeDetailsResponse? homeDetails = HomeDetailsResponse();
   String? token = "";
+  String? userId = "";
 
   @override
   void initState() {
@@ -45,7 +45,9 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
-    debugPrint("userId ${widget.userId.toString()}");
+    userId = sharedPreferences.getString(AppStrings.spId);
+    debugPrint("userId ${userId.toString()}");
+    debugPrint("token ${token.toString()}");
     debugPrint("referCode ${widget.referCode}");
     if (widget.referCode == true) {
       _showReferralPopup(context);
@@ -110,10 +112,10 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-        drawer: DrawerView(
-            userDetails: userDetails!,
-            homeDetails: homeDetails!,
-            token: token.toString()),
+        // drawer: DrawerView(
+        //     userDetails: userDetails!,
+        //     homeDetails: homeDetails!,
+        //     token: token.toString()),
         body: HomeSideView(homeDetails: homeDetails!),
       ),
     );
@@ -243,7 +245,7 @@ class _HomeViewState extends State<HomeView> {
                               if (referralFormKey.currentState!.validate()) {
                                 _hitReferralApi(
                                   code: textFieldController.text.trim(),
-                                  userId: widget.userId.toString(),
+                                  userId: userId.toString(),
                                 );
                               }
                             },

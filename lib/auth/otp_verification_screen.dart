@@ -74,7 +74,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         ): Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeView(referCode: widget.referCode, userId: widget.userId.toString()),
+            builder: (context) => HomeView(referCode: widget.referCode),
           ),
         );
         // } else {

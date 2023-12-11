@@ -275,6 +275,8 @@ class _SignupViewState extends State<SignupView> {
         ));
         SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
+        sharedPreferences.setString(
+            AppStrings.spId, signUpData.data!.sId.toString());
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -284,13 +286,7 @@ class _SignupViewState extends State<SignupView> {
               referCode: true,
             ),
           ),
-        ).then((value) =>
-        {
-          sharedPreferences.setString(
-              AppStrings.spId, signUpData.data!.sId.toString()),
-          sharedPreferences.setString(
-              AppStrings.spCode, signUpData.data!.verificationCode.toString()),
-        });
+        );
       } else {
         // API call failed
         customLoader!.hide();
