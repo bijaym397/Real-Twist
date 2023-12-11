@@ -448,7 +448,7 @@ class HomeSideView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        homeDetails.data?.totalInvestment.toString() ?? "0.00",
+                        homeDetails.data?.totalInvestment.toStringAsFixed(2) ?? "0.00",
                         style: const TextStyle(
                             fontWeight: FontWeight.w800, fontSize: 22),
                       ),

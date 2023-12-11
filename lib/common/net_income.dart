@@ -121,7 +121,7 @@ class _NetIncomeViewState extends State<NetIncomeView> {
                                   DataCell(SizedBox(
                                       width: double.infinity,
                                       child: Text(
-                                        data["rewardAmount"]?.toString() ?? "",
+                                        data["rewardAmount"] ?? "0",
                                         style: const TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,

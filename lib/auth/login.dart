@@ -90,12 +90,12 @@ class _LoginViewState extends State<LoginView> {
                   validator: (value) {
                     if (value == null || value.trim().isEmpty)
                       return "*Required";
-                    if (value.length < 8) {
-                      return "Password must contain at least 8 characters.";
+                    if (value.length < 3) {
+                      return "Password must contain at least 3 characters.";
                     }
                     // if (!value.isValidPassword()){
                     // return "Password must contain at least 8 characters.";
-                    // }
+                    // } FEA5C529
                     return null;
                   },
                   // validator: FromValidator.passwordValidator,

@@ -79,11 +79,11 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                 ),
               ),
             ),
-            const Padding(
+            /*const Padding(
               padding: EdgeInsets.symmetric(vertical: 26),
               child: Text("Net Income : 0",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
-            ),
+            ),*/
             tableData.length == 0 ? Padding(
               padding: const EdgeInsets.only(top: 70),
               child: const Center(child: Text("No Data Available",style: TextStyle(fontSize: 26))),

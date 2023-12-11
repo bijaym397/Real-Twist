@@ -156,7 +156,7 @@ class DrawerView extends StatelessWidget {
               Navigator.push<void>(
                 context,
                 MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const MyNetworkView(),
+                  builder: (BuildContext context) => MyNetworkView(userId: userDetails.data!.sId.toString()),
                 ),
               );
             },
