@@ -140,27 +140,31 @@ class _SplashViewState extends State<SplashView> {
       builder: (context) {
         return AlertDialog(
           content: SizedBox(
-            height: 270,
+            height: 300,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.asset("assets/spin2.png", height: 65)),
-                const Spacer(),
                 const Text(
                   "Exciting changes are on the way.",
                   maxLines: 20,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
                 ),
-                const SizedBox(height: 8),
                 const Text(
                   "Thanks for your patience, we'll be back shortly.",
                   maxLines: 20,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-                const Spacer(),
+                const Text(
+                  "Please delete the old application & Download the new application from the link.",
+                  maxLines: 20,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
                 SizedBox(
                   height: 40,
                   child: CommonCard(

@@ -146,9 +146,9 @@ class _UserDetailsState extends State<UserDetails> {
             ),
           ),
                   const SizedBox(height: 28),
-                  const Text(
+                  user['payments'].isEmpty ? const SizedBox() :  Text(
                     "User Payment Details",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                     textAlign: TextAlign.center,
                   ),
                   user['payments'].isEmpty ? const SizedBox() : Container(
