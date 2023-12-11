@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:real_twist/admin/network_admin.dart';
+import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/utils/dateFormater.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -124,7 +124,7 @@ class _UserDetailsState extends State<UserDetails> {
             onTap: () => Navigator.push<void>(
               context,
               MaterialPageRoute<void>(
-                builder: (BuildContext context) => MyNetworkAdmin(userId : widget.id),
+                builder: (BuildContext context) => MyNetworkView(userId : widget.id),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 10

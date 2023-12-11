@@ -10,7 +10,8 @@ import 'net_income.dart';
 import 'package:http/http.dart' as http;
 
 class MyNetworkView extends StatefulWidget {
-  const MyNetworkView({super.key});
+  final userId;
+  const MyNetworkView({super.key, this.userId});
 
   @override
   State<MyNetworkView> createState() => _MyNetworkViewState();
@@ -22,8 +23,8 @@ class _MyNetworkViewState extends State<MyNetworkView> {
 
   _fetchData() async {
     final pref = await SharedPreferences.getInstance();
-    final userId = pref.getString(AppStrings.spUserId) ?? "";
-    final apiUrl = Api.baseUrl + Api.userNetwork+userId;
+    // final userId = pref.getString(AppStrings.spUserId) ?? "";
+    final apiUrl = Api.baseUrl + Api.userNetwork+widget.userId;
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -64,7 +65,7 @@ class _MyNetworkViewState extends State<MyNetworkView> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                        const LevelChartView(id: "user id",)),
+                        const LevelChartView()),
                   );
                 },
                 child: const Row(

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:real_twist/home.dart';
 
 class LevelChartView extends StatefulWidget {
-  const LevelChartView({super.key, required this.id});
-
-  final dynamic id;
+  const LevelChartView({super.key});
 
   @override
   State<LevelChartView> createState() => _LevelChartViewState();
