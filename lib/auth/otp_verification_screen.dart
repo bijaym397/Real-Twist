@@ -11,6 +11,8 @@ import 'package:real_twist/main.dart';
 import 'package:real_twist/modals/otp_verification_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'login.dart';
+
 class OtpVerificationScreen extends StatefulWidget {
   final String? phoneNumber;
   final String? verificationCode;
@@ -111,9 +113,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: ScaffoldBGImg(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: otpFormKey,
             child: Column(
