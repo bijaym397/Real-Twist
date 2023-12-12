@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/api.dart';
@@ -59,92 +60,94 @@ class _NetIncomeViewState extends State<NetIncomeView> {
         centerTitle: true,
       ),
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Text("Real Twist Level Chart!",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-            ),
-            CommonCard(
-              child: DataTable(
-                border: TableBorder.all(),
-                columns: const [
-                  DataColumn(
-                      label: Expanded(
-                          child: Text(
-                    "User Name",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ))),
-                  DataColumn(
-                      label: Expanded(
-                          child: Text(
-                    "Inv.RT",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ))),
-                  DataColumn(
-                      label: Expanded(
-                          child: Text(
-                    "Referral",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ))),
-                ],
-                rows:
-                    tableData // Loops through dataColumnText, each iteration assigning the value to element
-                        .map(
-                          ((data) => DataRow(
-                                cells: <DataCell>[
-                                  DataCell(SizedBox(
-                                    width: double.infinity,
-                                    child: Text(
-                                      data["name"] ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )),
-                                  DataCell(SizedBox(
-                                      width: double.infinity,
-                                      child: Text(
-                                        data["rewardAmount"] ?? "0",
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      ))),
-                                  DataCell(SizedBox(
-                                      width: double.infinity,
-                                      child: Text(
-                                        data["userCode"] ?? "",
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      ))),
-                                ],
-                              )),
-                        )
-                        .toList(),
+      body: ScaffoldBGImg(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Text("Real Twist Level Chart!",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               ),
-            ),
-          ],
+              CommonCard(
+                child: DataTable(
+                  border: TableBorder.all(),
+                  columns: const [
+                    DataColumn(
+                        label: Expanded(
+                            child: Text(
+                      "User Name",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ))),
+                    DataColumn(
+                        label: Expanded(
+                            child: Text(
+                      "Inv.RT",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ))),
+                    DataColumn(
+                        label: Expanded(
+                            child: Text(
+                      "Referral",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ))),
+                  ],
+                  rows:
+                      tableData // Loops through dataColumnText, each iteration assigning the value to element
+                          .map(
+                            ((data) => DataRow(
+                                  cells: <DataCell>[
+                                    DataCell(SizedBox(
+                                      width: double.infinity,
+                                      child: Text(
+                                        data["name"] ?? "",
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )),
+                                    DataCell(SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          data["rewardAmount"] ?? "0",
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                          textAlign: TextAlign.center,
+                                        ))),
+                                    DataCell(SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          data["userCode"] ?? "",
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                          textAlign: TextAlign.center,
+                                        ))),
+                                  ],
+                                )),
+                          )
+                          .toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/constants/strings.dart';
@@ -65,70 +66,67 @@ class _SpinCoinHistoryState extends State<SpinCoinHistory> {
         centerTitle: true,
         title: const Text("Spin Coin History"),
       ),
-      body: spinCoins.isEmpty
-          ? const Center(
-              child: Text("No History available",
-                  style: TextStyle(color: Colors.white, fontSize: 22)))
-          : ListView.builder(
-        padding: EdgeInsets.all(16),
-              itemCount: spinCoins.length,
-              itemBuilder: (context, index) {
-                final coins = spinCoins[index];
-                // Extracting data from the payment object
-                final paymentId = coins['_id'];
-                final winCoin = coins['winCoin'];
-                final winNumber = coins['winNumber'];
-                final createdAt = coins['createdAt'];
-                final type = coins['type'];
+      body: ScaffoldBGImg(
+        child: spinCoins.isEmpty
+            ? const Center(
+                child: Text("No History available",
+                    style: TextStyle(color: Colors.white, fontSize: 22)))
+            : ListView.builder(
+                padding: EdgeInsets.all(16),
+                itemCount: spinCoins.length,
+                itemBuilder: (context, index) {
+                  final coins = spinCoins[index];
+                  // Extracting data from the payment object
+                  final paymentId = coins['_id'];
+                  final winCoin = coins['winCoin'];
+                  final winNumber = coins['winNumber'];
+                  final createdAt = coins['createdAt'];
+                  final type = coins['type'];
 
-                // Determine the color based on the status
-                Color statusColor = Colors.grey;
+                  // Determine the color based on the status
+                  Color statusColor = Colors.grey;
 
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: CommonCard(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Payment ID:   $paymentId",
-                              overflow: TextOverflow.ellipsis,
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: CommonCard(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Payment ID:   $paymentId",
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Win Coin:   $winCoin",
                               style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 6),
-                          Text(
-                            "Win Coin:   $winCoin",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            "Date:   ${formatDate(createdAt).toString()}",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            "Win Number:   $winNumber",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            "Type:   $type",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ]),
-                  ),
-                );
-              },
-            ),
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Date:   ${formatDate(createdAt).toString()}",
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Win Number:   $winNumber",
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Type:   $type",
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          ]),
+                    ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }

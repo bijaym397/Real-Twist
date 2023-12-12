@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/login.dart';
 
 class WithdrawalRequest extends StatelessWidget {
   const WithdrawalRequest({Key? key}) : super(key: key);
@@ -12,9 +13,11 @@ class WithdrawalRequest extends StatelessWidget {
         centerTitle: true,
         title: const Text("Withdrawal Request"),
       ),
-      body: const Center(
-          child: Text("No History available",
-              style: TextStyle(color: Colors.white, fontSize: 22))),
+      body: const ScaffoldBGImg(
+        child: Center(
+            child: Text("No History available",
+                style: TextStyle(color: Colors.white, fontSize: 22))),
+      ),
     );
   }
 }

@@ -397,6 +397,7 @@ final Widget? child;
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: double.infinity,
       decoration: BoxDecoration(
           image: DecorationImage(
               colorFilter: ColorFilter.mode(

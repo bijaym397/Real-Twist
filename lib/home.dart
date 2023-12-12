@@ -18,6 +18,7 @@ import 'package:real_twist/utils/Back_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'auth/login.dart';
 import 'game2.dart';
 import 'menu.dart';
 
@@ -116,7 +117,7 @@ class _HomeViewState extends State<HomeView> {
             userDetails: userDetails!,
             homeDetails: homeDetails!,
             token: token.toString()),
-        body: HomeSideView(homeDetails: homeDetails!),
+        body: ScaffoldBGImg(child: HomeSideView(homeDetails: homeDetails!)),
       ),
     );
   }
