@@ -115,7 +115,7 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
                     );
                   } else if (snapshot.hasError) {
                     return const Center(
-                      child: Text('Record not found...'),
+                      child: Text('Record not found...',style: TextStyle(fontSize: 22)),
                     );
                   }
                   else{
