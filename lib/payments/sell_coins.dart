@@ -60,8 +60,8 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
         'token': pref.getString(AppStrings.spAuthToken) ?? "",
       },
       body: jsonEncode({
-        'sellCoins': coins,
-        'upiID': upiId
+        'coins': coins,
+        'upiId': upiId
       }),
     );
 

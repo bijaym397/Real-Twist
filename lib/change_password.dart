@@ -7,10 +7,7 @@ import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/modals/change_password_modal.dart';
-import 'package:real_twist/utils/form_validator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'auth/widgets.dart';
 
 class ChangePassword extends StatefulWidget {
   final String? token;

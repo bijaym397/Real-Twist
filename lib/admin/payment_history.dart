@@ -50,7 +50,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
         customLoader!.hide();
       } else {
         // Handle API error
-        print('Failed to fetch payment history}');
+        debugPrint('Failed to fetch payment history}');
         customLoader!.hide();
       }
     } catch (e) {
@@ -109,10 +109,10 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                       child: Container(
                         height: 100,
                         width: 60,
-                        margin: EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             image: userName[0] == ""
-                                ? DecorationImage(image: AssetImage(img))
+                                ? const DecorationImage(image: AssetImage(img))
                                 : null,
                             color: Colors.pink.shade600,
                             shape: BoxShape.circle),
@@ -126,7 +126,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 32),
                             ))
-                            : SizedBox(),
+                            : const SizedBox(),
                       ),
                     ),
                   ),
