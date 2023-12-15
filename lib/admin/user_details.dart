@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/home.dart';
@@ -49,8 +48,6 @@ class _UserDetailsState extends State<UserDetails> {
         throw Exception('Failed to load user details');
       }
     } else {
-      debugPrint("fhdsjfhs ${userId}");
-      debugPrint("fhdsjfhs ${response.body}");
       throw Exception('Failed to load user details');
     }
   }
@@ -92,10 +89,10 @@ class _UserDetailsState extends State<UserDetails> {
                       child: Container(
                         height: 120,
                         width: 120,
-                        margin: EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             image: user['name'][0] == ""
-                                ? DecorationImage(image: AssetImage(img))
+                                ? const DecorationImage(image: AssetImage(img))
                                 : null,
                             color: Colors.pink.shade600,
                             shape: BoxShape.circle),
@@ -108,7 +105,7 @@ class _UserDetailsState extends State<UserDetails> {
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 52),
                               ))
-                            : SizedBox(),
+                            : const SizedBox(),
                       ),
                     ),
                     const SizedBox(height: 28),
@@ -150,12 +147,12 @@ class _UserDetailsState extends State<UserDetails> {
               ),
             ),
                     const SizedBox(height: 28),
-                    user['payments'].isEmpty ? const SizedBox() :  Text(
+                    user['payments'].isEmpty ? const SizedBox() :  const Text(
                       "User Payment Details",
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                       textAlign: TextAlign.center,
                     ),
-                    user['payments'].isEmpty ? const SizedBox() : Container(
+                    user['payments'].isEmpty ? const SizedBox() : SizedBox(
                       height: MediaQuery.of(context).size.height/2,
                       child: ListView.builder(
                         // physics: const NeverScrollableScrollPhysics(),
@@ -190,7 +187,7 @@ class _UserDetailsState extends State<UserDetails> {
                                   detailsRow(label: "Amount", data: user['payments'][index]['amount'].toString()),
                                   const SizedBox(height: 6),
                                   if(user['payments'][index]['paymentType'].toString().isNotEmpty)
-                                  detailsRow(label: "Payment Type", data: user['payments'][index]['paymentType'].toString() ?? ""),
+                                  detailsRow(label: "Payment Type", data: user['payments'][index]['paymentType'].toString()),
                                   const SizedBox(height: 6),
                                   detailsRow(label: "Date", data: formatDate(user['payments'][index]['createdAt'].toString())),
                                   const SizedBox(height: 6),
