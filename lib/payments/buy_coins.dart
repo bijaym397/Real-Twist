@@ -33,12 +33,12 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
 
     if (coinsText.isNotEmpty) {
       int numberOfCoins = int.tryParse(coinsText) ?? 0;
-      if (numberOfCoins >= 100) {
+      if (numberOfCoins >= 9) {
         _buyCoinsApiCall(numberOfCoins);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please enter coins greater than 100'),
+            content: Text('Minimum coin should be 10'),
           ),
         );
       }
