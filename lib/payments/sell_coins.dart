@@ -102,7 +102,7 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
                 controller: _coinsController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.currency_rupee),
+                    prefixIcon: Icon(Icons.account_balance_wallet_outlined),
                     contentPadding:
                     EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     border: OutlineInputBorder(),
