@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/home.dart';
 
 class LevelChartView extends StatefulWidget {
-  const LevelChartView({super.key, required this.id});
-
-  final dynamic id;
+  const LevelChartView({super.key});
 
   @override
   State<LevelChartView> createState() => _LevelChartViewState();
@@ -14,96 +13,98 @@ class _LevelChartViewState extends State<LevelChartView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(/*widget.id.toString() ??*/ "Details"),
+      appBar: AppBar(title: const Text("Real Twist"),
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,),
-      backgroundColor: Colors.black87,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Text("Net Income : 0",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-            ),
-            CommonCard(
-              child: DataTable(
-                border: TableBorder.all(),
-                columns: const [
-                  DataColumn(
-                      label: Expanded(
-                          child: Text(
-                            "Invest Rs",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                          ))),
-                  DataColumn(
-                      label: Expanded(
-                          child: Text(
-                            "Reward Rs",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ))),
-                  DataColumn(
-                      label: Expanded(
-                          child: Text(
-                            "Reward Day",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ))),
-                ],
-                rows:
-                listOfColumns // Loops through dataColumnText, each iteration assigning the value to element
-                    .map(
-                  ((data) => DataRow(
-                    cells: <DataCell>[
-                      DataCell(SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          data["invested"] ?? "",
-                          style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                      )),
-                      DataCell(SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            "=> ${data["reward"]}" ?? "",
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ))),
-                      DataCell(SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            data["day"] ?? "",
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ))),
-                    ],
-                  )),
-                ).toList(),
+      backgroundColor: Colors.black,
+      body: ScaffoldBGImg(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Text("Reward You Can Earn!",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               ),
-            ),
-          ],
+              CommonCard(
+                child: DataTable(
+                  border: TableBorder.all(),
+                  columns: const [
+                    DataColumn(
+                        label: Expanded(
+                            child: Text(
+                              "Invest Rs",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                            ))),
+                    DataColumn(
+                        label: Expanded(
+                            child: Text(
+                              "Reward Rs",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ))),
+                    DataColumn(
+                        label: Expanded(
+                            child: Text(
+                              "Reward Day",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ))),
+                  ],
+                  rows:
+                  listOfColumns // Loops through dataColumnText, each iteration assigning the value to element
+                      .map(
+                    ((data) => DataRow(
+                      cells: <DataCell>[
+                        DataCell(SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            data["invested"] ?? "",
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        )),
+                        DataCell(SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              "=> ${data["reward"]}" ?? "",
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ))),
+                        DataCell(SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              data["day"] ?? "",
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ))),
+                      ],
+                    )),
+                  ).toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

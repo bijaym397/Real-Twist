@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,12 +64,13 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,
         title: Text(widget.appBarTitle),
       ),
-      body: payments.isEmpty ?
+      body: ScaffoldBGImg(child: payments.isEmpty ?
       const Center(child: Text("No History available",
           style: TextStyle(color: Colors.white, fontSize: 22))) : ListView.builder(
         itemCount: payments.length,
@@ -160,7 +162,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
           //   ),
           // );
         },
-      ),
+      ),)
     );
   }
 }

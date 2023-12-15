@@ -34,159 +34,161 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BackHandler(
       child: Scaffold(
-        backgroundColor: Colors.black87,
-        body: SafeArea(
-          child: Form(
-            key: loginFormKey,
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                const SizedBox(height: 100),
-                const Center(
-                    child: Text(
-                  "Welcome to",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-                )),
-                const SizedBox(height: 8),
-                const Center(
-                    child: Text(
-                  "Real Twist",
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
-                )),
-                const SizedBox(height: 68),
-                TextFormField(
-                  focusNode: phoneNode,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  controller: phoneController,
-                  maxLength: 10,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty)
-                      return "*Required";
-                    if (value.length < 10) {
-                      return "Length should be 10";
-                    }
-                    // if (!value.isValidPhone()) return "Invalid Phone Number";
-                    // return null;
-                  },
-                  // validator: FromValidator.phoneValidator,
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.phone),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Your Phone Number',
-                    labelText: "Enter Your Phone Number",
-                    counterText: "",
-                  ),
-                ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  focusNode: passwordNode,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  controller: passwordController,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty)
-                      return "*Required";
-                    if (value.length < 8) {
-                      return "Password must contain at least 8 characters.";
-                    }
-                    // if (!value.isValidPassword()){
-                    // return "Password must contain at least 8 characters.";
-                    // }
-                    return null;
-                  },
-                  // validator: FromValidator.passwordValidator,
-                  textInputAction: TextInputAction.done,
-                  obscureText: hidePassword,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    prefixIcon: const Icon(Icons.key),
-                    border: const OutlineInputBorder(),
-                    hintText: 'Enter You Password',
-                    labelText: "Enter You Password",
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        hidePassword = !hidePassword;
-                        setState(() {});
-                      },
-                      child: Icon(
-                        hidePassword
-                            ? Icons.visibility_off_rounded
-                            : Icons.visibility_rounded,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        _showTextFieldPopup(context);
-                      },
-                      child: const Text(
-                        "Forgot Password",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
-                      ),
-                    )),
-                const SizedBox(height: 32),
-                SizedBox(
-                  height: 45,
-                  child: CommonCard(
-                    onTap: () {
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
-                      if (loginFormKey.currentState!.validate()) {
-                        _hitLoginApi(
-                          phone: phoneController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
-                      }
-                    },
-                    child: const Center(
+        backgroundColor: Colors.black,
+        body: ScaffoldBGImg(
+          child: SafeArea(
+            child: Form(
+              key: loginFormKey,
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  const SizedBox(height: 100),
+                  const Center(
                       child: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                    "Welcome to",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
+                  )),
+                  const SizedBox(height: 8),
+                  const Center(
+                      child: Text(
+                    "Real Twist",
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
+                  )),
+                  const SizedBox(height: 68),
+                  TextFormField(
+                    focusNode: phoneNode,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: phoneController,
+                    maxLength: 10,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "*Required";
+                      if (value.length < 10) {
+                        return "Length should be 10";
+                      }
+                      // if (!value.isValidPhone()) return "Invalid Phone Number";
+                      // return null;
+                    },
+                    // validator: FromValidator.phoneValidator,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.phone),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Your Phone Number',
+                      labelText: "Enter Your Phone Number",
+                      counterText: "",
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  TextFormField(
+                    focusNode: passwordNode,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: passwordController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "*Required";
+                      if (value.length < 3) {
+                        return "Password must contain at least 3 characters.";
+                      }
+                      // if (!value.isValidPassword()){
+                      // return "Password must contain at least 8 characters.";
+                      // } FEA5C529
+                      return null;
+                    },
+                    // validator: FromValidator.passwordValidator,
+                    textInputAction: TextInputAction.done,
+                    obscureText: hidePassword,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 6),
+                      prefixIcon: const Icon(Icons.key),
+                      border: const OutlineInputBorder(),
+                      hintText: 'Enter You Password',
+                      labelText: "Enter You Password",
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          hidePassword = !hidePassword;
+                          setState(() {});
+                        },
+                        child: Icon(
+                          hidePassword
+                              ? Icons.visibility_off_rounded
+                              : Icons.visibility_rounded,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 60),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const SignupView()),
-                        (Route<dynamic> route) => false);
-                  },
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "You don't have a account, ",
+                  const SizedBox(height: 12),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          _showTextFieldPopup(context);
+                        },
+                        child: const Text(
+                          "Forgot Password",
                           style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.pink.shade400),
+                              fontWeight: FontWeight.w500, fontSize: 16),
                         ),
-                        const TextSpan(
-                          text: "Sign Up",
+                      )),
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    height: 45,
+                    child: CommonCard(
+                      onTap: () {
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
+                        if (loginFormKey.currentState!.validate()) {
+                          _hitLoginApi(
+                            phone: phoneController.text.trim(),
+                            password: passwordController.text.trim(),
+                          );
+                        }
+                      },
+                      child: const Center(
+                        child: Text(
+                          'Login',
                           style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white),
+                              fontSize: 18, fontWeight: FontWeight.w600),
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 60),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const SignupView()),
+                          (Route<dynamic> route) => false);
+                    },
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "You don't have a account, ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.pink.shade400),
+                          ),
+                          const TextSpan(
+                            text: "Sign Up",
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -226,9 +228,10 @@ class _LoginViewState extends State<LoginView> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => Api.userType != loginData.data?.user?.userType.toString()
-                  ? const DashboardView()
-                  : HomeView()),
+              builder: (context) =>
+                  Api.userType != loginData.data?.user?.userType.toString()
+                      ? const DashboardView()
+                      : HomeView()),
         );
       } else {
         // API call failed
@@ -383,6 +386,25 @@ class _LoginViewState extends State<LoginView> {
           ),
         );
       },
+    );
+  }
+}
+
+
+class ScaffoldBGImg extends StatelessWidget {
+  const ScaffoldBGImg({Key? key, this.child}) : super(key: key);
+final Widget? child;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: double.infinity,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.45), BlendMode.dstATop),
+              image: const AssetImage("assets/profile_bg.jpg"),
+              fit: BoxFit.cover)),
+      child: child,
     );
   }
 }
