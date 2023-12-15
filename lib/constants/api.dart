@@ -20,24 +20,6 @@ abstract class Api {
   static const String homeDetails = "user/details";
   static const String referralCode = "by-referral-code";
 
-  static const String socialData = "users/userSignupBySocial";
-  static const String getStaticPages = "/get_page_content/";
-
-  static const String getProfile = "users/get-profile/";
-  static const String uploadProfileImage = "users/upload-image/";
-  static const String editProfile = "users/edit-profile/";
-  static const String profileChangePassword = "profile/change-password/";
-
-  static const String uploadPrescription = "users/upload-prescription/";
-  static const String getPrescription = "users/get-prescription/";
-  static const String getAllPrescriptions = "users/list-prescription";
-  static const String editPrescription = "users/edit-prescription";
-  static const String deletePrescription = "users/delete_prescription";
-
-  static const String setReminder = "users/set-reminder/";
-  static const String getReminder = "users/get-reminder/";
-  static const String editReminder = "users/edit-reminder/";
-
   static const String iosAppLinked = "https://flutter.dev/";
   static const String androidAppLinked = "https://flutter.dev/";
 
