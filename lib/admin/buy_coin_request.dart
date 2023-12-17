@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:real_twist/auth/login.dart';
@@ -9,18 +8,16 @@ import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
-import '../menu.dart';
 import '../utils/dateFormater.dart';
 
-class WithdrawalRequest extends StatefulWidget {
-  const WithdrawalRequest({Key? key}) : super(key: key);
+class BuyCoinRequest extends StatefulWidget {
+  const BuyCoinRequest({Key? key}) : super(key: key);
 
   @override
-  State<WithdrawalRequest> createState() => _WithdrawalRequestState();
+  State<BuyCoinRequest> createState() => _BuyCoinRequestState();
 }
 
-class _WithdrawalRequestState extends State<WithdrawalRequest> {
+class _BuyCoinRequestState extends State<BuyCoinRequest> {
   String userId = "";
   static String status = "";
   static const String img = "assets/user.png";
@@ -29,12 +26,15 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
   @override
   void initState() {
     super.initState();
-    withdrawalList = _fetchWithdrawalList();
+
+    setState(() {
+      _fetchWithdrawalList();
+      withdrawalList = _fetchWithdrawalList();
+    });
   }
 
-  /// List Items
   Future<List<Map<String, dynamic>>> _fetchWithdrawalList() async {
-    const apiUrl = "${Api.baseUrl}${Api.adminPaymentRequestWithdrawal}";
+    const apiUrl = "${Api.baseUrl}${Api.adminPaymentRequestDeposit}";
     final pref = await SharedPreferences.getInstance();
 
     final response = await http.get(
@@ -65,7 +65,7 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
 
     final Map<String, dynamic> requestMap = {
       "status": status,
-      "paymentType": "withdrawal"
+      "paymentType": "deposit"
     };
 
     final response = await http.put(Uri.parse(apiUrl),
@@ -82,7 +82,7 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("${data['message'] ?? "Success"}"),
       ));
-      Navigator.pop(context);
+      Navigator.pop(context, {"refresh": true});
       _fetchWithdrawalList();
     } else {
       customLoader!.hide();
@@ -102,7 +102,7 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,
-        title: const Text("Withdrawal Request"),
+        title: const Text("Buy Coin Request"),
       ),
       body: ScaffoldBGImg(
         child: Column(
@@ -211,56 +211,18 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
                                                       fontWeight:
                                                           FontWeight.w400)),
                                               const SizedBox(height: 6),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Clipboard.setData(
-                                                      ClipboardData(
-                                                    text: data[index]['upiId']
-                                                        .toString(),
-                                                  )).then((value) {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      const SnackBar(
-                                                        content: Text(
-                                                            "UPI ID copied"),
-                                                      ),
-                                                    );
-                                                  });
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      data[index]['upiId']
-                                                          .toString(),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.w900),
-                                                    ),
-                                                    const SizedBox(width: 16),
-                                                    const Icon(Icons.copy)
-                                                  ],
-                                                ),
-                                              ),
+                                              Text(
+                                                  "Status: ${data[index]['status'].toString().toUpperCase()}",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400)),
                                               const SizedBox(height: 6),
                                               Text(
                                                 data[index]['paymentType']
-                                                    .toString()
-                                                    .toUpperCase(),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              const SizedBox(height: 6),
-                                              Text(
-                                                data[index]['status']
                                                     .toString()
                                                     .toUpperCase(),
                                                 maxLines: 1,
@@ -291,12 +253,11 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
                                       Expanded(
                                         flex: 2,
                                         child: GestureDetector(
-                                          onTap: () {
-                                            showWithdPopup(context,
-                                                data[index]['_id'].toString());
-                                          },
+                                          onTap: () => showPayPopup(context,
+                                              data[index]['_id'].toString()),
                                           child: Text("Update Status",
                                               maxLines: 2,
+                                              textAlign: TextAlign.center,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   fontSize: 18,
@@ -316,11 +277,14 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
             ),
           ],
         ),
+        /*Center(
+            child: Text("No History available",
+                style: TextStyle(color: Colors.white, fontSize: 22))),*/
       ),
     );
   }
 
-  Future<void> showWithdPopup(BuildContext context, userId) async {
+  Future<void> showPayPopup(BuildContext context, userId) async {
     return showDialog(
       context: context,
       barrierColor: Colors.black87,
@@ -342,8 +306,9 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
                 SizedBox(
                   height: 40,
                   child: CommonCard(
-                    onTap: ()async {
-                      _updateWithdrawalList(userId: userId.toString(), status: "succeeded");
+                    onTap: () async {
+                      _updateWithdrawalList(
+                          userId: userId.toString(), status: "succeeded");
                     },
                     child: const Center(
                       child: Text(
@@ -358,7 +323,8 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
                   height: 40,
                   child: CommonCard(
                     onTap: () async {
-                      _updateWithdrawalList(userId: userId.toString(), status: "pending");
+                      _updateWithdrawalList(
+                          userId: userId.toString(), status: "pending");
                     },
                     child: const Center(
                       child: Text(
@@ -373,7 +339,8 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
                   height: 40,
                   child: CommonCard(
                     onTap: () async {
-                      _updateWithdrawalList(userId: userId.toString(), status: "canceled");
+                      _updateWithdrawalList(
+                          userId: userId.toString(), status: "canceled");
                     },
                     child: const Center(
                       child: Text(

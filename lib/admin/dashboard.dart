@@ -17,6 +17,8 @@ import '../constants/strings.dart';
 import '../menu.dart';
 import 'package:http/http.dart' as http;
 
+import 'buy_coin_request.dart';
+
 class DashboardView extends StatefulWidget {
   const DashboardView({Key? key}) : super(key: key);
 
@@ -189,6 +191,29 @@ class _DashboardViewState extends State<DashboardView> {
                           MaterialPageRoute(
                               builder: (context) => UserListScreen()));
                     },
+                  ),
+                ),
+
+                /// Withdrawal Request
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BuyCoinRequest()));
+                    },
+                    child: Center(
+                        child: Text(
+                      "Buy Coin Request",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
                   ),
                 ),
 

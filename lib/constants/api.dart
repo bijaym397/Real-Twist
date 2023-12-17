@@ -41,7 +41,9 @@ abstract class Api {
 
   //Admin endpoints
   static const String getUserList = "admin/user-list?search=";
-  static const String adminPaymentRequest = "admin/payment/request";
+  static const String adminPaymentRequestWithdrawal = "admin/payment/request?paymentType=withdrawal";
+  static const String adminPaymentRequestDeposit = "admin/payment/request?paymentType=deposit";
+  static const String adminPaymentRequest = "admin/payment/request/";
   static const String getUserDetails = "admin/user/";
   static const String setCoinsPrice = "admin/set-config";
   static const String setVersion = "admin/set-config";
