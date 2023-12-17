@@ -5,6 +5,7 @@ import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
+import 'package:real_twist/payments/buy_coin_PU.dart';
 import 'package:real_twist/payments/buy_coins.dart';
 import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/payments/sell_coins.dart';
@@ -91,7 +92,7 @@ class DrawerView extends StatelessWidget {
             ), //DrawerHeader
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text(' My Profile '),
+              title: const Text('My Profile'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -111,7 +112,7 @@ class DrawerView extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const BuyCoinsScreen()));
+                        builder: (context) => const BuyCoinPU()));
               },
             ),
             ListTile(
