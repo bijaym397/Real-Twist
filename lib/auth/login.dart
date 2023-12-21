@@ -210,8 +210,8 @@ class _LoginViewState extends State<LoginView> {
         }),
       );
 
-      final loginData = LoginDataResponse.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
+        final loginData = LoginDataResponse.fromJson(json.decode(response.body));
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Login ${loginData.message}"),
@@ -235,6 +235,7 @@ class _LoginViewState extends State<LoginView> {
         );
       } else {
         // API call failed
+        final loginData = LoginDataResponse.fromJson(json.decode(response.body));
         customLoader!.hide();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

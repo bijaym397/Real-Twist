@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class LoginDataResponse {
   String? message;
   int? status;
@@ -8,7 +10,7 @@ class LoginDataResponse {
   LoginDataResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? LoginRecord.fromJson(json['data']) : null;
+    data = (json['data'] as Map<dynamic,dynamic>?)?.isNotEmpty == true ? LoginRecord.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
