@@ -67,6 +67,12 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
     );
 
     if (response.statusCode == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Your request is in Progress. You will get update within 24 hours.'),

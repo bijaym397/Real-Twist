@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:real_twist/payments/webview_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +17,7 @@ class BuyCoinPU extends StatefulWidget {
 
 class _BuyCoinPUState extends State<BuyCoinPU> {
   final TextEditingController _coinsController = TextEditingController();
+  final TextEditingController _transactionID = TextEditingController();
 
   @override
   void dispose() {
@@ -26,15 +26,15 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
 
   void _sellCoins() {
     String buyMoneyText = _coinsController.text.trim();
-
+    String transactionIDText = _transactionID.text.trim();
     if (buyMoneyText.isNotEmpty) {
       int numberOfCoins = int.tryParse(buyMoneyText) ?? 0;
-      if (numberOfCoins > 9) {
-        _buyCoinsApiCall(numberOfCoins);
+      if (numberOfCoins > 9 && transactionIDText.length > 4) {
+        _buyCoinsApiCall(numberOfCoins, transactionIDText);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Minimum amount should be 10'),
+            content: Text("Please Enter the Amount OR 'Transaction ID'"),
           ),
         );
       }
@@ -47,7 +47,7 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
     }
   }
 
-  void _buyCoinsApiCall(numberOfCoins) async {
+  void _buyCoinsApiCall(numberOfCoins, transactionIDText) async {
     final pref = await SharedPreferences.getInstance();
 
     const apiUrl = Api.baseUrl + Api.sellCoins;
@@ -59,27 +59,19 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
       },
       body: jsonEncode({
         "amount": numberOfCoins,
-        "transactionId": "00000.0",
+        "transactionId": transactionIDText,
         "paymentType": "deposit"
       }),
     );
 
     if (response.statusCode == 200) {
+      print("response.body ${response.body}");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-              'Your request is in Progress. You will get update within 24 hours.'),
-        ),
+            content: Text(
+                'Your request is in Progress. You will get update within 24 hours.')),
       );
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => WebViewScreen(
-            "https://pmny.in/AIPlns6BskBN",
-            title: "Terms & Conditions",
-            onPageFinished: (String url) {},
-          ),
-        ),
-      );
+      Navigator.pop(context);
     } else {
       // API call failed, show error message using Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -97,22 +89,56 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,
-        title: const Text('Buy Coins'),
+        title: const Text("Real Twist Buy Coin!"),
       ),
       body: ScaffoldBGImg(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 140),
+              const SizedBox(height: 80),
               const Text(
-                'Real Twist Buy Coin!',
-                style:
-                TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                'Pay & buy the RT coin.',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
-              SizedBox(height: 160),
+              const SizedBox(height: 24),
+              SizedBox(
+                height: 45,
+                child: CommonCard(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => WebViewScreen(
+                          "https://pmny.in/AIPlns6BskBN",
+                          title: "Buy RT Coin",
+                          onPageFinished: (String url) {},
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Center(
+                    child: Text(
+                      "Pay & Buy RT Coin",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 80),
+              const Text(
+                'Verify You Payment',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Please verify your payment. After the verification process, you will get your 'Coin' in your wallet!",
+                style: TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
               TextField(
                 controller: _coinsController,
                 keyboardType: TextInputType.number,
@@ -125,13 +151,24 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
                     labelText: "Enter number amount"),
               ),
               const SizedBox(height: 16),
+              TextField(
+                controller: _transactionID,
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.repeat_one),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter Transaction ID',
+                    labelText: "Enter Transaction ID"),
+              ),
+              const SizedBox(height: 16),
               SizedBox(
                 height: 45,
                 child: CommonCard(
                   onTap: _sellCoins,
                   child: const Center(
                     child: Text(
-                      'Buy Coin',
+                      'Verify',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
