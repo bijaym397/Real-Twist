@@ -100,7 +100,7 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
             children: [
               const SizedBox(height: 80),
               const Text(
-                'Pay & buy the RT coin.',
+                'Buy Real Twist Coin.',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 24),
@@ -112,7 +112,7 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
                       MaterialPageRoute(
                         builder: (context) => WebViewScreen(
                           "https://pmny.in/AIPlns6BskBN",
-                          title: "Buy RT Coin",
+                          title: "Buy Real Twist Coin",
                           onPageFinished: (String url) {},
                         ),
                       ),
@@ -120,7 +120,7 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
                   },
                   child: const Center(
                     child: Text(
-                      "Pay & Buy RT Coin",
+                      "Buy Coin Now",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
@@ -129,16 +129,16 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
               ),
               const SizedBox(height: 80),
               const Text(
-                'Verify You Payment',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                'Please Verify You Payment',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               const Text(
-                "Please verify your payment. After the verification process, you will get your 'Coin' in your wallet!",
+                "* After your payment you need to verify your payment. After the verification process, you will get your 'Coin' in your wallet!",
                 style: TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               TextField(
                 controller: _coinsController,
                 keyboardType: TextInputType.number,
