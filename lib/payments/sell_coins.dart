@@ -72,7 +72,14 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
           content: Text('Your request is in Progress. You will get update within 24 hours.'),
         ),
       );
-    } else {
+    } else if (response.statusCode == 400){
+      // API call failed, show error message using Snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You do not have enough coins to perform this withdraw.'),
+        ),
+      );
+    }else {
       // API call failed, show error message using Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
