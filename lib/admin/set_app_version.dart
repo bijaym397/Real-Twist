@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/main.dart';
 import 'package:http/http.dart' as http;
@@ -33,12 +34,12 @@ class _SetAppVersionState extends State<SetAppVersion> {
         title: const Text("Set App Version"),
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Colors.black87,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+      backgroundColor: Colors.black,
+      body: ScaffoldBGImg(
         child: Form(
           key: versionFormKey,
           child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
               const SizedBox(height: 150),
               const Center(

@@ -8,7 +8,7 @@ class OtpVerificationResponse {
   OtpVerificationResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new OtpData.fromJson(json['data']) : null;
+    data = json['data'] != null ? OtpData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -27,8 +27,6 @@ class OtpData {
   String? userId;
   int? iV;
   String? authToken;
-  String? token;
-  int? verificationCode;
   String? createdAt;
   String? updatedAt;
 
@@ -37,8 +35,6 @@ class OtpData {
         this.userId,
         this.iV,
         this.authToken,
-        this.token,
-        this.verificationCode,
         this.createdAt,
         this.updatedAt});
 
@@ -47,8 +43,6 @@ class OtpData {
     userId = json['userId'];
     iV = json['__v'];
     authToken = json['authToken'];
-    token = json['token'];
-    verificationCode = json['verificationCode'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -59,8 +53,6 @@ class OtpData {
     data['userId'] = this.userId;
     data['__v'] = this.iV;
     data['authToken'] = this.authToken;
-    data['token'] = this.token;
-    data['verificationCode'] = this.verificationCode;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;

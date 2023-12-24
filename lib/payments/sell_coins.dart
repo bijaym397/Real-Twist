@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../auth/login.dart';
 import '../constants/api.dart';
 import '../constants/strings.dart';
 import '../home.dart';
@@ -35,7 +36,7 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please enter coins greater than 0'),
+            content: Text('Minimum coin should be 100'),
           ),
         );
       }
@@ -59,18 +60,32 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
         'token': pref.getString(AppStrings.spAuthToken) ?? "",
       },
       body: jsonEncode({
-        'sellCoins': coins,
-        'upiID': upiId
+        'coins': coins,
+        'upiId': upiId,
+        "paymentType":"withdrawal"
       }),
     );
 
     if (response.statusCode == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Your request is in Progress. You will get update within 24 hours.'),
         ),
       );
-    } else {
+    } else if (response.statusCode == 400){
+      // API call failed, show error message using Snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You do not have enough coins to perform this withdraw.'),
+        ),
+      );
+    }else {
       // API call failed, show error message using Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -84,60 +99,63 @@ class _SellCoinsScreenState extends State<SellCoinsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,
         title: const Text('Sell Coins'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _coinsController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.currency_rupee),
-                  contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter number of coins',
-                  labelText: "Enter number of coins"
+      body: ScaffoldBGImg(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _coinsController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.account_balance_wallet_outlined),
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter number of coins',
+                    labelText: "Enter number of coins"
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _upiController,
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.payment),
-                  contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  border: OutlineInputBorder(),
-                  hintText: 'Your UPI id',
-                  labelText: "Your UPI id"
+              const SizedBox(height: 16),
+              TextField(
+                controller: _upiController,
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.payment),
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    border: OutlineInputBorder(),
+                    hintText: 'Your UPI id',
+                    labelText: "Your UPI id"
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            const Text("We need your UPI id to send you payment", style: TextStyle(
-              color: Colors.white54
-            ),),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 45,
-              child: CommonCard(
-                onTap:_sellCoins,
-                child: const Center(
-                  child: Text(
-                    'Sell',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600),
+              const SizedBox(height: 10),
+              const Text("We need your UPI id to send you payment", style: TextStyle(
+                color: Colors.white54
+              ),),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 45,
+                child: CommonCard(
+                  onTap:_sellCoins,
+                  child: const Center(
+                    child: Text(
+                      'Sell',
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

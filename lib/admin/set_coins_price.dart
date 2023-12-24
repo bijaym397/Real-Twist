@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/main.dart';
 import 'package:http/http.dart' as http;
@@ -30,20 +31,20 @@ class _SetCoinPriceState extends State<SetCoinPrice> {
         elevation: 8,
         centerTitle: true,
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Set Coins Price"),
+        title: const Text("Real Twist"),
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Colors.black87,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+      backgroundColor: Colors.black,
+      body: ScaffoldBGImg(
         child: Form(
           key: setCoinFormKey,
           child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
               const SizedBox(height: 150),
               const Center(
                   child: Text(
-                    "Set Coins",
+                    "Set Coins Price",
                     style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
                   )),
               const SizedBox(height: 100),

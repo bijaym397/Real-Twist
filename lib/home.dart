@@ -18,14 +18,14 @@ import 'package:real_twist/utils/Back_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/utils/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'auth/login.dart';
 import 'game2.dart';
 import 'menu.dart';
 
 class HomeView extends StatefulWidget {
-  String? userId;
   bool? referCode;
 
-  HomeView({Key? key, this.referCode, this.userId}) : super(key: key);
+  HomeView({Key? key, this.referCode}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -35,6 +35,7 @@ class _HomeViewState extends State<HomeView> {
   UserApiResponse? userDetails = UserApiResponse();
   HomeDetailsResponse? homeDetails = HomeDetailsResponse();
   String? token = "";
+  String? userId = "";
 
   @override
   void initState() {
@@ -45,7 +46,9 @@ class _HomeViewState extends State<HomeView> {
   initSates() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(AppStrings.spAuthToken);
-    debugPrint("userId ${widget.userId.toString()}");
+    userId = sharedPreferences.getString(AppStrings.spId);
+    debugPrint("userId ${userId.toString()}");
+    debugPrint("token ${token.toString()}");
     debugPrint("referCode ${widget.referCode}");
     if (widget.referCode == true) {
       _showReferralPopup(context);
@@ -114,7 +117,7 @@ class _HomeViewState extends State<HomeView> {
             userDetails: userDetails!,
             homeDetails: homeDetails!,
             token: token.toString()),
-        body: HomeSideView(homeDetails: homeDetails!),
+        body: ScaffoldBGImg(child: HomeSideView(homeDetails: homeDetails!)),
       ),
     );
   }
@@ -243,7 +246,7 @@ class _HomeViewState extends State<HomeView> {
                               if (referralFormKey.currentState!.validate()) {
                                 _hitReferralApi(
                                   code: textFieldController.text.trim(),
-                                  userId: widget.userId.toString(),
+                                  userId: userId.toString(),
                                 );
                               }
                             },
@@ -317,42 +320,11 @@ class HomeSideView extends StatelessWidget {
         children: [
           CoinDetails(
             totalCoin: formatPercentage(double.parse(
-                homeDetails.data?.totalUserCoins?.numberDecimal ?? "0.00")),
+                homeDetails.data?.totalUserCoins.toString() ?? "0.00")),
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
 
-          /// Total Coins Available
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-            child: CommonCard(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Total Coins Available",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    formatPercentage(double.parse(homeDetails
-                            .data?.totalCoins?.numberDecimal
-                            ?.toString() ??
-                        "0.00")),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 22,
-                        color: Colors.black54),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          /// My Network
+         /* /// My Network
           const SizedBox(height: 26),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -379,7 +351,7 @@ class HomeSideView extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+          ),*/
 
           const SizedBox(height: 24),
           Padding(
@@ -426,36 +398,63 @@ class HomeSideView extends StatelessWidget {
                     viewportFraction: 1,
                   ),
                 ),
-                const SizedBox(height: 24),
 
-                /// Total Investment
-                CommonCard(
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PaymentHistoryPage(
-                              appBarTitle: 'My Investment History'))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "My Investment",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 30,
-                            color: Colors.white.withOpacity(.7)),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        homeDetails.data?.totalInvestment.toString() ?? "0.00",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w800, fontSize: 22),
-                      ),
-                    ],
+                /// Total Coins Available
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: CommonCard(
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Total Coins Available",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 26,
+                              color: Colors.white.withOpacity(.8)),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          formatPercentage(double.parse(homeDetails
+                              .data?.totalCoins.toString() ?? "0.00")),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 25,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                // /// Total Investment
+                // CommonCard(
+                //   padding: const EdgeInsets.symmetric(vertical: 18),
+                //   onTap: () => Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const PaymentHistoryPage(
+                //               appBarTitle: 'My Investment History'))),
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         "My Investment",
+                //         style: TextStyle(
+                //             fontWeight: FontWeight.w900,
+                //             fontSize: 30,
+                //             color: Colors.white.withOpacity(.7)),
+                //       ),
+                //       const SizedBox(height: 8),
+                //       Text(
+                //         homeDetails.data?.totalInvestment.toStringAsFixed(2) ?? "0.00",
+                //         style: const TextStyle(
+                //             fontWeight: FontWeight.w800, fontSize: 22),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(height: 24),
 
                 /// Spin game
                 GestureDetector(

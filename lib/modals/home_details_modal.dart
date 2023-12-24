@@ -26,10 +26,10 @@ class HomeDetailsResponse {
 
 class HomeData {
   String? id;
-  int? totalInvestment;
-  int? totalIncome;
-  TotalCoins? totalCoins;
-  TotalCoins? totalUserCoins;
+  dynamic? totalInvestment;
+  dynamic? totalIncome;
+  dynamic? totalCoins;
+  dynamic? totalUserCoins;
   int? cra;
   String? appLink;
 
@@ -48,8 +48,8 @@ class HomeData {
       id: json['_id'],
       totalInvestment: json['totalInvestment'],
       totalIncome: json['totalIncome'],
-      totalCoins: TotalCoins.fromJson(json['totalCoins']),
-      totalUserCoins: TotalCoins.fromJson(json['totalUserCoins']),
+      totalCoins: json['totalCoins'],
+      totalUserCoins: json['totalUserCoins'],
       cra: json['cra'],
       appLink: json['appLink'],
     );
@@ -60,8 +60,8 @@ class HomeData {
       '_id': id,
       'totalInvestment': totalInvestment,
       'totalIncome': totalIncome,
-      'totalCoins': totalCoins?.toJson(),
-      'totalUserCoins': totalUserCoins?.toJson(),
+      'totalCoins': totalCoins,
+      'totalUserCoins': totalUserCoins,
       'cra': cra,
       'appLink': appLink,
     };

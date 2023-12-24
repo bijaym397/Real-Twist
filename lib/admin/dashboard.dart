@@ -8,6 +8,7 @@ import 'package:real_twist/admin/set_coins_price.dart';
 import 'package:real_twist/admin/spin_coin_history.dart';
 import 'package:real_twist/admin/users_list_screen.dart';
 import 'package:real_twist/admin/withdrawal_request.dart';
+import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +16,8 @@ import '../constants/api.dart';
 import '../constants/strings.dart';
 import '../menu.dart';
 import 'package:http/http.dart' as http;
+
+import 'buy_coin_request.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({Key? key}) : super(key: key);
@@ -77,237 +80,262 @@ class _DashboardViewState extends State<DashboardView> {
           automaticallyImplyLeading: true,
         ),
         backgroundColor: Colors.black,
-        body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              SizedBox(
-                height: 200,
-                child: CommonCard(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: <Widget>[
-                      CircularPercentIndicator(
-                        radius: 68,
-                        lineWidth: 15,
-                        animation: true,
-                        percent: percentage / 100,
-                        backgroundColor: Colors.white38,
-                        circularStrokeCap: CircularStrokeCap.round,
-                        progressColor: Colors.white,
-                        center: Text("${formatPercentage(percentage)}%\nRemain",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0)),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Total Coin available",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 24,
-                                  color: Colors.white.withOpacity(.8)),
+        body: ScaffoldBGImg(
+          child: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                SizedBox(
+                  height: 200,
+                  child: CommonCard(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: <Widget>[
+                        CircularPercentIndicator(
+                          radius: 68,
+                          lineWidth: 15,
+                          animation: true,
+                          percent: percentage / 100,
+                          backgroundColor: Colors.white38,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          progressColor: Colors.white,
+                          center: Text("${formatPercentage(percentage)}%\nRemain",
                               textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "$totalCoins",
                               style: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 28,
-                                  color: Colors.black54),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              "₹$coinPrice Per Coin Price",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 16,
-                                  color: Colors.white54),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                                  fontWeight: FontWeight.bold, fontSize: 16.0)),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Total Coin available",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 24,
+                                    color: Colors.white.withOpacity(.8)),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                "$totalCoins",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 28,
+                                    color: Colors.black54),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                "₹$coinPrice Per Coin Price",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: Colors.white54),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              /// Set Coin Price
-              Container(
-                height: 120,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: CommonCard(
-                  onTap: () async {
-                    final response = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SetCoinPrice(),
-                      ),
-                    );
-
-                    if (response["refresh"] == true) {
-                      _fetchDetails();
-                    }
-                  },
-                  child: Center(
-                      child: Text(
-                    "Set Coin Price",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                    textAlign: TextAlign.center,
-                  )),
-                ),
-              ),
-
-              /// User Details
-              Container(
-                height: 120,
-                padding: const EdgeInsets.only(bottom: 16),
-                child: CommonCard(
-                  child: Center(
-                      child: Text(
-                    "Users",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                    textAlign: TextAlign.center,
-                  )),
-                  onTap: () {
-                    Navigator.push(
+                /// Set Coin Price
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: CommonCard(
+                    onTap: () async {
+                      final response = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UserListScreen()));
-                  },
-                ),
-              ),
+                          builder: (context) => const SetCoinPrice(),
+                        ),
+                      );
 
-              /// Withdrawal Request
-              Container(
-                height: 120,
-                padding: const EdgeInsets.only(bottom: 16),
-                child: CommonCard(
-                  onTap: () {
-                    Navigator.push(
+                      if (response["refresh"] == true) {
+                        _fetchDetails();
+                      }
+                    },
+                    child: Center(
+                        child: Text(
+                      "Set Coin Price",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
+                  ),
+                ),
+
+                /// User Details
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    child: Center(
+                        child: Text(
+                      "Users",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserListScreen()));
+                    },
+                  ),
+                ),
+
+                /// Withdrawal Request
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BuyCoinRequest()));
+                    },
+                    child: Center(
+                        child: Text(
+                      "Buy Coin Request",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
+                  ),
+                ),
+
+                /// Withdrawal Request
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const WithdrawalRequest()));
+                    },
+                    child: Center(
+                        child: Text(
+                      "Withdrawal Request",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
+                  ),
+                ),
+
+                /// Get Payment History
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PaymentHistory()));
+                    },
+                    child: Center(
+                        child: Text(
+                      "Get Payment History",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
+                  ),
+                ),
+
+                /// Get Spin Coin History
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    child: Center(
+                        child: Text(
+                      "Get Spin Coin History",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SpinCoinHistory()));
+                    },
+                  ),
+                ),
+
+                /// Set app version
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    onTap: () async {
+                      final response = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const WithdrawalRequest()));
-                  },
-                  child: Center(
-                      child: Text(
-                    "Withdrawal Request",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                    textAlign: TextAlign.center,
-                  )),
-                ),
-              ),
+                          builder: (context) => const SetAppVersion(),
+                        ),
+                      );
 
-              /// Get Payment History
-              Container(
-                height: 120,
-                padding: const EdgeInsets.only(bottom: 16),
-                child: CommonCard(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PaymentHistory()));
-                  },
-                  child: Center(
-                      child: Text(
-                    "Get Payment History",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                    textAlign: TextAlign.center,
-                  )),
+                      if (response["refresh"] == true) {
+                        _fetchDetails();
+                      }
+                    },
+                    child: Center(
+                        child: Text(
+                          "Set App Version",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 26,
+                              color: Colors.white.withOpacity(.7)),
+                          textAlign: TextAlign.center,
+                        )),
+                  ),
                 ),
-              ),
 
-              /// Get Spin Coin History
-              Container(
-                height: 120,
-                padding: const EdgeInsets.only(bottom: 16),
-                child: CommonCard(
-                  child: Center(
-                      child: Text(
-                    "Get Spin Coin History",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                    textAlign: TextAlign.center,
-                  )),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SpinCoinHistory()));
-                  },
+                /// Logout
+                Container(
+                  height: 120,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommonCard(
+                    onTap: () {
+                      showTextFieldPopup(context);
+                    },
+                    child: Center(
+                        child: Text(
+                      "Logout",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 26,
+                          color: Colors.white.withOpacity(.7)),
+                      textAlign: TextAlign.center,
+                    )),
+                  ),
                 ),
-              ),
-
-              /// Set app version
-              Container(
-                height: 120,
-                padding: const EdgeInsets.only(bottom: 16),
-                child: CommonCard(
-                  onTap: () async {
-                    final response = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SetAppVersion(),
-                      ),
-                    );
-
-                    if (response["refresh"] == true) {
-                      _fetchDetails();
-                    }
-                  },
-                  child: Center(
-                      child: Text(
-                        "Set App Version",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 26,
-                            color: Colors.white.withOpacity(.7)),
-                        textAlign: TextAlign.center,
-                      )),
-                ),
-              ),
-
-              /// Logout
-              Container(
-                height: 120,
-                padding: const EdgeInsets.only(bottom: 16),
-                child: CommonCard(
-                  onTap: () {
-                    showTextFieldPopup(context);
-                  },
-                  child: Center(
-                      child: Text(
-                    "Logout",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                    textAlign: TextAlign.center,
-                  )),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

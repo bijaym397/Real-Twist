@@ -11,6 +11,8 @@ import 'package:real_twist/main.dart';
 import 'package:real_twist/modals/otp_verification_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'login.dart';
+
 class OtpVerificationScreen extends StatefulWidget {
   final String? phoneNumber;
   final String? verificationCode;
@@ -69,12 +71,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         widget.token?.isNotEmpty == true ?  Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ChangePassword(token: verificationData.data!.token.toString()),
+            builder: (context) => ChangePassword(token: verificationData.data!.authToken.toString()),
           ),
         ): Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeView(referCode: widget.referCode, userId: widget.userId.toString()),
+            builder: (context) => HomeView(referCode: widget.referCode),
           ),
         );
         // } else {
@@ -106,13 +108,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: ScaffoldBGImg(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: otpFormKey,
             child: Column(

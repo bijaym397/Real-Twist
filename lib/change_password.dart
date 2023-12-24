@@ -7,10 +7,7 @@ import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/modals/change_password_modal.dart';
-import 'package:real_twist/utils/form_validator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'auth/widgets.dart';
 
 class ChangePassword extends StatefulWidget {
   final String? token;
@@ -42,121 +39,123 @@ class _ChangePasswordState extends State<ChangePassword> {
         title: const Text('Real Twist'),
       ),
       backgroundColor: Colors.black,
-      body: Form(
-        key: changePasswordFormkey,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          children: [
-            const SizedBox(height: 150),
-            const Center(
-                child: Text(
-                  "Change Password",
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
-                )),
-            const SizedBox(height: 100),
-            TextFormField(
-              focusNode: passwordNode,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: passwordController,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) return "*Required";
-                if (value.length < 8) {
-                  return "Password must contain at least 8 characters.";
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.done,
-              obscureText: hidePassword,
-              decoration: InputDecoration(
-                contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                prefixIcon: const Icon(Icons.key),
-                border: const OutlineInputBorder(),
-                hintText: 'Enter New Password',
-                labelText: "Enter New Password",
-                suffixIcon: InkWell(
-                  onTap: (){
-                    hidePassword = !hidePassword;
-                    setState(() {
+      body: ScaffoldBGImg(
+        child: Form(
+          key: changePasswordFormkey,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            children: [
+              const SizedBox(height: 150),
+              const Center(
+                  child: Text(
+                    "Change Password",
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
+                  )),
+              const SizedBox(height: 100),
+              TextFormField(
+                focusNode: passwordNode,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                controller: passwordController,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) return "*Required";
+                  if (value.length < 8) {
+                    return "Password must contain at least 8 characters.";
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.done,
+                obscureText: hidePassword,
+                decoration: InputDecoration(
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  prefixIcon: const Icon(Icons.key),
+                  border: const OutlineInputBorder(),
+                  hintText: 'Enter New Password',
+                  labelText: "Enter New Password",
+                  suffixIcon: InkWell(
+                    onTap: (){
+                      hidePassword = !hidePassword;
+                      setState(() {
 
-                    });
-                  },
-                  child: Icon(
-                    hidePassword
-                        ? Icons.visibility_off_rounded
-                        : Icons.visibility_rounded,
+                      });
+                    },
+                    child: Icon(
+                      hidePassword
+                          ? Icons.visibility_off_rounded
+                          : Icons.visibility_rounded,
+                    ),
+                    /*onTap: () {
+
+                            }*/
                   ),
-                  /*onTap: () {
+                ),
+              ),
+              const SizedBox(height: 24),
+              TextFormField(
+                focusNode: confirmPasswordNode,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                controller: confirmPasswordController,
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: hideConfirmPassword,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "*Required";
+                  } else if (value.length < 8) {
+                    return "Minimum length is 8";
+                  } else if (passwordController.value.text !=
+                      confirmPasswordController.value.text) {
+                    return "Password & Confirmation password do not match";
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.key),
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Confirm Password',
+                  labelText: "Enter Confirm Password",
+                  suffixIcon: InkWell(
+                    onTap: (){
+                      hideConfirmPassword = !hideConfirmPassword;
+                      setState(() {
+
+                      });
+                    },
+                    child: Icon(
+                      hideConfirmPassword
+                          ? Icons.visibility_off_rounded
+                          : Icons.visibility_rounded,
+                    ),
+                    /*onTap: () {
 
                           }*/
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            TextFormField(
-              focusNode: confirmPasswordNode,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: confirmPasswordController,
-              keyboardType: TextInputType.visiblePassword,
-              obscureText: hideConfirmPassword,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "*Required";
-                } else if (value.length < 8) {
-                  return "Minimum length is 8";
-                } else if (passwordController.value.text !=
-                    confirmPasswordController.value.text) {
-                  return "Password & Confirmation password do not match";
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.key),
-                contentPadding:
-                EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                border: OutlineInputBorder(),
-                hintText: 'Enter Confirm Password',
-                labelText: "Enter Confirm Password",
-                suffixIcon: InkWell(
-                  onTap: (){
-                    hideConfirmPassword = !hideConfirmPassword;
-                    setState(() {
-
-                    });
+              const SizedBox(height: 60),
+              SizedBox(
+                height: 45,
+                child: CommonCard(
+                  onTap: () {
+                    if (changePasswordFormkey.currentState!.validate()) {
+                      _hitChangePasswordApi(
+                        password: passwordController.text.trim(),
+                      );
+                    }
                   },
-                  child: Icon(
-                    hideConfirmPassword
-                        ? Icons.visibility_off_rounded
-                        : Icons.visibility_rounded,
-                  ),
-                  /*onTap: () {
-
-                        }*/
-                ),
-              ),
-            ),
-            const SizedBox(height: 60),
-            SizedBox(
-              height: 45,
-              child: CommonCard(
-                onTap: () {
-                  if (changePasswordFormkey.currentState!.validate()) {
-                    _hitChangePasswordApi(
-                      password: passwordController.text.trim(),
-                    );
-                  }
-                },
-                child: const Center(
-                  child: Text(
-                    'Submit',
-                    style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  child: const Center(
+                    child: Text(
+                      'Submit',
+                      style:
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

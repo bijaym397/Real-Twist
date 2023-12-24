@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:real_twist/utils/blinking_border_container.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'constants/strings.dart';
 
 class SpinWheel extends StatefulWidget {
@@ -22,7 +20,7 @@ class _SpinWheelState extends State<SpinWheel> {
 
   bool isApiCallInProgress = false;
 
-  List<int> items = [100, 50, 10, 200, 0, 20, 500, 0, 1000, 0];
+  List<int> items = [1, 3, 10, 20, 50, 0, 100, 200, 500, 1000];
 
   late SharedPreferences prefs;
   bool hasPlayedToday = true;
@@ -115,7 +113,7 @@ class _SpinWheelState extends State<SpinWheel> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
-        title: const Text("Play and win"),
+        title: const Text("Play & Win"),
         centerTitle: true,
       ),
       body: BlinkingBorderContainer(
@@ -154,13 +152,10 @@ class _SpinWheelState extends State<SpinWheel> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withAlpha(100),
-                                // Shadow color
-                                offset: const Offset(0.0, 0.0),
-                                blurRadius: 10.0,
-                                // Spread of the shadow
-                                spreadRadius: 5.0, // Expansion of the shadow
-                              ),
+                                  color: Colors.black.withAlpha(100),
+                                  offset: const Offset(0.0, 0.0),
+                                  blurRadius: 10.0,
+                                  spreadRadius: 5.0),
                             ],
                             borderRadius: BorderRadius.circular(
                                 MediaQuery.of(context).size.width * 0.80 / 2),
@@ -180,9 +175,7 @@ class _SpinWheelState extends State<SpinWheel> {
                                           : Colors.black87,
                                   child: Center(
                                     child: Text(
-                                      index != 9
-                                          ? items[index].toString()
-                                          : "?",
+                                      items[index].toString(),
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w900,

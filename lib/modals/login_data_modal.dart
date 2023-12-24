@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class LoginDataResponse {
   String? message;
   int? status;
@@ -8,7 +10,7 @@ class LoginDataResponse {
   LoginDataResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? LoginRecord.fromJson(json['data']) : null;
+    data = (json['data'] as Map<dynamic,dynamic>?)?.isNotEmpty == true ? LoginRecord.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -75,7 +77,7 @@ class User {
   String? countryCode;
   String? userCode;
   int? verificationCode;
-  TotalCoins? totalCoins;
+  dynamic? totalCoins;
   bool? status;
   String? userType;
   DateTime? userCreatedAt;
@@ -111,7 +113,7 @@ class User {
       countryCode: json['countryCode'],
       userCode: json['userCode'],
       verificationCode: json['verificationCode'],
-      totalCoins: TotalCoins.fromJson(json['totalCoins']),
+      totalCoins: json['totalCoins'],
       status: json['status'],
       userType: json['userType'],
       userCreatedAt: DateTime.parse(json['createdAt']),
@@ -131,7 +133,7 @@ class User {
     'countryCode': countryCode,
     'userCode': userCode,
     'verificationCode': verificationCode,
-    'totalCoins': totalCoins?.toJson(),
+    'totalCoins': totalCoins,
     'status': status,
     'userType': userType,
     'createdAt': userCreatedAt?.toIso8601String(),

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:real_twist/auth/login.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -160,7 +161,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
         centerTitle: true,
         title: const Text("Casino"),
       ),
-      body: Center(child: Text("Coming Soon", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 22)))
+      body: ScaffoldBGImg(child: const Center(child: Text("Coming Soon", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 22))))
       // BlinkingBorderContainer(
       //   backgroundImage: "assets/casio_table.jpg",
       //   child: SizedBox(

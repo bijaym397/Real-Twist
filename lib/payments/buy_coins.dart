@@ -5,6 +5,7 @@ import 'package:real_twist/payments/webview_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../auth/login.dart';
 import '../constants/api.dart';
 import '../constants/strings.dart';
 import '../home.dart';
@@ -32,12 +33,12 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
 
     if (coinsText.isNotEmpty) {
       int numberOfCoins = int.tryParse(coinsText) ?? 0;
-      if (numberOfCoins >= 100) {
+      if (numberOfCoins >= 9) {
         _buyCoinsApiCall(numberOfCoins);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please enter coins greater than 100'),
+            content: Text('Minimum coin should be 10'),
           ),
         );
       }
@@ -157,42 +158,45 @@ class _BuyCoinsScreenState extends State<BuyCoinsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.pink.shade800,
         centerTitle: true,
         title: const Text('Buy Coins'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _coinsController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.currency_exchange),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter number of coins',
-                  labelText: "Enter number of coins"),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 45,
-              child: CommonCard(
-                onTap: _buyCoins,
-                child: const Center(
-                  child: Text(
-                    'Buy',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+      body: ScaffoldBGImg(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _coinsController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.currency_exchange),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter number of coins',
+                    labelText: "Enter number of coins"),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 45,
+                child: CommonCard(
+                  onTap: _buyCoins,
+                  child: const Center(
+                    child: Text(
+                      'Buy',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
