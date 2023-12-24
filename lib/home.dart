@@ -324,35 +324,6 @@ class HomeSideView extends StatelessWidget {
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
 
-          /// Total Coins Available
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-            child: CommonCard(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Total Coins Available",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.7)),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    formatPercentage(double.parse(homeDetails
-                            .data?.totalCoins.toString() ?? "0.00")),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 22,
-                        color: Colors.black54),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
          /* /// My Network
           const SizedBox(height: 26),
           Padding(
@@ -427,36 +398,63 @@ class HomeSideView extends StatelessWidget {
                     viewportFraction: 1,
                   ),
                 ),
-                const SizedBox(height: 24),
 
-                /// Total Investment
-                CommonCard(
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PaymentHistoryPage(
-                              appBarTitle: 'My Investment History'))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "My Investment",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 30,
-                            color: Colors.white.withOpacity(.7)),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        homeDetails.data?.totalInvestment.toStringAsFixed(2) ?? "0.00",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w800, fontSize: 22),
-                      ),
-                    ],
+                /// Total Coins Available
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: CommonCard(
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Total Coins Available",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 26,
+                              color: Colors.white.withOpacity(.8)),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          formatPercentage(double.parse(homeDetails
+                              .data?.totalCoins.toString() ?? "0.00")),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 25,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                // /// Total Investment
+                // CommonCard(
+                //   padding: const EdgeInsets.symmetric(vertical: 18),
+                //   onTap: () => Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const PaymentHistoryPage(
+                //               appBarTitle: 'My Investment History'))),
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         "My Investment",
+                //         style: TextStyle(
+                //             fontWeight: FontWeight.w900,
+                //             fontSize: 30,
+                //             color: Colors.white.withOpacity(.7)),
+                //       ),
+                //       const SizedBox(height: 8),
+                //       Text(
+                //         homeDetails.data?.totalInvestment.toStringAsFixed(2) ?? "0.00",
+                //         style: const TextStyle(
+                //             fontWeight: FontWeight.w800, fontSize: 22),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(height: 24),
 
                 /// Spin game
                 GestureDetector(
