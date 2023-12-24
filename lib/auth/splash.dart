@@ -190,7 +190,7 @@ class _SplashViewState extends State<SplashView> {
 
   Future<void> _launchUrl() async {
     if (!await launchUrl(
-        Uri.parse("http://178.16.138.186:5000/download-apk"))) {
+        Uri.parse("https://web.realtwist.tech/download-apk.html"))) {
       throw Exception('Could not launch');
     }
   }
