@@ -267,6 +267,7 @@ Future<void> showTextFieldPopup(BuildContext context) async {
                           SharedPreferences preference =
                               await SharedPreferences.getInstance();
                           preference.setString(AppStrings.spAuthToken, "");
+                          preference.clear;
                           Navigator.pushAndRemoveUntil(
                               context, MaterialPageRoute(
                               builder: (context) => const LoginView()), (route) => false

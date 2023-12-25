@@ -285,6 +285,7 @@ class _LoginViewState extends State<LoginView> {
             content: Text("${forgotData.message}"),
           ),
         );
+        Navigator.pop(context);
       }
     } catch (e) {
       customLoader!.hide();

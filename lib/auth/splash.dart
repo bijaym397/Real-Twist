@@ -46,12 +46,12 @@ class _SplashViewState extends State<SplashView> {
   }
 
   initStates() async {
-    var authToken = await getToken();
+    String? authToken = await getToken();
     var userType = await getUser();
-
+    debugPrint("checktoken ${authToken.toString()}");
     if (await _checkVersionApi()) {
       Future.delayed(const Duration(seconds: 3), () async {
-        if (authToken?.isNotEmpty == true) {
+        if (authToken != "" && authToken != null) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -71,7 +71,7 @@ class _SplashViewState extends State<SplashView> {
 
   Future<String?> getToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var token = sharedPreferences.getString(AppStrings.spAuthToken);
+    String? token = sharedPreferences.getString(AppStrings.spAuthToken);
     return token;
   }
 

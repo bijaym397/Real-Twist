@@ -8,6 +8,7 @@ import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
+import 'package:real_twist/modals/forgot_otp_verification_modal.dart';
 import 'package:real_twist/modals/otp_verification_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,22 +34,78 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   final TextEditingController otpController = TextEditingController();
 
+  Future<void> _hitForgotVerifyOtpApi() async {
+    try{
+      customLoader!.show(context);
+      const forgotApiUrl = '${Api.baseUrl}${Api.verifyPasswordOtp}';
+      Map payload = {
+        'token' : widget.token,
+        'verificationCode': int.tryParse(otpController.text) ?? 0,
+      };
+      final response = await http.post(
+          Uri.parse(forgotApiUrl),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(payload)
+      );
+      final verificationData = ForgotOtpVerificationResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        customLoader!.hide();
+        // API call successful
+        SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("OTP verification successful."),
+          ),
+        );
+        debugPrint("prtf ${widget.token.toString()}");
+        debugPrint("prtf ${verificationData.data!.token.toString()}");
+        // Navigate to the home screen (replace with the actual home screen)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChangePassword(token: verificationData.data!.token.toString()),
+            // builder: (context) => ChangePassword(token: widget.token.toString()),
+          ),
+        );
+        // } else {
+        //   // API call failed
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       content: const Text("OTP verification failed. Please try again."),
+        //     ),
+        //   );
+        // }
+      }
+      else {
+        // API call failed
+        customLoader!.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("OTP verification failed. Please try again."),
+          ),
+        );
+      }
+    }
+    catch(e){
+      customLoader!.hide();
+      return debugPrint("errrior $e.toString()");
+    }
+
+  }
+
   Future<void> _hitVerifyOtpApi() async {
     try{
       customLoader!.show(context);
       const apiUrl = '${Api.baseUrl}${Api.verifyOtp}';
-      const forgotApiUrl = '${Api.baseUrl}${Api.verifyPasswordOtp}';
-      Map payload = widget.token?.isNotEmpty == true ? {
-        'token' : widget.token,
-        'verificationCode': int.tryParse(otpController.text) ?? 0,
-      } :
+      Map payload =
       {
         'userId': widget.userId.toString() ?? '654ca1fe7470d369ff94735c',
         'phoneNumber': widget.phoneNumber.toString(),
         'verificationCode': int.tryParse(otpController.text) ?? 0,
       };
       final response = await http.post(
-        Uri.parse(widget.token?.isNotEmpty == true ? forgotApiUrl : apiUrl),
+        Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(payload)
       );
@@ -63,19 +120,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             content: const Text("OTP verification successful."),
           ),
         );
+        debugPrint("prtf ${widget.token.toString()}");
+        debugPrint("prtf ${verificationData.data!.authToken.toString()}");
         sharedPreferences.setString(
             AppStrings.spAuthToken, verificationData.data!.authToken.toString());
         sharedPreferences.setString(
             AppStrings.spUserId, verificationData.data!.userId.toString());
         // Navigate to the home screen (replace with the actual home screen)
-        widget.token?.isNotEmpty == true ?  Navigator.pushReplacement(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => ChangePassword(token: verificationData.data!.authToken.toString()),
-          ),
-        ): Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
+          MaterialPageRoute( 
             builder: (context) => HomeView(referCode: widget.referCode),
           ),
         );
@@ -168,7 +222,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   child: CommonCard(
                     onTap: (){
                       if(otpFormKey.currentState!.validate()){
-                        _hitVerifyOtpApi();
+                       widget.token!.isNotEmpty == true ? _hitForgotVerifyOtpApi() : _hitVerifyOtpApi();
                       }
                     },
                     child: const Center(

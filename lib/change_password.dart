@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/constants/api.dart';
+import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/home.dart';
 import 'package:real_twist/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:real_twist/modals/change_password_modal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ChangePassword extends StatefulWidget {
@@ -172,7 +174,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'token': widget.token.toString(),
-          'password': password.toString(),
+          'password': password.toString(), 
         }),
       );
       debugPrint("requested data ${jsonEncode({
@@ -185,6 +187,10 @@ class _ChangePasswordState extends State<ChangePassword> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Password Changed ${changePassData.message}"),
         ));
+        SharedPreferences preference =
+        await SharedPreferences.getInstance();
+        preference.setString(AppStrings.spAuthToken, "");
+        preference.clear;
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const LoginView()),(Route<dynamic> route) => false);
       } else {
