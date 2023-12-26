@@ -222,7 +222,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   child: CommonCard(
                     onTap: (){
                       if(otpFormKey.currentState!.validate()){
-                       widget.token!.isNotEmpty == true ? _hitForgotVerifyOtpApi() : _hitVerifyOtpApi();
+                       widget.token != null ? _hitForgotVerifyOtpApi() : _hitVerifyOtpApi();
                       }
                     },
                     child: const Center(

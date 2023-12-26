@@ -12,7 +12,7 @@ class BackHandler extends StatelessWidget {
     DateTime _lastExitTime = DateTime.now();
     return WillPopScope(
       onWillPop: onTap ?? () async {
-        if (DateTime.now().difference(_lastExitTime) >= Duration(seconds: 2)) {
+        if (DateTime.now().difference(_lastExitTime) > Duration(seconds: 2)) {
           //showing message to user
           final snack =  SnackBar(
             content:  Text("Press the back button again to exist the app"),
@@ -20,9 +20,9 @@ class BackHandler extends StatelessWidget {
           );
           ScaffoldMessenger.of(context).showSnackBar(snack);
           _lastExitTime = DateTime.now();
-          return false; // disable back press
+          return Future.value(false); // disable back press
         } else {
-          return true; //  exit the app
+          return Future.value(true); //  exit the app
         }
       },
       child: child,
