@@ -304,12 +304,12 @@ class _LoginViewState extends State<LoginView> {
       builder: (context) {
         final GlobalKey<FormState> forgotFormKey = GlobalKey<FormState>();
         return AlertDialog(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           content: Container(
             height: 160,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             child: Form(

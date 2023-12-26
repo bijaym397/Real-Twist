@@ -11,6 +11,7 @@ import 'package:real_twist/main.dart';
 import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/referral_response_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
+import 'package:real_twist/payments/coin_history.dart';
 import 'package:real_twist/payments/icome_view.dart';
 import 'package:real_twist/payments/my_invest.dart';
 import 'package:real_twist/payments/payment_history.dart';
@@ -359,8 +360,6 @@ class HomeSideView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-
-
                 /// Total Coins Available
                 Padding(
                   padding: const EdgeInsets.only(bottom: 24),
@@ -379,7 +378,8 @@ class HomeSideView extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           formatPercentage(double.parse(
-                              homeDetails.data?.totalCoins.toString() ?? "0.00")),
+                              homeDetails.data?.totalCoins.toString() ??
+                                  "0.00")),
                           style: const TextStyle(
                               fontWeight: FontWeight.w800,
                               fontSize: 25,
@@ -407,7 +407,8 @@ class HomeSideView extends StatelessWidget {
                       onTap: () => Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) => const NumberSpinner(),
+                          builder: (BuildContext context) =>
+                              const NumberSpinner(),
                         ),
                       ),
                     ),
@@ -423,7 +424,8 @@ class HomeSideView extends StatelessWidget {
                     aspectRatio: 16 / 9,
                     autoPlayCurve: Curves.fastOutSlowIn,
                     enableInfiniteScroll: true,
-                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
                     autoPlayInterval: const Duration(seconds: 6),
                     viewportFraction: 1,
                   ),
@@ -651,31 +653,31 @@ class HomeSideView extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 /// Total Bonus
-                CommonCard(
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BonusChart())),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Real Twist Bonus Chart",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 26,
-                            color: Colors.white.withOpacity(.7)),
-                      ),
-                      // const SizedBox(height: 8),
-                      // const Text(
-                      //   "You can ",
-                      //   style: TextStyle(
-                      //       fontWeight: FontWeight.w800, fontSize: 22),
-                      // ),
-                    ],
-                  ),
-                ),
+                // CommonCard(
+                //   padding: const EdgeInsets.symmetric(vertical: 18),
+                //   onTap: () => Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const BonusChart())),
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         "Real Twist Bonus Chart",
+                //         style: TextStyle(
+                //             fontWeight: FontWeight.w900,
+                //             fontSize: 26,
+                //             color: Colors.white.withOpacity(.7)),
+                //       ),
+                //       // const SizedBox(height: 8),
+                //       // const Text(
+                //       //   "You can ",
+                //       //   style: TextStyle(
+                //       //       fontWeight: FontWeight.w800, fontSize: 22),
+                //       // ),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(height: 48),
               ],
             ),
@@ -821,57 +823,64 @@ class CoinDetails extends StatelessWidget {
         ),
         const SizedBox(width: 24),
         Expanded(
-          child: Container(
-            height: 80,
-            margin: const EdgeInsets.only(bottom: 26),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.pinkAccent.shade100, Colors.pink.shade900]),
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(100),
-                  bottomLeft: Radius.circular(100)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                /*const Text(
-                  "Real Twist",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),*/
-
-                const Text(
-                  "Total Coins",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 7),
-                  child: Text(
-                    totalCoin.toString(),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CoinHistory()));
+            },
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 26),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.pinkAccent.shade100, Colors.pink.shade900]),
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(100),
+                    bottomLeft: Radius.circular(100)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Total Coins",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 7),
+                    child: Text(
+                      totalCoin.toString(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 7),
+                    child: Text(
+                      "Show Coin History",
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/buy_coin_PU.dart';
 import 'package:real_twist/payments/buy_coins.dart';
+import 'package:real_twist/payments/coin_history.dart';
 import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/payments/sell_coins.dart';
 import 'package:real_twist/payments/webview_screen.dart';
@@ -127,6 +128,29 @@ class DrawerView extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.history),
+              title: const Text('Payment History'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PaymentHistoryPage(
+                            appBarTitle: 'Payment History')));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.update),
+              title: const Text('Show Coins History'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CoinHistory()));
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.key),
               title: const Text('Change Password'),
               onTap: () async {
@@ -136,18 +160,6 @@ class DrawerView extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) =>
                             ChangePassword(token: token.toString())));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.account_balance),
-              title: const Text('Payment History'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PaymentHistoryPage(
-                            appBarTitle: 'Payment History')));
               },
             ),
             ListTile(

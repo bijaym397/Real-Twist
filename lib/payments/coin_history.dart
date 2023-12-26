@@ -1,24 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:real_twist/auth/login.dart';
-import 'package:real_twist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import '../auth/login.dart';
 import '../constants/api.dart';
 import '../constants/strings.dart';
 import '../home.dart';
+import '../main.dart';
 
-class PaymentHistoryPage extends StatefulWidget {
-
-  final String appBarTitle;
-
-  const PaymentHistoryPage({super.key, required this.appBarTitle});
+class CoinHistory extends StatefulWidget {
+  const CoinHistory({Key? key}) : super(key: key);
 
   @override
-  _PaymentHistoryPageState createState() => _PaymentHistoryPageState();
+  State<CoinHistory> createState() => _CoinHistoryState();
 }
 
-class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
+class _CoinHistoryState extends State<CoinHistory> {
   late List<Map<String, dynamic>> payments = [];
 
   @override
@@ -59,19 +56,19 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
     }
 
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.pink.shade800,
-        centerTitle: true,
-        title: Text(widget.appBarTitle),
-      ),
-      body: ScaffoldBGImg(child: payments.isEmpty ?
-      const Center(child: Text("No History available",
-          style: TextStyle(color: Colors.white, fontSize: 22))) : ListView.builder(
+        appBar: AppBar(
+          backgroundColor: Colors.pink.shade800,
+          centerTitle: true,
+          title: const Text("Coin History"),),
+        body: ScaffoldBGImg(
+      child: payments.isEmpty
+          ? const Center(
+          child: Text("No History available",
+              style: TextStyle(color: Colors.white, fontSize: 22)))
+          : ListView.builder(
         itemCount: payments.length,
         itemBuilder: (context, index) {
           final payment = payments[index];
@@ -95,16 +92,17 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(top: 16, right: 12, left: 12),
+            padding:
+            const EdgeInsets.only(top: 16, right: 12, left: 12),
             child: CommonCard(
-              padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 12),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 6, vertical: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Payment ID: $paymentId",
                       style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold)),
+                          fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 6),
                   Text(
                     'Amount: $amount',
@@ -161,7 +159,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
           //   ),
           // );
         },
-      ),)
-    );
+      ),
+    ));
   }
 }
