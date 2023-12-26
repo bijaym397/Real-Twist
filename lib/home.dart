@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:real_twist/admin/payment_history.dart';
+import 'package:real_twist/bonus_chart.dart';
 import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
@@ -324,7 +325,75 @@ class HomeSideView extends StatelessWidget {
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
 
-         /* /// My Network
+          /// Total Coins Available
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: CommonCard(
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Total Coins Available",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 26,
+                        color: Colors.white.withOpacity(.8)),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    formatPercentage(double.parse(
+                        homeDetails.data?.totalCoins.toString() ?? "0.00")),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 25,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          /// Banner
+          CarouselSlider(
+            items: [
+              BannerImg(
+                imgUrl: "assets/b1.png",
+                onTap: () => Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const SpinWheel(),
+                  ),
+                ),
+              ),
+              BannerImg(
+                imgUrl: "assets/b3.jpeg",
+                onTap: () => Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const NumberSpinner(),
+                  ),
+                ),
+              ),
+              const BannerImg(
+                imgUrl: "assets/b111.jpeg",
+                ind: 1,
+              ),
+            ],
+            options: CarouselOptions(
+              height: 200.0,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              autoPlayInterval: const Duration(seconds: 6),
+              viewportFraction: 1,
+            ),
+          ),
+
+          /* /// My Network
           const SizedBox(height: 26),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -353,108 +422,42 @@ class HomeSideView extends StatelessWidget {
             ),
           ),*/
 
-          const SizedBox(height: 24),
+          // const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                /// Banner
-                CarouselSlider(
-                  items: [
-                    BannerImg(
-                      imgUrl: "assets/b1.png",
-                      onTap: () => Navigator.push<void>(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) => const SpinWheel(),
-                        ),
-                      ),
-                    ),
-                    BannerImg(
-                      imgUrl: "assets/b3.jpeg",
-                      onTap: () => Navigator.push<void>(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              const NumberSpinner(),
-                        ),
-                      ),
-                    ),
-                    const BannerImg(
-                      imgUrl: "assets/b111.jpeg",
-                      ind: 1,
-                    ),
-                  ],
-                  options: CarouselOptions(
-                    height: 200.0,
-                    enlargeCenterPage: true,
-                    autoPlay: true,
-                    aspectRatio: 16 / 9,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enableInfiniteScroll: true,
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
-                    autoPlayInterval: const Duration(seconds: 6),
-                    viewportFraction: 1,
-                  ),
-                ),
+                const SizedBox(height: 24),
 
-                /// Total Coins Available
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: CommonCard(
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Total Coins Available",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 26,
-                              color: Colors.white.withOpacity(.8)),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          formatPercentage(double.parse(homeDetails
-                              .data?.totalCoins.toString() ?? "0.00")),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 25,
-                              color: Colors.black),
-                        ),
-                      ],
-                    ),
+                /// Total Investment
+                CommonCard(
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PaymentHistoryPage(
+                              appBarTitle: 'My Investment History'))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "My Investment",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 30,
+                            color: Colors.white.withOpacity(.7)),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        homeDetails.data?.totalInvestment.toStringAsFixed(2) ??
+                            "0.00",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w800, fontSize: 22),
+                      ),
+                    ],
                   ),
                 ),
-                // /// Total Investment
-                // CommonCard(
-                //   padding: const EdgeInsets.symmetric(vertical: 18),
-                //   onTap: () => Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => const PaymentHistoryPage(
-                //               appBarTitle: 'My Investment History'))),
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       Text(
-                //         "My Investment",
-                //         style: TextStyle(
-                //             fontWeight: FontWeight.w900,
-                //             fontSize: 30,
-                //             color: Colors.white.withOpacity(.7)),
-                //       ),
-                //       const SizedBox(height: 8),
-                //       Text(
-                //         homeDetails.data?.totalInvestment.toStringAsFixed(2) ?? "0.00",
-                //         style: const TextStyle(
-                //             fontWeight: FontWeight.w800, fontSize: 22),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
                 /// Spin game
                 GestureDetector(
@@ -644,7 +647,35 @@ class HomeSideView extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 48)
+                const SizedBox(height: 24),
+
+                /// Total Bonus
+                CommonCard(
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BonusChart())),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Real Twist Bonus Chart",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 26,
+                            color: Colors.white.withOpacity(.7)),
+                      ),
+                      // const SizedBox(height: 8),
+                      // const Text(
+                      //   "You can ",
+                      //   style: TextStyle(
+                      //       fontWeight: FontWeight.w800, fontSize: 22),
+                      // ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 48),
               ],
             ),
           ),
