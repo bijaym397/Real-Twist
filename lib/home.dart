@@ -325,74 +325,6 @@ class HomeSideView extends StatelessWidget {
             coinPrice: homeDetails.data?.cra?.toStringAsFixed(2) ?? "0",
           ),
 
-          /// Total Coins Available
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24),
-            child: CommonCard(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Total Coins Available",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Colors.white.withOpacity(.8)),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    formatPercentage(double.parse(
-                        homeDetails.data?.totalCoins.toString() ?? "0.00")),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 25,
-                        color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          /// Banner
-          CarouselSlider(
-            items: [
-              BannerImg(
-                imgUrl: "assets/b1.png",
-                onTap: () => Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SpinWheel(),
-                  ),
-                ),
-              ),
-              BannerImg(
-                imgUrl: "assets/b3.jpeg",
-                onTap: () => Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const NumberSpinner(),
-                  ),
-                ),
-              ),
-              const BannerImg(
-                imgUrl: "assets/b111.jpeg",
-                ind: 1,
-              ),
-            ],
-            options: CarouselOptions(
-              height: 200.0,
-              enlargeCenterPage: true,
-              autoPlay: true,
-              aspectRatio: 16 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayInterval: const Duration(seconds: 6),
-              viewportFraction: 1,
-            ),
-          ),
-
           /* /// My Network
           const SizedBox(height: 26),
           Padding(
@@ -427,6 +359,75 @@ class HomeSideView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
+
+
+                /// Total Coins Available
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: CommonCard(
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Total Coins Available",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 26,
+                              color: Colors.white.withOpacity(.8)),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          formatPercentage(double.parse(
+                              homeDetails.data?.totalCoins.toString() ?? "0.00")),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 25,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                /// Banner
+                CarouselSlider(
+                  items: [
+                    BannerImg(
+                      imgUrl: "assets/b1.png",
+                      onTap: () => Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const SpinWheel(),
+                        ),
+                      ),
+                    ),
+                    BannerImg(
+                      imgUrl: "assets/b3.jpeg",
+                      onTap: () => Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const NumberSpinner(),
+                        ),
+                      ),
+                    ),
+                    const BannerImg(
+                      imgUrl: "assets/b111.jpeg",
+                      ind: 1,
+                    ),
+                  ],
+                  options: CarouselOptions(
+                    height: 200.0,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                    autoPlayInterval: const Duration(seconds: 6),
+                    viewportFraction: 1,
+                  ),
+                ),
                 const SizedBox(height: 24),
 
                 /// Total Investment
