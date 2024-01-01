@@ -870,15 +870,15 @@ class CoinDetails extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 7),
-                    child: Text(
-                      "Show Coin History",
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: 7),
+                  //   child: Text(
+                  //     "Show Coin History",
+                  //     textAlign: TextAlign.center,
+                  //     maxLines: 2,
+                  //     overflow: TextOverflow.ellipsis,
+                  //   ),
+                  // ),
                 ],
               ),
             ),

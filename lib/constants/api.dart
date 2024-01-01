@@ -32,6 +32,7 @@ abstract class Api {
   static const String sellCoins = "payment/request";
   static const String updatePaymentStatus = "payment/status";
   static const String paymentHistory = "user/payment";
+  static const String userCoinHistory = "user/coin-histroy";
   static const String adminPaymentHistory = "admin/payment-history";
   static const String spinCoinHistory = "admin/spincoin";
 
@@ -56,5 +57,7 @@ abstract class Api {
 
   static const String checkAppVersion = "admin/get-config?type=appversion";
 
-  static const String appVersion = "1.0.6";
+  static const String appVersion = "1.0.7";
+
+  static const String buyURl = "https://pmny.in/AIPlns6BskBN";
 }

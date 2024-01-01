@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:real_twist/payments/webview_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../auth/login.dart';
 import '../constants/api.dart';
 import '../constants/strings.dart';
@@ -107,17 +108,19 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
               SizedBox(
                 height: 45,
                 child: CommonCard(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => WebViewScreen(
-                          "https://pmny.in/AIPlns6BskBN",
-                          title: "Buy Real Twist Coin",
-                          onPageFinished: (String url) {},
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: _launchUrl,
+                      // () {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => WebViewScreen(
+                    //       "https://pmny.in/AIPlns6BskBN",
+                    //       // https://pmny.in/AIPlns6BskBN
+                    //       title: "Buy Real Twist Coin",
+                    //       onPageFinished: (String url) {},
+                    //     ),
+                    //   ),
+                    // );
+                  // },
                   child: const Center(
                     child: Text(
                       "Buy Coin Now",
@@ -180,5 +183,11 @@ class _BuyCoinPUState extends State<BuyCoinPU> {
         ),
       ),
     );
+  }
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(
+        Uri.parse(Api.buyURl))) {
+      throw Exception('Could not launch');
+    }
   }
 }

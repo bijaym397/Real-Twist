@@ -16,7 +16,7 @@ class CoinHistory extends StatefulWidget {
 }
 
 class _CoinHistoryState extends State<CoinHistory> {
-  late List<Map<String, dynamic>> payments = [];
+  late List<Map<String, dynamic>> data = [];
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _CoinHistoryState extends State<CoinHistory> {
 
   Future<void> fetchPaymentHistory() async {
     final pref = await SharedPreferences.getInstance();
-    const apiUrl = Api.baseUrl+Api.paymentHistory;
+    const apiUrl = Api.baseUrl+Api.userCoinHistory;
     try{
       customLoader!.show(context);
       final response = await http.get(
@@ -39,15 +39,18 @@ class _CoinHistoryState extends State<CoinHistory> {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        final List<dynamic> paymentsData = responseData['data']['payments'];
+        final List<dynamic> paymentsData = responseData['data'];
         customLoader!.hide();
         setState(() {
-          payments = paymentsData.cast<Map<String, dynamic>>();
+          data = paymentsData.cast<Map<String, dynamic>>();
         });
+        print("payments");
+        print(data.toString());
       } else {
         // Handle API error
         print('Failed to fetch payment history}');
         customLoader!.hide();
+        print("payments");
       }
     }
     catch(e){
@@ -64,21 +67,21 @@ class _CoinHistoryState extends State<CoinHistory> {
           centerTitle: true,
           title: const Text("Coin History"),),
         body: ScaffoldBGImg(
-      child: payments.isEmpty
+      child: data.isEmpty
           ? const Center(
           child: Text("No History available",
               style: TextStyle(color: Colors.white, fontSize: 22)))
           : ListView.builder(
-        itemCount: payments.length,
+        itemCount: data.length,
         itemBuilder: (context, index) {
-          final payment = payments[index];
+          final payment = data[index];
 
           // Extracting data from the payment object
-          final paymentId = payment['_id'];
-          final amount = payment['amount'];
+          final paymentId = payment['paymentId'];
+          final amount = payment['coins'];
           final status = payment['status'];
           final createdAt = payment['createdAt'];
-          final buyCoin = payment['buyCoin'];
+          final buyCoin = payment['type'];
 
           // Formatting date
           final formattedDate = DateTime.parse(createdAt).toLocal();
@@ -100,7 +103,7 @@ class _CoinHistoryState extends State<CoinHistory> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Payment ID: $paymentId",
+                  Text("Payment ID: ${paymentId ?? ""}",
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 6),
