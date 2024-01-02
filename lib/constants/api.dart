@@ -57,7 +57,7 @@ abstract class Api {
 
   static const String checkAppVersion = "admin/get-config?type=appversion";
 
-  static const String appVersion = "1.0.7";
+  static const String appVersion = "1.0.8";
 
   static const String buyURl = "https://pmny.in/AIPlns6BskBN";
 }
