@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:real_twist/auth/login.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
@@ -200,6 +201,35 @@ class _WithdrawalRequestState extends State<WithdrawalRequest> {
                                                 fontSize: 18,
                                                 fontWeight:
                                                 FontWeight.bold)),
+                                        const SizedBox(height: 8),
+                                        GestureDetector(
+                                          onTap: (){
+                                            Clipboard.setData(ClipboardData(text: data[index]['upiId'].toString() ?? "")).then((value) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text("Referral code copied"),
+                                                ),
+                                              );
+                                            });
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                               Flexible(
+                                                 child: Text(
+                                                  data[index]['upiId'].toString() ?? "",
+                                                  textAlign: TextAlign.start,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                              ),
+                                               ),
+                                              const SizedBox(width: 6),
+                                              const Icon(Icons.copy, size: 28)
+                                            ],
+                                          ),
+                                        ),
                                         const SizedBox(height: 6),
                                         Text(
                                             "Amount: ${data[index]['amount'].toString()}",
