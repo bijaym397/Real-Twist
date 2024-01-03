@@ -1,10 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:real_twist/admin/payment_history.dart';
-import 'package:real_twist/bonus_chart.dart';
-import 'package:real_twist/common/my_network.dart';
 import 'package:real_twist/constants/api.dart';
 import 'package:real_twist/constants/strings.dart';
 import 'package:real_twist/main.dart';
@@ -12,8 +8,6 @@ import 'package:real_twist/modals/home_details_modal.dart';
 import 'package:real_twist/modals/referral_response_modal.dart';
 import 'package:real_twist/modals/user_modal.dart';
 import 'package:real_twist/payments/coin_history.dart';
-import 'package:real_twist/payments/icome_view.dart';
-import 'package:real_twist/payments/my_invest.dart';
 import 'package:real_twist/payments/payment_history.dart';
 import 'package:real_twist/spinwheelscreen.dart';
 import 'package:real_twist/utils/Back_handler.dart';
@@ -630,7 +624,7 @@ class HomeSideView extends StatelessWidget {
                 /// Refer A Friend
                 GestureDetector(
                   onTap: () {
-                    share(shareUrl: homeDetails.data!.appLink.toString());
+                    share(context: context,shareUrl: homeDetails.data!.appLink.toString());
                   },
                   child: Container(
                     height: 200,
