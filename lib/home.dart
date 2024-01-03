@@ -648,8 +648,14 @@ class HomeSideView extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 5.0),
-                      child: Text(userDetails?.data?.userCode?.isNotEmpty == true ? "Referral Code : ${userDetails?.data?.userCode.toString()}" : "",
-                          style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 20, fontWeight: FontWeight.bold)),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Text(userDetails?.data?.userCode?.isNotEmpty == true ? "My Refer Code : ${userDetails?.data?.userCode.toString()}" : "",
+                              style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 16, fontWeight: FontWeight.w900)),
+                        ),
+                      ),
                     ),
                   ),
                 ),
