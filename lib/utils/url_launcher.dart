@@ -13,13 +13,13 @@ Future<void> urlLauncher({required String url, String? title}) async {
   }
 }
 
-Future<void> share({required BuildContext context,required String shareUrl}) async {
+Future<void> share({required BuildContext context,required String shareUrl, String? referralCode}) async {
   final dir = await getTemporaryDirectory();
-  final byte = (await rootBundle.load("assets/spin2.png")).buffer.asUint8List();
-  final file = File("${dir.path}/Image.png");
+  final byte = (await rootBundle.load("assets/referralCodeImage.jpg")).buffer.asUint8List();
+  final file = File("${dir.path}/Image.jpg");
   await file.writeAsBytes(byte);
   try{
-    await Share.shareXFiles([XFile(file.path)], text: "${"Real Twist"} "" ${shareUrl}");
+    await Share.shareXFiles([XFile(file.path)], text: "${"Real Twist"}\n${referralCode != "" ? "Referral Code : " : ""} ${referralCode ?? ""} "" ${shareUrl}");
     Clipboard.setData(ClipboardData(text: shareUrl ?? "")).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

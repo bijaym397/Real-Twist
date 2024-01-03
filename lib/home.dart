@@ -113,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
             userDetails: userDetails!,
             homeDetails: homeDetails!,
             token: token.toString()),
-        body: ScaffoldBGImg(child: HomeSideView(homeDetails: homeDetails!)),
+        body: ScaffoldBGImg(child: HomeSideView(homeDetails: homeDetails!, userDetails: userDetails,)),
       ),
     );
   }
@@ -305,8 +305,9 @@ class _HomeViewState extends State<HomeView> {
 
 class HomeSideView extends StatelessWidget {
   final HomeDetailsResponse homeDetails;
+  final UserApiResponse? userDetails;
 
-  const HomeSideView({Key? key, required this.homeDetails}) : super(key: key);
+  const HomeSideView({Key? key, required this.homeDetails, this.userDetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -624,7 +625,9 @@ class HomeSideView extends StatelessWidget {
                 /// Refer A Friend
                 GestureDetector(
                   onTap: () {
-                    share(context: context,shareUrl: homeDetails.data!.appLink.toString());
+                    share(context: context,
+                        shareUrl: homeDetails.data!.appLink.toString(),
+                        referralCode: userDetails?.data?.userCode.toString() ?? "");
                   },
                   child: Container(
                     height: 200,

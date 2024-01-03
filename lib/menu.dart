@@ -211,7 +211,10 @@ class DrawerView extends StatelessWidget {
                 leading: const Icon(Icons.share_rounded),
                 title: const Text("Refer Friends & Earn"),
                 onTap: () async {
-                  await share(context: context,shareUrl: homeDetails.data!.appLink.toString());
+                  await share(context: context,
+                      shareUrl: homeDetails.data!.appLink.toString(),
+                      referralCode: userDetails.data!.userCode!.isNotEmpty == true ? userDetails.data!.userCode.toString() : ""
+                  );
                   Navigator.pop(context);
                 }),
             ListTile(
