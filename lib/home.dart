@@ -631,7 +631,8 @@ class HomeSideView extends StatelessWidget {
                   },
                   child: Container(
                     height: 200,
-                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -644,6 +645,11 @@ class HomeSideView extends StatelessWidget {
                         fit: BoxFit.fill,
                       ),
                       borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5.0),
+                      child: Text(userDetails?.data?.userCode?.isNotEmpty == true ? "Referral Code : ${userDetails?.data?.userCode.toString()}" : "",
+                          style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ),
