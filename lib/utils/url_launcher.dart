@@ -20,7 +20,7 @@ Future<void> share({required BuildContext context,required String shareUrl, Stri
   await file.writeAsBytes(byte);
   try{
     await Share.shareXFiles([XFile(file.path)], text: "${"Real Twist"}\n${referralCode != "" ? "Referral Code : " : ""} ${referralCode ?? ""} "" ${shareUrl}");
-    Clipboard.setData(ClipboardData(text: shareUrl ?? "")).then((value) {
+    Clipboard.setData(ClipboardData(text: "${referralCode != "" ? "Referral Code : " : ""} ${referralCode ?? ""}\n${shareUrl}")).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
