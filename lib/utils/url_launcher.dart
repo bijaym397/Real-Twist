@@ -10,7 +10,7 @@ const String headText =
     "Hi! I'm inviting you to use Real Twist. It's a simple and secure way to make money, play games and more.";
 const String codeText = "Please use my referral code ";
 const String dowanloadText = "Click below link for dowanload the App.";
-const String nameText = "Real Twist";
+const String nameText = "Join with Real Twist";
 
 Future<void> urlLauncher({required String url, String? title}) async {
   final Uri uri = Uri.parse(url);
@@ -32,10 +32,10 @@ Future<void> share(
   try {
     await Share.shareXFiles([XFile(file.path)],
         text:
-            "$nameText\n$headText\n${referralCode != "" ? codeText : ""} <${referralCode ?? ""}>\n$dowanloadText\n${shareUrl}");
+            "$nameText\n\n$headText\n\n${referralCode != "" ? codeText : ""} <${referralCode ?? ""}>\n\n$dowanloadText\n\n$shareUrl");
     Clipboard.setData(ClipboardData(
             text:
-                "${referralCode != "" ? "Referral Code : " : ""} ${referralCode ?? ""}\n${shareUrl}"))
+                "${referralCode != "" ? "Referral Code : " : ""} ${referralCode ?? ""}\n$shareUrl"))
         .then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
